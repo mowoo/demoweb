@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="99.757" height="92.063" viewBox="0 0 99.757 92.063">
+    <defs>
+        <clipPath id="clip-path">
+            <path id="矩形_209" fill="none" d="M0 0H99.757V92.063H0z"/>
+        </clipPath>
+        <style>
+            .cls-4{fill:none;stroke:#fff;stroke-miterlimit:10;stroke-width:8px}
+        </style>
+    </defs>
+    <g id="组_769">
+        <g id="组_768" clip-path="url(#clip-path)">
+            <path id="路径_258" fill="none" stroke="#fff" stroke-miterlimit="10" stroke-width="5px" d="M89.286 10.471a27.413 27.413 0 0 0-38.651 0l-.757.756-.756-.756A27.33 27.33 0 0 0 10.471 49.12l.758.759 38.649 38.648 38.649-38.648.759-.759a27.41 27.41 0 0 0 0-38.649z"/>
+            <path id="直线_8" d="M0 0L0 31.865" class="cls-4" transform="translate(49.325 26.162)"/>
+            <path id="直线_9" d="M0 0L31.864 0" class="cls-4" transform="translate(33.393 42.094)"/>
+        </g>
+    </g>
+</svg>

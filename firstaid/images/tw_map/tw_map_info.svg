@@ -1,0 +1,39 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="138" height="120" viewBox="0 0 138 120">
+    <defs>
+        <style>
+            .cls-2{fill:#fff;font-size:15px;font-family:PingFangTC-Regular,PingFang TC}.cls-3{font-family:MicrosoftSansSerif,Microsoft Sans Serif}
+        </style>
+    </defs>
+    <g id="组_819" transform="translate(-137 -221)">
+        <g id="组_814" transform="translate(3 25)">
+            <path id="矩形_210" fill="#66b8bd" d="M0 0H10V10H0z" transform="translate(134 226)"/>
+            <text id="開車30分鐘內" class="cls-2" transform="translate(153 221)">
+                <tspan x="0" y="16">開車</tspan><tspan y="16" class="cls-3">30</tspan><tspan y="16">分鐘內</tspan>
+            </text>
+        </g>
+        <g id="组_815" transform="translate(3 50)">
+            <path id="矩形_210-2" fill="#fcd472" d="M0 0H10V10H0z" transform="translate(134 226)"/>
+            <text id="開車30至60分鐘" class="cls-2" transform="translate(153 221)">
+                <tspan x="0" y="16">開車</tspan><tspan y="16" class="cls-3">30</tspan><tspan y="16">至</tspan><tspan y="16" class="cls-3">60</tspan><tspan y="16">分鐘</tspan>
+            </text>
+        </g>
+        <g id="组_816" transform="translate(3 74)">
+            <path id="矩形_210-3" fill="#f89d75" d="M0 0H10V10H0z" transform="translate(134 226)"/>
+            <text id="開車60至120分鐘" class="cls-2" transform="translate(153 221)">
+                <tspan x="0" y="16">開車</tspan><tspan y="16" class="cls-3">60</tspan><tspan y="16">至</tspan><tspan y="16" class="cls-3">120</tspan><tspan y="16">分鐘</tspan>
+            </text>
+        </g>
+        <g id="组_817" transform="translate(3 99)">
+            <path id="矩形_210-4" fill="#bebfbf" d="M0 0H10V10H0z" transform="translate(134 226)"/>
+            <text id="開車120分鐘以上" class="cls-2" transform="translate(153 221)">
+                <tspan x="0" y="16">開車</tspan><tspan y="16" class="cls-3">120</tspan><tspan y="16">分鐘以上</tspan>
+            </text>
+        </g>
+        <g id="组_818">
+            <text id="急救責任醫院" class="cls-2" transform="translate(156 221)">
+                <tspan x="0" y="16">急救責任醫院</tspan>
+            </text>
+            <circle id="椭圆_10" cx="5.5" cy="5.5" r="5.5" fill="#ec4040" transform="translate(137 226)"/>
+        </g>
+    </g>
+</svg>
