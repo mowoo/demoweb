@@ -141,8 +141,14 @@ main {
   margin: 0;
   padding: 0;
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(2, 1fr);
   gap: 32px;
+}
+
+@media (min-width: 1400px) {
+  .card-grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
 }
 
 .card {
@@ -329,7 +335,6 @@ main {
 /* === Responsive === */
 @media (max-width: 960px) {
   .card-grid {
-    grid-template-columns: repeat(2, 1fr);
     gap: 24px;
   }
   main {
