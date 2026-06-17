@@ -153,9 +153,9 @@ import * as THREE from 'three';
 
 /* ===== 數字跳動 ===== */
 function animateNum(el){
-  const to=+el.dataset.to, unitEl=el.querySelector('.unit'), dur=1600, start=performance.now();
+  const to=+el.dataset.to, unitEl=el.querySelector('.unit'), dur=1600; let start=null;
   function frame(now){
-    const p=Math.min((now-start)/dur,1), ease=1-Math.pow(1-p,3);
+    if(start===null)start=now; const p=Math.min(Math.max((now-start)/dur,0),1), ease=1-Math.pow(1-p,3);
     const txt=Math.round(to*ease).toLocaleString();
     if(unitEl) el.firstChild.nodeValue=txt; else el.textContent=txt;
     if(p<1) requestAnimationFrame(frame);

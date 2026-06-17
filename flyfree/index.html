@@ -1349,7 +1349,7 @@ body.at-hero #topbar,body.at-hero #cnav,body.at-hero #globalRain{opacity:0!impor
   if(hp.complete&&hp.naturalWidth)hp.classList.add('shown');else hp.addEventListener('load',function(){hp.classList.add('shown')});})();
 /* 數字跳動 */
 function runCount(el){var target=parseFloat(String(el.dataset.count).replace(/,/g,'')),dur=1500,t0=performance.now();
-  (function tick(now){var p=Math.min((now-t0)/dur,1),v=Math.round(target*(1-Math.pow(1-p,3)));
+  (function tick(now){var p=Math.min(Math.max((now-t0)/dur,0),1),v=Math.round(target*(1-Math.pow(1-p,3)));
     el.textContent=v.toLocaleString('en-US');if(p<1)requestAnimationFrame(tick)})(t0);}
 (function(){var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){runCount(e.target);io.unobserve(e.target)}})},{threshold:.6});
   document.querySelectorAll('[data-count]').forEach(function(el){if(!el.closest('#dataReveal'))io.observe(el)})})();
