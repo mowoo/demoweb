@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1400 900" preserveAspectRatio="xMidYMid slice">
+  <defs>
+    <linearGradient id="fade" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#9db4c3" stop-opacity="0.18"/>
+      <stop offset="0.58" stop-color="#9db4c3" stop-opacity="0.07"/>
+      <stop offset="1" stop-color="#c8743a" stop-opacity="0.06"/>
+    </linearGradient>
+    <filter id="grain" x="-10%" y="-10%" width="120%" height="120%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.85" numOctaves="3" seed="88"/>
+      <feColorMatrix type="saturate" values="0"/>
+      <feComponentTransfer>
+        <feFuncA type="table" tableValues="0 0.12"/>
+      </feComponentTransfer>
+    </filter>
+  </defs>
+  <rect width="1400" height="900" fill="url(#fade)" opacity="0.8"/>
+  <g stroke="#c7d5df" stroke-width="1.4" stroke-linecap="round" opacity="0.28" transform="rotate(12 700 450)">
+    <path d="M80 -20 v260"/><path d="M148 -60 v330"/><path d="M236 -30 v250"/><path d="M322 -80 v360"/>
+    <path d="M410 -40 v300"/><path d="M486 -70 v270"/><path d="M574 -30 v350"/><path d="M650 -90 v290"/>
+    <path d="M735 -20 v310"/><path d="M812 -70 v360"/><path d="M900 -20 v280"/><path d="M982 -90 v350"/>
+    <path d="M1070 -40 v320"/><path d="M1160 -80 v300"/><path d="M1244 -20 v350"/><path d="M1340 -70 v300"/>
+  </g>
+  <g stroke="#e6b070" stroke-width="1" stroke-linecap="round" opacity="0.08" transform="rotate(12 700 450)">
+    <path d="M30 480 v220"/><path d="M210 400 v260"/><path d="M470 520 v210"/><path d="M760 440 v260"/><path d="M1040 510 v220"/><path d="M1300 430 v260"/>
+  </g>
+  <rect width="1400" height="900" filter="url(#grain)"/>
+</svg>

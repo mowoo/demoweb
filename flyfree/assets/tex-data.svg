@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1400 900" preserveAspectRatio="xMidYMid slice">
+  <defs>
+    <radialGradient id="pulse" cx="70%" cy="18%" r="68%">
+      <stop offset="0" stop-color="#e6b070" stop-opacity="0.20"/>
+      <stop offset="0.45" stop-color="#c8743a" stop-opacity="0.08"/>
+      <stop offset="1" stop-color="#0b0d10" stop-opacity="0"/>
+    </radialGradient>
+    <pattern id="grid" width="80" height="80" patternUnits="userSpaceOnUse">
+      <path d="M80 0H0V80" fill="none" stroke="#f2ece2" stroke-opacity="0.055" stroke-width="1"/>
+    </pattern>
+    <filter id="grain" x="-10%" y="-10%" width="120%" height="120%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.52" numOctaves="3" seed="9"/>
+      <feColorMatrix type="saturate" values="0"/>
+      <feComponentTransfer><feFuncA type="table" tableValues="0 0.12"/></feComponentTransfer>
+    </filter>
+  </defs>
+  <rect width="1400" height="900" fill="url(#pulse)"/>
+  <rect width="1400" height="900" fill="url(#grid)"/>
+  <g fill="none" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M110 660 C250 540 360 600 520 470 C690 332 850 410 990 295 C1110 196 1240 220 1340 150" stroke="#e6b070" stroke-opacity="0.14" stroke-width="2.2"/>
+    <path d="M100 720 C280 650 410 680 590 560 C760 450 930 515 1080 395 C1210 292 1270 312 1360 240" stroke="#9aa0a6" stroke-opacity="0.12" stroke-width="1.5"/>
+    <path d="M170 365 C350 300 520 365 700 260 C850 174 1020 210 1220 112" stroke="#c8743a" stroke-opacity="0.10" stroke-width="1.4"/>
+  </g>
+  <g fill="#e6b070" opacity="0.16">
+    <circle cx="520" cy="470" r="3"/><circle cx="990" cy="295" r="3.5"/><circle cx="1340" cy="150" r="4"/>
+    <circle cx="700" cy="260" r="2.5"/><circle cx="1220" cy="112" r="3"/>
+  </g>
+  <rect width="1400" height="900" filter="url(#grain)"/>
+</svg>

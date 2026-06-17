@@ -1,0 +1,19 @@
+{
+  "version": 1,
+  "kind": "html",
+  "title": "embed/不缺席的陪伴.html",
+  "entry": "embed/不缺席的陪伴.html",
+  "renderer": "html",
+  "status": "complete",
+  "exports": [
+    "html",
+    "pdf",
+    "zip"
+  ],
+  "createdAt": "2026-06-16T15:39:18.814Z",
+  "updatedAt": "2026-06-16T15:39:18.814Z",
+  "metadata": {
+    "inferred": true,
+    "reconciled": true
+  }
+}
