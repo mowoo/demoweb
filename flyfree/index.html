@@ -1409,8 +1409,8 @@ function runCount(el){var target=parseFloat(String(el.dataset.count).replace(/,/
     var list=hasExt?[cap]:[cap+'.jpg',cap+'.JPG',cap+'.jpeg',cap+'.JPEG',cap+'.png',cap+'.PNG',cap+'.webp',cap+'.WEBP'];var i=0;
     var img=document.createElement('img');img.loading='lazy';img.decoding='async';img.alt=cap;
     img.addEventListener('load',function(){requestAnimationFrame(function(){img.classList.add('shown')})});
-    img.onerror=function(){i++;if(i<list.length){img.src='assets/'+encodeURIComponent(list[i])}else{img.remove()}};
-    img.src='assets/'+encodeURIComponent(list[0]);
+    img.onerror=function(){i++;if(i<list.length){img.src='assets/'+encodeURIComponent(list[i]).replace(/%2B/g,'+')}else{img.remove()}};
+    img.src='assets/'+encodeURIComponent(list[0]).replace(/%2B/g,'+');
     el.insertBefore(img,el.firstChild);
   });
 })();
