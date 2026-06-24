@@ -13,26 +13,26 @@
   *{box-sizing:border-box;margin:0;padding:0}
   body{background:var(--bg);color:var(--ink);
     font-family:"Noto Sans TC","PingFang TC","Microsoft JhengHei",sans-serif;
-    display:flex;justify-content:center;padding:48px 16px;line-height:1.7}
+    display:flex;justify-content:center;padding:48px 16px 8px;line-height:1.7}
   .wrap{width:720px;max-width:100%}
-  .eyebrow{display:inline-flex;align-items:center;gap:8px;font-size:13px;
-    letter-spacing:.18em;color:var(--teal-deep);font-weight:700;margin-bottom:14px}
-  .eyebrow::before{content:"";width:24px;height:3px;background:var(--teal);border-radius:2px}
+  .eyebrow{display:inline-flex;align-items:center;gap:8px;font-size:16px;
+    letter-spacing:.18em;color:var(--teal-deep);font-weight:700;margin-bottom:4px}
   h1{font-family:"Noto Serif TC","Songti TC",serif;font-size:46px;font-weight:700;
     letter-spacing:.04em;margin-bottom:10px}
-  .sub{color:var(--ink-soft);font-size:15px;margin-bottom:30px;max-width:560px}
+  .sub{color:var(--ink-soft);font-size:16px;margin-bottom:30px;max-width:560px}
   .card{background:var(--card);border:1px solid var(--line);border-radius:22px;
     padding:30px 34px;margin-bottom:22px;box-shadow:0 18px 40px -28px rgba(58,58,54,.4)}
-  .card-label{font-size:12px;letter-spacing:.16em;color:var(--gold);font-weight:700;
+  .card:last-child{margin-bottom:0}
+  .card-label{font-size:16px;letter-spacing:.16em;color:var(--gold);font-weight:700;
     margin-bottom:18px;text-transform:uppercase}
   .stats{display:flex;justify-content:space-between;gap:12px;text-align:center;margin-bottom:26px;align-items:flex-start}
   .stat{flex:1}
   .num{font-family:"Noto Serif TC",serif;font-weight:700;color:var(--teal-deep);
     font-size:42px;line-height:1.1;display:inline-block;white-space:nowrap}
-  .num .unit{font-size:15px;color:var(--ink-soft);font-weight:500;margin-left:2px}
+  .num .unit{font-size:16px;color:var(--ink-soft);font-weight:500;margin-left:2px}
   .num.pulse{animation:pulse 2.4s ease-in-out infinite}
   @keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.06)}}
-  .stat .cap{font-size:13px;color:var(--ink-soft);margin-top:6px;letter-spacing:.04em}
+  .stat .cap{font-size:16px;color:var(--ink-soft);margin-top:6px;letter-spacing:.04em}
 
   .globe-block{display:flex;align-items:center;justify-content:center;gap:18px;
     padding:8px 0 4px;flex-wrap:wrap}
@@ -47,7 +47,7 @@
     font-size:84px;line-height:1;color:var(--teal-deep)}
   .globe-big .big-unit{font-family:"Noto Serif TC",serif;font-weight:700;
     font-size:34px;color:var(--ink)}
-  .globe-hint{font-size:11px;color:#A8A294;margin-top:8px;letter-spacing:.04em;line-height:1.5}
+  .globe-hint{font-size:16px;color:#A8A294;margin-top:8px;letter-spacing:.04em;line-height:1.5}
 
   .divider{height:1px;background:var(--line);margin:22px 0}
   .map-block{display:flex;gap:26px;align-items:center;flex-wrap:wrap}
@@ -59,7 +59,7 @@
   .route-icon{flex:0 0 38px;height:38px;border-radius:10px;display:flex;
     align-items:center;justify-content:center;background:rgba(62,142,148,.12);font-size:18px}
   .route-row b{font-family:"Noto Serif TC",serif;color:var(--teal-deep);font-size:26px;display:inline-block}
-  .route-row .lbl{font-size:13px;color:var(--ink-soft);display:block;margin-top:2px}
+  .route-row .lbl{font-size:16px;color:var(--ink-soft);display:block;margin-top:2px}
 
   .tw-land{fill:var(--land);stroke:var(--teal-deep);stroke-width:.8;stroke-linejoin:round}
   #route-line{fill:none;stroke:var(--teal);stroke-width:2.5;stroke-linecap:round;
@@ -78,10 +78,10 @@
   .case-unit{font-family:"Noto Serif TC",serif;color:var(--ink-soft);font-size:22px;margin-right:6px}
   .case-card .tail{font-size:16px;color:var(--ink);margin-top:22px}
   .badge{display:inline-block;margin-top:22px;padding:9px 22px;background:rgba(62,142,148,.1);
-    color:var(--teal-deep);border-radius:999px;font-size:14px;font-weight:700;letter-spacing:.05em}
+    color:var(--teal-deep);border-radius:999px;font-size:16px;font-weight:700;letter-spacing:.05em}
   .closed-tick{display:inline-flex;width:18px;height:18px;border-radius:50%;background:var(--teal);
-    color:#fff;align-items:center;justify-content:center;font-size:11px;margin-right:7px;vertical-align:-3px}
-  .footnote{font-size:12px;color:var(--ink-soft);text-align:center;margin-top:8px;letter-spacing:.03em}
+    color:#fff;align-items:center;justify-content:center;font-size:16px;margin-right:7px;vertical-align:-3px}
+  .footnote{font-size:16px;color:var(--ink-soft);text-align:center;margin-top:8px;letter-spacing:.03em}
   @media (max-width:760px){h1{font-size:34px}.stats{gap:6px}
     .num{font-size:clamp(18px,4.8vw,40px)}.case-num{font-size:72px}
     .case-hero{flex-wrap:wrap;gap:2px}.case-side{font-size:17px}}
@@ -96,7 +96,7 @@
 
   <!-- 數據一 -->
   <div class="card">
-    <div class="card-label">數據一 · 走過的路</div>
+    <div class="card-label" style="text-align:center">兒盟‧走過的路</div>
     <div class="stats">
       <div class="stat"><span class="num pulse" data-to="17">0<span class="unit">年</span></span><div class="cap">持續陪伴</div></div>
       <div class="stat"><span class="num pulse" data-to="1725">0<span class="unit">次</span></span><div class="cap">累計訪視</div></div>
@@ -124,18 +124,17 @@
           <div><b data-to="171">0</b> 圈<span class="lbl">以環島一周約 1,140 公里計，可繞行台灣</span></div></div>
       </div>
     </div>
-    <p class="footnote">底圖為台灣實際輪廓（GeoJSON）；里程換算為示意，呈現「急難期密集 → 長期低頻但持續」的節奏。</p>
   </div>
 
   <!-- 數據二 -->
   <div class="card case-card">
-    <div class="card-label" style="margin-bottom:24px">數據二 · 陪到最後</div>
+    <div class="card-label" style="margin-bottom:24px">兒盟‧陪到最後</div>
     <div class="case-hero">
-      <span class="case-side case-left">十七年來的陪伴</span>
+      <span class="case-side case-left">十七年來陪伴</span>
       <span class="case-num-wrap"><span class="case-num pulse" data-to="77">0</span></span>
-      <span class="case-side case-right">個失依・喪親個案</span>
+      <span class="case-side case-right">個失依、喪親個案</span>
     </div>
-    <p class="tail" style="font-size:23px;font-weight:600"><span class="closed-tick">✓</span>於 <b style="color:var(--teal-deep);background:rgba(62,142,148,.18);padding:3px 10px;border-radius:7px">115 年 9 月</b> 全數結案</p>  </div>
+    <p class="tail" style="font-size:23px;font-weight:600"><span class="closed-tick">✓</span>於 <b style="color:var(--teal-deep);background:rgba(62,142,148,.18);padding:3px 10px;border-radius:7px">2026 年 9 月</b> 全數結案</p>  </div>
 </div>
 
 <script>
