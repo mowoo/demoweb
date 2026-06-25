@@ -175,7 +175,7 @@ section{position:relative}
   max-width:22ch;text-shadow:0 6px 50px rgba(0,0,0,.7)}
 .cut__quote cite{display:block;margin-top:22px;font-style:normal;font-size:16px;letter-spacing:.18em;color:var(--accent-2)}
 /* 曙光擦除：災難→復原的轉場高潮（暖光由下而上抹過、風暴退場、暗轉亮）。單一變數 --dp(0→1) 由捲動驅動 */
-.cut--pivot{--storm:calc(.62*(1 - var(--dp,0)))}
+.cut--pivot{--storm:calc(.62*(1 - var(--dp,0)));height:57vh;min-height:360px}
 .cut--pivot .dawn-wipe{position:absolute;inset:0;z-index:3;pointer-events:none;will-change:transform;
   transform:translateY(calc((1 - var(--dp,0)) * 100%));
   background:linear-gradient(0deg,#f7f1e7 0%,#f7f1e7 32%,rgba(247,241,231,.94) 55%,rgba(247,241,231,.5) 72%,rgba(247,241,231,.16) 87%,transparent 100%)}
@@ -620,7 +620,7 @@ footer .top-link:hover{border-color:var(--accent)}
   <a href="#s5"><span>孝慈十年磨一劍</span></a>
   <a href="#dataviz"><span>17年的軌跡</span></a>
   <a href="#feature"><span>養出「悲復力」</span></a>
-  <a href="#qa"><span>風災Q&A</span></a>
+  <a href="#qa"><span>風災Q&amp;A</span></a>
 </nav>
 
 <style>
@@ -789,7 +789,7 @@ body.at-hero #cnav{opacity:0!important;pointer-events:none!important}body.at-her
   <div class="photo cut__img" data-speed="0.5" data-cap="981015陸軍官校的玩具圖書館.JPG"><div class="grain"></div><div class="vignette"></div></div>
   <div class="dawn-wipe" aria-hidden="true"></div>
   <div class="dawn-bloom" aria-hidden="true"></div>
-  <div class="cut__quote"><div class="reveal"><img loading="lazy" decoding="async" class="cut-quote-img reveal" src="assets/titles/首頁-繪本與教具.png" alt="帶著繪本與教具，在收容所裡為孩子撐起一塊秩序。" style="display:block;width:100%;max-width:min(94%,520px);height:auto;margin:0 auto;filter:brightness(0) invert(1) drop-shadow(0 2px 8px rgba(0,0,0,.55))">
+  <div class="cut__quote"><div class="reveal"><img loading="lazy" decoding="async" class="cut-quote-img reveal" src="assets/titles/小標題-繪本與教具.png" alt="帶著繪本與教具，在收容所裡為孩子撐起一塊秩序。" style="display:block;width:100%;max-width:min(94%,520px);height:auto;margin:0 auto;filter:brightness(0) invert(1) drop-shadow(0 2px 8px rgba(0,0,0,.55))">
     <cite style="color:#fff;text-shadow:0 2px 8px rgba(0,0,0,.55)">兒盟・受災兒童服務</cite></div></div>
 </section>
 
@@ -798,10 +798,10 @@ body.at-hero #cnav{opacity:0!important;pointer-events:none!important}body.at-her
 
 <!-- ③-1 小吉 -->
 <article class="story block" id="s1" data-od-id="story-1">
-  <div class="wrap narrow story__head">
+  <div class="wrap narrow story__head" style="padding-top: 0px;">
     <img class="profile-img reveal" data-od-id="profile-1" src="assets/profiles/小吉_profile.png" alt="小吉 個案小檔案">
     <img loading="lazy" decoding="async" class="story-title-img reveal d1" src="assets/titles/小吉-文章標題@2x.png" alt="衝突摩擦長出親情，沒有哆啦A夢，他卻有「大雄」來幫忙">
-    <div class="video-chip reveal d1"><span class="play"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"></path></svg></span>觀看小吉的 10 秒短片　<em>影片連結待補</em></div>
+    <div class="reveal d1" style="margin:34px auto 32px;max-width:720px;aspect-ratio:16/9;border-radius:12px;overflow:hidden;position:relative;background:linear-gradient(135deg,#1c1f24,#0c0e11);border:1px solid var(--border-soft);box-shadow:0 22px 52px rgba(0,0,0,.4);display:flex;align-items:center;justify-content:center;cursor:pointer"><span style="width:76px;height:76px;border-radius:50%;background:rgba(201,100,66,.94);display:flex;align-items:center;justify-content:center;box-shadow:0 10px 26px rgba(0,0,0,.45)"><svg viewBox="0 0 24 24" width="32" height="32" fill="#fff" style="margin-left:5px"><path d="M8 5v14l11-7z"></path></svg></span><span style="position:absolute;left:18px;bottom:14px;color:rgba(244,238,228,.74);font-size:16px;letter-spacing:.04em">小吉的 10 秒短片・影片待嵌入</span></div>
     <p class="body reveal d2">我今年19歲，目前就讀台灣大學公衛系。莫拉克風災重創小林村，我的阿嬤、爸爸媽媽跟姊姊不幸離世。那年我才三歲，還在唸幼幼班的年紀，先讓叔叔撫養，後來又轉給三姑姑，最後才交到住杉林鄉的阿伯（伯父）家。</p>
     <p class="body reveal">阿伯管我很嚴，那時特別討厭跟他住在一起。有次他帶我到山下伯母家，我就在那住了快一年。但伯母工作忙，所以我必須在安親班待到七點才能回家，才小四就覺得壓力很大，作業寫到半夜11點還寫不完。那時很想回到杉林過野孩子的生活，所以五年級過後還是回來跟阿伯一起住。</p>
   </div>
@@ -826,16 +826,17 @@ body.at-hero #cnav{opacity:0!important;pointer-events:none!important}body.at-her
       <div class="photo" data-cap="小吉家庭合照"><div class="grain"></div></div>
       <div class="photo" data-cap="小吉普門中學當志工1"><div class="grain"></div></div>
     </div>
+    <div class="reveal" style="text-align:center;margin-top:26px"><a href="#" style="display:inline-block;text-decoration:none"><img loading="lazy" decoding="async" src="assets/titles/完整影片請看-變色@2x.png" alt="完整影片請看" style="display:block;height:auto;width:auto;max-width:280px"></a></div>
 
   </div>
 </article>
 
 <!-- ④ 過場：小吉 —— 樂團表演襯底 + 家庭合照/普門志工小圖 + 一句話（稿單 item 4，版式同 cut-3） -->
 <section class="cut cut--family" data-od-id="cut-5">
-  <div class="photo cut__img" data-speed="0.5" data-cap="小吉近況-樂團表演"><div class="grain"></div><div class="vignette"></div></div>
+  <div class="photo cut__img" data-speed="0.5" data-cap="小吉近況-樂團表演" data-file="小吉近況-樂團表演_cut"><div class="grain"></div><div class="vignette"></div></div>
   <div class="cut__minis reveal">
   </div>
-  <img loading="lazy" decoding="async" class="cut-cap-img reveal" src="assets/titles/小吉-結語小標@3x.png" alt="兩歲失依的孩子，如今站上舞台——把走過的日子，彈成自己的歌。">
+  <img loading="lazy" decoding="async" class="cut-cap-img reveal" src="assets/titles/結尾小標語-三歲失依@2x.png" alt="三歲失依的孩子，如今站上舞台——把走過的日子，彈成自己的歌。" style="filter:none">
 </section>
 
 <!-- ③-2 大雄(社工) -->
@@ -843,7 +844,7 @@ body.at-hero #cnav{opacity:0!important;pointer-events:none!important}body.at-her
   <div class="wrap narrow story__head">
     <img class="profile-img reveal" data-od-id="profile-2" src="assets/profiles/大熊_profile.png" alt="大雄 個案小檔案">
     <img loading="lazy" decoding="async" class="story-title-img reveal d1" src="assets/titles/大雄-文章標題@2x.png" alt="災變倖存者「我沒事」的面具下，藏著厚重的悲傷">
-    <div class="video-chip reveal d1"><span class="play"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"></path></svg></span>觀看大雄的 10 秒短片　<em>影片連結待補</em></div>
+    <div class="reveal d1" style="margin:34px auto 32px;max-width:720px;aspect-ratio:16/9;border-radius:12px;overflow:hidden;position:relative;background:linear-gradient(135deg,#1c1f24,#0c0e11);border:1px solid var(--border-soft);box-shadow:0 22px 52px rgba(0,0,0,.4);display:flex;align-items:center;justify-content:center;cursor:pointer"><span style="width:76px;height:76px;border-radius:50%;background:rgba(201,100,66,.94);display:flex;align-items:center;justify-content:center;box-shadow:0 10px 26px rgba(0,0,0,.45)"><svg viewBox="0 0 24 24" width="32" height="32" fill="#fff" style="margin-left:5px"><path d="M8 5v14l11-7z"></path></svg></span><span style="position:absolute;left:18px;bottom:14px;color:rgba(244,238,228,.74);font-size:16px;letter-spacing:.04em">大雄・影片待嵌入</span></div>
     <p class="body reveal d2">在兒福聯盟裡，大家都叫我大雄。</p>
     <p class="body reveal">我是災變後2個月，2009年10月1日到職，前一晚先被督導派去鳳山的陸軍官校安置營區「感受第一線氛圍」。在那個收容了小林村、桃源鄉住民的緊急安置所裡，我身為新進社工，學到的第一課不是如何進行心理諮商，而是「穩定生活秩序」。</p>
     <p class="body reveal">災變儘管發生快2個月，住民們的生活依舊很混亂。大人每天忙著申請補助、找工作、處理未來房子的事，根本沒有餘力照顧身邊的孩子；而學校也因為道路中斷無法復學。我很快意識到：在物理生存與基本秩序穩定之前，所有的心理治療都是很難介入的。陪伴他們打飯、打理日常、讓生活「就定位」，才是我們的第一優先。</p>
@@ -859,7 +860,7 @@ body.at-hero #cnav{opacity:0!important;pointer-events:none!important}body.at-her
     <p class="body reveal">在陪伴的歲月裡，我最常做的就是扮演「轉譯者」和「開關」。有些個案由手足照顧，年齡相仿，生活裡常有劇烈的爭吵與攻擊行為。當哥哥憤怒地吼出：「你那麼晚回家到底在幹嘛？」或者妹妹哭喊：「你到底要我怎樣！」的時候，我必須站在中間去轉譯他們藏在攻擊底下的真心話：「我很害怕失去你，所以我很擔心你。」</p>
     <p class="body reveal">為了打開那些被緊緊鎖住的壓抑情緒，我常帶著兒盟的媒材，例如《擁抱你想念我》這本繪本，去敲孩子們的家門。</p>
     <p class="body reveal">曾有一位國中女孩，她一年搬了三、四次家，生活是很不穩定的，一直在換新環境、唸書、轉學、交新朋友，但訪視時總是笑臉迎人、貼心地說自己一切都好。表面上看起來不希望讓人擔心與牽掛，但當我們共讀那本繪本，藉由故事拉出情感連結的瞬間，她積壓多年的情緒瞬間潰堤，一邊痛哭一邊對我說：「大雄，我真的很想我媽媽……但是因為想她太痛了，我根本不敢想她。」</p>
-    <p class="body reveal">那一刻我明白，好好大哭一場，其實就是與失落和平共處的第一步。悲傷輔導最難的是「與自己和解」。有時候她們與父母的關係，那種失落的層面需要有些討論。她想媽媽，但是又不敢想她。這種想念非常沉重。我們希望透過這些方法讓她哭一場，因為她的笑容底下是「ㄍㄧㄥ」住，好好大哭一場對她們來說滿重要的。</p>
+    <p class="body reveal">那一刻我明白，好好大哭一場，其實就是與失落和平共處的第一步。悲傷輔導最難的是「與自己和解」。有時候她們與父母的關係，那種失落的層面需要有些討論。她想媽媽，但是又不敢想她，這種想念非常沉重。我們希望透過這些方法讓她哭一場，因為她的笑容底下是「ㄍㄧㄥ」住，好好大哭一場對她們來說滿重要的。</p>
     <div class="photostrip reveal">
       <div class="photo" data-cap="兒盟媒材《擁抱你想念我》" data-file="擁抱你想念我"><div class="grain"></div></div>
       <div class="photo" data-cap="小吉（左）是大雄最牽掛的個案" data-file="大雄小吉2"><div class="grain"></div></div>
@@ -875,6 +876,7 @@ body.at-hero #cnav{opacity:0!important;pointer-events:none!important}body.at-her
     <p class="body reveal"><b>學校沒教過悲傷，我們也不習慣面對親人的離去。但生命中的遺憾與悲傷，並不需要被特地鎖起來。</b>認真、踏實地過好現在的生活本身，就是對離開的親人最好的安慰與體貼。因為只要你過得好，你現在的踏實，就是與過去的愛同在。</p>
     <p class="body reveal">這份工作也徹底改變了我。以前我是個不折不扣的工作狂，但現在，我把人生切成「三個三分之一」，8小時工作、8小時睡眠，只剩下8小時可以陪家人，不希望陪家人的時間被稀釋得越來越少。</p>
     <p class="body reveal">跟悲傷的工作做了這麼長的時間，我自己也還沒有準備好怎麼跟家人好好道別。我覺得它沒有「準備好」的一天，但至少你知道怎麼跟自己的情緒好好共處。當事情發生時，你可以好好照顧你自己，不要壓抑它，或者不要過度的堅強說「我沒事」。有時候那個心情被照顧了，很多事情其實就不像你想像中那麼的困難跟嚴重。</p>
+    <div class="reveal" style="text-align:center;margin-top:26px"><a href="#" style="display:inline-block;text-decoration:none"><img loading="lazy" decoding="async" src="assets/titles/完整影片請看-變色@2x.png" alt="完整影片請看" style="display:block;height:auto;width:auto;max-width:280px"></a></div>
   </div>
 </article>
 
@@ -912,7 +914,7 @@ body.at-hero #cnav{opacity:0!important;pointer-events:none!important}body.at-her
   <div class="wrap narrow story__head">
     <img class="profile-img reveal" data-od-id="profile-3" src="assets/profiles/小亭_profile.png" alt="小亭 個案小檔案">
     <img loading="lazy" decoding="async" class="story-title-img reveal d1" src="assets/titles/小亭-文章標題@2x.png" alt="父親是我的英雄，我是父親的驕傲；隨泥流入土為安，精神長留於心">
-    <div class="video-chip reveal d1"><span class="play"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"></path></svg></span>觀看小亭的 10 秒短片　<em>影片連結待補</em></div>
+    <div class="reveal d1" style="margin:34px auto 32px;max-width:720px;aspect-ratio:16/9;border-radius:12px;overflow:hidden;position:relative;background:linear-gradient(135deg,#1c1f24,#0c0e11);border:1px solid var(--border-soft);box-shadow:0 22px 52px rgba(0,0,0,.4);display:flex;align-items:center;justify-content:center;cursor:pointer"><span style="width:76px;height:76px;border-radius:50%;background:rgba(201,100,66,.94);display:flex;align-items:center;justify-content:center;box-shadow:0 10px 26px rgba(0,0,0,.45)"><svg viewBox="0 0 24 24" width="32" height="32" fill="#fff" style="margin-left:5px"><path d="M8 5v14l11-7z"></path></svg></span><span style="position:absolute;left:18px;bottom:14px;color:rgba(244,238,228,.74);font-size:16px;letter-spacing:.04em">小亭・影片待嵌入</span></div>
     <p class="body reveal d2">風災那年我剛要國一升國二，那時因為爸爸當警察的關係，我們全家住在台東太麻里的警察宿舍裡。他曾經接獲民眾報案，說家裡有人抱著瓦斯桶要輕生。爸爸跟同事到現場排除狀況，我覺得他好勇敢。</p>
     <p class="body reveal">莫拉克風災來臨的那天凌晨，爸爸接到特勤通知要出任務。天快亮時，家裡響起一陣敲門聲，有人來通知說爸爸失聯、無線電聯繫不上。</p>
     <p class="body reveal">那時風雨已經非常非常大，當下想說「可能等一下就聯繫到了」、「等一下就找到人了」，我仍存有一絲希望。但時間一分一秒過去，半小時、一小時、半天、一天、兩天、三天……直升機都派出去搜救，就是找不到。最後只有找到警車，但我爸爸跟另一位警員，兩個人都找不到。</p>
@@ -943,18 +945,19 @@ body.at-hero #cnav{opacity:0!important;pointer-events:none!important}body.at-her
     <p class="body reveal">我現在結婚、當媽媽，也是生了三個孩子，很能與過去、與我的父母和解，自己成為父母，更能體會當父母的不容易。身為三寶媽，孩子常問「你比較愛誰？」愛要分成三份，才想到原來那時父母的難處與無奈。我很幸運有社工的幫助，不知道那時爸媽有沒有這樣的人來幫助他們？</p>
     <img loading="lazy" decoding="async" class="quoteimg reveal" src="assets/titles/小亭-金句@3x.png" alt="「我很幸運有社工的幫助，不知道那時爸媽，有沒有這樣的人來幫助他們？」">
     <div class="photostrip reveal">
-      <div class="photo" data-cap="小亭父親台東紀念碑-2(翻攝前台東縣長黃健庭臉書)"><div class="grain"></div></div>
+      <div class="photo" data-cap="紀念碑記載小亭父親江文祥殉職經過（翻攝前台東縣長黃健庭臉書）" data-file="小亭父親台東紀念碑-2(翻攝前台東縣長黃健庭臉書)"><div class="grain"></div></div>
       <div class="photo" data-cap="江文祥科工館立牌"><div class="grain"></div></div>
     </div>
+    <div class="reveal" style="text-align:center;margin-top:26px"><a href="#" style="display:inline-block;text-decoration:none"><img loading="lazy" decoding="async" src="assets/titles/完整影片請看-變色@2x.png" alt="完整影片請看" style="display:block;height:auto;width:auto;max-width:280px"></a></div>
   </div>
 </article>
 
 <!-- ⑧ 過場：小亭 —— 亭葶全家福襯底 + 父親紀念碑/科工館立牌小圖（稿單 item 8，版式同 cut-2） -->
 <section class="cut cut--family" data-od-id="cut-3">
-  <div class="photo cut__img" data-speed="0.5" data-cap="亭葶全家福"><div class="grain"></div><div class="vignette"></div></div>
+  <div class="photo cut__img" data-speed="0.5" data-cap="亭葶全家福" data-file="亭葶全家福_cut"><div class="grain"></div><div class="vignette"></div></div>
   <div class="cut__minis reveal">
   </div>
-  <img loading="lazy" decoding="async" class="cut-cap-img reveal" src="assets/titles/小亭-結語小標@3x.png" alt="父親的身影，留在台東的紀念碑、科工館的立牌——也留在全家福的笑容裡。" style="transform:translateX(-50%) translateY(-184px)">
+  <img loading="lazy" decoding="async" class="cut-cap-img reveal" src="assets/titles/小亭-結語小標@3x.png" alt="父親的身影，留在台東的紀念碑、科工館的立牌——也留在全家福的笑容裡。" style="left:auto;right:clamp(24px,4vw,64px);bottom:clamp(28px,6vh,64px);transform:none">
 </section>
 
 <!-- ③-4 小詩 -->
@@ -962,9 +965,9 @@ body.at-hero #cnav{opacity:0!important;pointer-events:none!important}body.at-her
   <div class="wrap narrow story__head">
     <img class="profile-img reveal" data-od-id="profile-4" src="assets/profiles/小詩_profile.png" alt="小詩 個案小檔案">
     <img loading="lazy" decoding="async" class="story-title-img reveal d1" src="assets/titles/小詩-文章標題@2x.png" alt="媽媽的叮嚀，竟成最後一次通話；《想念，再見》讓我轉念看生死">
-    <div class="video-chip reveal d1"><span class="play"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"></path></svg></span>觀看小詩的 10 秒短片　<em>影片連結待補</em></div>
+    <div class="reveal d1" style="margin:34px auto 32px;max-width:720px;aspect-ratio:16/9;border-radius:12px;overflow:hidden;position:relative;background:linear-gradient(135deg,#1c1f24,#0c0e11);border:1px solid var(--border-soft);box-shadow:0 22px 52px rgba(0,0,0,.4);display:flex;align-items:center;justify-content:center;cursor:pointer"><span style="width:76px;height:76px;border-radius:50%;background:rgba(201,100,66,.94);display:flex;align-items:center;justify-content:center;box-shadow:0 10px 26px rgba(0,0,0,.45)"><svg viewBox="0 0 24 24" width="32" height="32" fill="#fff" style="margin-left:5px"><path d="M8 5v14l11-7z"></path></svg></span><span style="position:absolute;left:18px;bottom:14px;color:rgba(244,238,228,.74);font-size:16px;letter-spacing:.04em">小詩・影片待嵌入</span></div>
     <p class="body reveal d2">如果把記憶撥回2009年的那個夏天，我依然能清晰地感受到那場驚心動魄的暴風雨。</p>
-    <p class="body reveal">那一年，我17歲，正要升高三。因為學校暑修的關係，我獨自住在六龜高中的宿舍裡。颱風來襲前2天，我在宿舍裡接到媽媽打來的電話：<b>「颱風要來了，交通也不方便，你這週末就先待在學校，不要回來了。」</b></p>
+    <p class="body reveal">那一年，我17歲，正要升高三。因為學校暑修的關係，我獨自住在路竹高中的宿舍裡。颱風來襲前2天，我在宿舍裡接到媽媽打來的電話：<b>「颱風要來了，交通也不方便，你這週末就先待在學校，不要回來了。」</b></p>
     <p class="body reveal">當時的我並不知道，那竟然是我這輩子最後一次聽到媽媽的聲音。是不是冥冥之中，媽媽的電話讓我躲過小林村土石流災難。颱風停課2天，才收到國小同學通知我，小林村的狀況不是很好，我聽了一頭霧水，因為當時新聞都沒有報導，是真的嗎？</p>
     <p class="body reveal">多希望那是一場夢。那場災難，奪走了我<b>15位至親</b>。我的阿公、阿嬤、爸爸、媽媽、可愛的弟弟，還有叔叔、姑姑一家人，全都被留在了那座山裡。原本熱鬧的大聚落，最後只剩下我和住在高雄、年紀最小的叔叔。</p>
     <p class="body reveal">那時我還在讀高中，叔叔則成了我的監護人，幫未成年的我跑遍所有繁雜的法律程序。但事實上，他同樣面對父母、手足與下一輩的離世，心裡承受的悲傷又更大。叔叔一度動了輕生的念頭，幸好嬸嬸與堂妹日夜陪伴他，才撐了過來。</p>
@@ -984,6 +987,7 @@ body.at-hero #cnav{opacity:0!important;pointer-events:none!important}body.at-her
     <p class="body reveal">雖然爸爸媽媽與弟弟離開我，但我的人生中，丈夫與2個兒子進來填補空缺，很巧的是小兒子出生日期，剛好就是8月8日，我沒有強求，孩子在這天呱呱落地，一切都是緣分。</p>
     <p class="body reveal">「你好，他們也會好」，把自己過得很好，就是對逝者最大的安慰。現在，我每年過年或有空時，還是會回山上走走，祭拜天上的家人。如果此時此刻，能對天上的爸爸、媽媽和弟弟說話，我想帶著微笑告訴他們：</p>
     <img loading="lazy" decoding="async" class="quoteimg reveal" src="assets/titles/小詩-我過得很好.png" alt="「爸爸、媽媽、弟弟，我現在過得很好，有了疼我的先生和兩個可愛的孩子，你們在天上不用擔心我了。」">
+    <div class="reveal" style="text-align:center;margin-top:26px"><a href="#" style="display:inline-block;text-decoration:none"><img loading="lazy" decoding="async" src="assets/titles/完整影片請看-變色@2x.png" alt="完整影片請看" style="display:block;height:auto;width:auto;max-width:280px"></a></div>
   </div>
 </article>
 
@@ -1000,7 +1004,7 @@ body.at-hero #cnav{opacity:0!important;pointer-events:none!important}body.at-her
   <div class="wrap narrow story__head">
     <img class="profile-img reveal" data-od-id="profile-5" src="assets/profiles/孝慈_profile.png" alt="孝慈 個案小檔案">
     <img loading="lazy" decoding="async" class="story-title-img reveal d1" src="assets/titles/孝慈-文章標題@2x.png" alt="大腦「跳電」用麻木隔絕痛苦，社工接住情緒，十年磨一劍">
-    <div class="video-chip reveal d1"><span class="play"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"></path></svg></span>觀看孝慈的 10 秒短片　<em>影片連結待補</em></div>
+    <div class="reveal d1" style="margin:34px auto 32px;max-width:720px;aspect-ratio:16/9;border-radius:12px;overflow:hidden;position:relative;background:linear-gradient(135deg,#1c1f24,#0c0e11);border:1px solid var(--border-soft);box-shadow:0 22px 52px rgba(0,0,0,.4);display:flex;align-items:center;justify-content:center;cursor:pointer"><span style="width:76px;height:76px;border-radius:50%;background:rgba(201,100,66,.94);display:flex;align-items:center;justify-content:center;box-shadow:0 10px 26px rgba(0,0,0,.45)"><svg viewBox="0 0 24 24" width="32" height="32" fill="#fff" style="margin-left:5px"><path d="M8 5v14l11-7z"></path></svg></span><span style="position:absolute;left:18px;bottom:14px;color:rgba(244,238,228,.74);font-size:16px;letter-spacing:.04em">孝慈・影片待嵌入</span></div>
     <p class="body reveal d2">從民國101年進到兒福聯盟開始，我先後陪伴19位八八風災中失去至親的孩子，其中有11位更是父母雙亡的失依兒。看著他們從小學三年級一路蹣跚長大到成年，這些故事，也深深雕刻了我的人生。</p>
     <p class="body reveal">失依兒少的服務最主要是家庭拜訪，孩子被親戚收養、到另一個環境生活，在「家規」這件事就需要很多的磨合。我曾陪伴過一位男孩，高職時身邊的朋友個個都有機車，他也渴望有一台，但相依為命的阿嬤堅守「未成年不能騎車」的安全底線。男孩每次跟朋友出去玩，不是得央求別人載，就是得騎著腳踏車在後面苦苦跟著，讓他覺得既丟臉又不公平。</p>
   </div>
@@ -1031,6 +1035,7 @@ body.at-hero #cnav{opacity:0!important;pointer-events:none!important}body.at-her
     <p class="body reveal">談完之後，舅舅有一種豁然開朗的感覺，他會覺得說：「哇！原來這些都是很正常的，只是我們不懂他。」接下來可以怎麼樣去做跟幫忙，我覺得雖然沒有到十年，但有「磨出一劍」的那個感覺。</p>
     <p class="body reveal">現在，這些孩子都已經平安長大、成年了。回首這條路，我想對他們每一個人說：</p>
     <p class="pullquote reveal">「謝謝你們當年如此勇敢，<br>願意讓社工走進你們的生命裡，<br>讓我們有機會一起走過那段最黑暗的泥濘。」</p>
+    <div class="reveal" style="text-align:center;margin-top:26px"><a href="#" style="display:inline-block;text-decoration:none"><img loading="lazy" decoding="async" src="assets/titles/完整影片請看-變色@2x.png" alt="完整影片請看" style="display:block;height:auto;width:auto;max-width:280px"></a></div>
   </div>
 </article>
 
@@ -1072,7 +1077,7 @@ body.at-hero #cnav{opacity:0!important;pointer-events:none!important}body.at-her
       <img loading="lazy" decoding="async" class="hand-img hi-quote reveal" src="assets/titles/滋養-不用結案@3x.png" alt="「如果我表現得不好，是不是就可以不用結案？」">
       <p class="body reveal" style="text-align:center;max-width:50ch;margin-inline:auto">個案畢業前的一句撒嬌，印證了最深厚的信任。</p>
       <p class="body reveal" style="text-align:center;max-width:54ch;margin-inline:auto">曾經瓦礫中的小樹苗，如今已長成適應人際的青少年、他鄉求學的大學生、成家立業的父母，以及穩定就業的社會新鮮人。</p>
-      <img loading="lazy" decoding="async" class="hand-img hi-close reveal" src="assets/titles/17年歷程滋養愛與韌性_圖表_01.jpg" alt="17 年歷程・滋養愛與韌性圖表" style="max-width:none;width:min(1175px,94vw);margin-left:50%;transform:translateX(-50%)">
+      <img loading="lazy" decoding="async" class="hand-img hi-close reveal" src="assets/titles/17年歷程滋養愛與韌性_圖表_02.jpg" alt="17 年歷程・滋養愛與韌性圖表" style="max-width:none;width:min(1175px,94vw);margin-left:50%;transform:translateX(-50%)">
     </div>
   </div>
 </section>
@@ -1175,14 +1180,7 @@ body.at-hero #cnav{opacity:0!important;pointer-events:none!important}body.at-her
     <p class="body reveal">兒盟南區社工處副處長黃英琪接受NOWNEWS專訪，回憶當時同仁進駐建立臨時遊戲區師法有據，根據聯合國兒童基金會（The United Nations Children's Fund）1999年因應科索沃戰爭，所提出「兒童友善空間」概念，孩童在面臨天災戰爭等危險狀態下內心極脆弱，若獲即時安頓，復原力就會長出來。從安頓生活到培養悲復力，兒盟更擘劃心靈陪伴藍圖，直到孩子成年。</p>
     <h3 class="subhead reveal">17年陪伴藍圖：1725次訪視、<br>19.5萬公里訪視里程</h3>
     <p class="body reveal">然而，這幅陪伴藍圖長達17年之久，經歷政黨輪替與三任總統改選，從馬英九、蔡英文乃至於賴清德。據兒盟統計，八八風災迄今，陪伴77位失依（父母雙亡）或喪親（父或母一方仍在）兒少成年，累積1725次訪視、19.5萬公里訪視里程，相當於台灣環島171次、繞行地球4.88圈，直到個案們成家立業、最後一名個案將於2026年9月滿20歲，計畫宣告「畢業」結案。</p>
-    <div class="stages reveal">
-      <div class="stage"><div class="stage-head"><h4>災變緊急任務化</h4><span class="stage-ico"><img src="assets/stage-ico-1.png" alt="" loading="lazy" decoding="async"></span></div>
-        <div class="stage-body"><p><span style="display:inline-block;font-weight:700;font-size:1.06em;letter-spacing:.04em;margin-bottom:7px">98年~103年</span><br>安置555人次、服務逾4,472人次<br>兒童遊樂空間服務逾萬人次<br>補助24校45社團、11,766人次</p></div></div>
-      <div class="stage"><div class="stage-head"><h4>原鄉服務在地化</h4><span class="stage-ico"><img src="assets/stage-ico-2.png" alt="" loading="lazy" decoding="async"></span></div>
-        <div class="stage-body"><p><span style="display:inline-block;font-weight:700;font-size:1.06em;letter-spacing:.04em;margin-bottom:7px">104年~110年</span><br>桃源工作站業務轉型<br>育兒支持+兒少關懷<br>累積入站逾4萬人次</p></div></div>
-      <div class="stage"><div class="stage-head"><h4>兒少陪伴不中斷</h4><span class="stage-ico"><img src="assets/stage-ico-3.png" alt="" loading="lazy" decoding="async"></span></div>
-        <div class="stage-body"><p><span style="display:inline-block;font-weight:700;font-size:1.06em;letter-spacing:.04em;margin-bottom:7px">110年~115年</span><br>15年以上不間斷陪伴<br>見證個案畢業與成長<br>115年77案全數結案</p></div></div>
-    </div>
+    <img loading="lazy" decoding="async" class="reveal" src="assets/titles/主稿內圖表_01.jpg" alt="兒盟三階段服務架構圖表" style="display:block;height:auto;max-width:none;width:min(1175px,94vw);margin-left:50%;transform:translateX(-50%);margin-top:10px">
     <h3 class="subhead reveal">階段一：「災變緊急任務化階段」</h3>
     <p class="body reveal">黃英琪向NOWNEWS娓娓道來，如何執行三階段陪伴藍圖。首先是「災變緊急任務化階段」，兒盟過去曾參與921地震、中國四川大地震等經驗，了解兒童在面臨災害，內心極其脆弱，帶玩具及文具親赴第一線臨時安置的高雄內門順賢宮，展開「受災兒童受災服務」，打造遊戲空間與安排魔術表演等輕鬆活動，並透過畫冊等方式，讓孩童們抒發心情，讓他們失去家園、親人混沌之際，安頓其身心。</p>
     <p class="body reveal">除安頓兒少之外，由於風災摧毀多處校園，當時全台有超過1300位學生需要被安置，兒盟積極協助聯繫安置處所；訪視工作也不停歇，攤開數據來看，自2009年9月8日至2010年1月31日，兒盟派出39人、502人次，志工55人100人次，總計服務家庭75戶317人，兒少97人。</p>
@@ -1253,7 +1251,7 @@ body.at-hero #cnav{opacity:0!important;pointer-events:none!important}body.at-her
   <div class="wrap">
     <div class="qa__head">
       <span class="eyebrow reveal" style="justify-content:center;display:inline-flex">互動問答</span>
-      <img loading="lazy" decoding="async" class="reveal d1" data-od-id="path-11-14-0-0-1" src="assets/titles/你還記得莫拉克風災嗎@3x.png" alt="你還記得莫拉克風災嗎？" style="display:block;height:auto;max-width:min(94%,560px);margin:14px auto 12px">
+      <img loading="lazy" decoding="async" class="reveal d1" data-od-id="path-11-14-0-0-1" src="assets/titles/你還記得莫拉克風災嗎？@2x.png" alt="你還記得莫拉克風災嗎？" style="display:block;height:auto;max-width:min(94%,560px);margin:14px auto 12px">
       <p class="lead reveal d2" style="margin:0 auto;font-size:16px">當年傷亡慘重的災情你知道多少？一起答題，回顧這場大地的傷痕。</p>
       <div class="qa__bar reveal d2"><i id="qbar"></i></div>
     </div>
