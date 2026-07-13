@@ -103,6 +103,7 @@ section{position:relative}
 .photo::after{content:attr(data-cap);position:absolute;left:14px;bottom:12px;z-index:4;font-size:16px;letter-spacing:.08em;
   color:#fff;border-left:2px solid var(--accent);padding-left:9px;background:rgba(8,10,11,.9);
   max-width:80%;line-height:1.5}
+.photo.captop::after{top:12px;bottom:auto}
 .grain{position:absolute;inset:0;z-index:2;opacity:.28;mix-blend-mode:overlay;pointer-events:none;
   background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.5'/%3E%3C/svg%3E")}
 .vignette{position:absolute;inset:0;z-index:2;pointer-events:none;background:radial-gradient(120% 90% at 50% 30%,transparent 42%,rgba(7,8,9,.8) 100%)}
@@ -739,7 +740,7 @@ body.at-hero #cnav{opacity:0!important;pointer-events:none!important}body.at-her
   <img class="review-bg" src="assets/mqeumza9-cut-storm.png" alt="" aria-hidden="true">
   <div class="wrap narrow">
     <header class="lede reveal">
-      <p class="sub" style="text-align:left">2009年8月莫拉克風災重創台灣，造成681人死亡、18人失蹤，無數家庭因此破碎。災後，兒福聯盟隨即啟動「失依兒少陪伴服務」，17年來持續投入資源，深耕陪伴77位失依孩子走過陰霾。<br><br>隨著時間推移，2026年9月，最後一位陪伴個案即將迎來正式結案。這不僅是終點，更是孩子們新生活的起點。我們誠摯邀請您，一同見證他們17年來走過的精神與成長軌跡。</p>
+      <p class="sub" style="text-align:left">2009年8月莫拉克風災重創台灣，造成681人死亡、18人失蹤，無數家庭因此破碎。災後，兒福聯盟隨即啟動「失依及喪親兒少陪伴服務」，17年來持續投入資源，深耕陪伴77位失依及喪親孩子走過陰霾。<br><br>隨著時間推移，2026年9月，最後一位陪伴個案即將迎來正式結案。這不僅是終點，更是孩子們新生活的起點。我們誠摯邀請您，一同見證他們17年來走過的精神與成長軌跡。</p>
     </header>
     <span class="reveal" style="margin:0 auto 10px;display:inline-flex;align-items:center;justify-content:center;gap:14px;color:#c8743a;font-weight:600;font-size:32px;letter-spacing:.3em"><i style="flex:0 0 auto;width:34px;height:1px;background:currentColor;opacity:.6"></i>2009年八八風災<i style="flex:0 0 auto;width:34px;height:1px;background:currentColor;opacity:.6"></i></span>
     <div class="bigstat reveal">
@@ -806,7 +807,7 @@ body.at-hero #cnav{opacity:0!important;pointer-events:none!important}body.at-her
     <img class="profile-img reveal" data-od-id="profile-1" src="assets/profiles/小吉_profile.png" alt="小吉 個案小檔案">
     <img loading="lazy" decoding="async" class="story-title-img reveal d1" src="assets/titles/小吉-文章標題@2x.png" alt="衝突摩擦長出親情，沒有哆啦A夢，他卻有「大雄」來幫忙">
     <div class="reveal d1" style="margin:34px auto 32px;max-width:720px;aspect-ratio:16/9;border-radius:12px;overflow:hidden;position:relative;background:linear-gradient(135deg,#1c1f24,#0c0e11);border:1px solid var(--border-soft);box-shadow:0 22px 52px rgba(0,0,0,.4);display:flex;align-items:center;justify-content:center;cursor:pointer"><img loading="lazy" decoding="async" src="assets/小吉截圖_01.jpg" alt="小吉 影片封面" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:0"><span style="position:absolute;inset:0;background:rgba(8,10,13,.34);z-index:1"></span><img src="assets/play-button-outline-white.png" alt="播放" style="width:84px;height:auto;position:relative;z-index:2;cursor:pointer"></div>
-    <p class="body reveal d2">我今年19歲，目前就讀台灣大學公衛系。莫拉克風災重創小林村，我的阿嬤、爸爸媽媽跟姊姊不幸離世。那年我才三歲，還在唸幼幼班的年紀，先讓叔叔撫養，後來又轉給三姑姑，最後才交到住杉林鄉的阿伯（伯父）家。</p>
+    <p class="body reveal d2">我今年19歲，目前就讀台灣大學公衛系。莫拉克風災重創小林村，我的阿嬤、爸爸媽媽跟姊姊不幸離世。那年我才三歲，還在念幼幼班的年紀，先讓叔叔撫養，後來又轉給三姑姑，最後才交到住杉林鄉的阿伯（伯父）家。</p>
     <p class="body reveal">阿伯管我很嚴，那時特別討厭跟他住在一起。有次他帶我到山下伯母家，我就在那住了快一年。但伯母工作忙，所以我必須在安親班待到七點才能回家，才小四就覺得壓力很大，作業寫到半夜11點還寫不完。那時很想回到杉林過野孩子的生活，所以五年級過後還是回來跟阿伯一起住。</p>
   </div>
   <div class="wrap narrow">
@@ -862,11 +863,11 @@ body.at-hero #cnav{opacity:0!important;pointer-events:none!important}body.at-her
     </div>
     <h3 class="subhead reveal">笑臉迎人的女孩<br>「不敢想媽媽」讀繪本情緒潰堤</h3>
     <p class="body reveal">在陪伴的歲月裡，我最常做的就是扮演「轉譯者」和「開關」。有些個案由手足照顧，年齡相仿，生活裡常有劇烈的爭吵與攻擊行為。當哥哥憤怒地吼出：「你那麼晚回家到底在幹嘛？」或者妹妹哭喊：「你到底要我怎樣！」的時候，我必須站在中間去轉譯他們藏在攻擊底下的真心話：「我很害怕失去你，所以我很擔心你。」</p>
-    <p class="body reveal">為了打開那些被緊緊鎖住的壓抑情緒，我常帶著兒盟的媒材，例如《擁抱你想念我》這本繪本，去敲孩子們的家門。</p>
+    <p class="body reveal">為了打開那些被緊緊鎖住的壓抑情緒，我常帶著兒盟的媒材，例如《想念你擁抱我》這本繪本，去敲孩子們的家門。</p>
     <p class="body reveal">曾有一位國中女孩，她一年搬了三、四次家，生活是很不穩定的，一直在換新環境、念書、轉學、交新朋友，但訪視時總是笑臉迎人、貼心地說自己一切都好。表面上看起來不希望讓人擔心與牽掛，但當我們共讀那本繪本，藉由故事拉出情感連結的瞬間，她積壓多年的情緒瞬間潰堤，一邊痛哭一邊對我說：「大雄，我真的很想我媽媽……但是因為想她太痛了，我根本不敢想她。」</p>
     <p class="body reveal">那一刻我明白，好好大哭一場，其實就是與失落和平共處的第一步。悲傷輔導最難的是「與自己和解」。有時候他們與父母的關係，那種失落的層面需要有些討論。她想媽媽，但是又不敢想她，這種想念非常沉重。我們希望透過這些方法讓她哭一場，因為她的笑容底下是「ㄍㄧㄥ」住，好好大哭一場對他們來說滿重要的。</p>
     <div class="photostrip reveal">
-      <div class="photo" data-cap="兒盟媒材《擁抱你想念我》" data-file="擁抱你想念我"><div class="grain"></div></div>
+      <div class="photo" data-cap="兒盟媒材《想念你擁抱我》" data-file="擁抱你想念我"><div class="grain"></div></div>
       <div class="photo" data-cap="小吉（左）是大雄最牽掛的個案" data-file="大雄小吉2"><div class="grain"></div></div>
       <div class="photo" data-cap="兒盟《我的畫冊》讓孩子釋放悲傷" data-file="我的畫冊"><div class="grain"></div></div>
     </div>
@@ -927,7 +928,7 @@ body.at-hero #cnav{opacity:0!important;pointer-events:none!important}body.at-her
   <div class="wrap narrow">
     <div class="photostrip reveal">
       <div class="photo" data-cap="小亭小時候全家福" data-file="小亭小時候全家福 (1)"><div class="grain"></div></div>
-      <div class="photo" data-cap="小亭爸爸江文祥（後排左）殉職" data-file="小亭小時候全家福 (2)"><div class="grain"></div></div>
+      <div class="photo captop" data-cap="小亭爸爸江文祥（後排左）殉職" data-file="小亭小時候全家福 (2)"><div class="grain"></div></div>
       <div class="photo" data-cap="小亭爸爸褒揚令"><div class="grain"></div></div>
     </div>
     <h3 class="subhead reveal">父親離世　失去讀書動力</h3>
@@ -940,7 +941,7 @@ body.at-hero #cnav{opacity:0!important;pointer-events:none!important}body.at-her
     <div class="photostrip reveal">
       <div class="photo" data-cap="小亭家人合照"><div class="grain"></div></div>
       <div class="photo" data-cap="小亭姊姊結婚爸爸同在(警察帽子)" data-file="小亭姐姐結婚爸爸同在(警察帽子)"><div class="grain"></div></div>
-      <div class="photo" data-cap="小亭阿祖與孫子們" data-file="阿祖與孫子們"><div class="grain"></div></div>
+      <div class="photo" data-cap="小亭的阿嬤與曾孫們" data-file="阿祖與孫子們"><div class="grain"></div></div>
       <div class="photo" data-cap="兒盟社工與小亭（左四）已成為朋友" data-file="小亭左邊數來第四"><div class="grain"></div></div>
     </div>
     <h3 class="subhead reveal">多餘的關心　竟成二度傷害</h3>
@@ -987,7 +988,7 @@ body.at-hero #cnav{opacity:0!important;pointer-events:none!important}body.at-her
     <p class="body reveal">那時，我面對完第一個，第二個、第三個又接踵而來，模式不斷地重複，大家不斷關注在受難者身上。但現在時間久了，我反而可以侃侃而談，那就是人生其中一段回憶。</p>
     <p class="body reveal">長大之後我發現，原來還有更多需要幫助的人，比我更可憐。再回頭看看自己，雖然爸爸媽媽離開了，但我還有叔叔、表哥表姊，至少我活得很好很精彩。看到2025年堰塞湖潰堤造成花蓮光復鄉嚴重災情，我很能懂災民的心境，看了也很有感觸。</p>
     <h3 class="subhead reveal">丈夫與2個兒子遞補人生空缺<br>「活得好」逝者最大安慰</h3>
-    <p class="body reveal">這段過程，兒福聯盟社工孝慈不斷陪伴著我，她曾經給我一本《想念，再見》。繪本裡很像我一開始的心境，很黑暗，慢慢地能釋懷，坦然面對父母離世。即便過了這麼久，我依然留著這本書，偶爾拿起來翻一下，也會唸給兒子聽。</p>
+    <p class="body reveal">這段過程，兒福聯盟社工孝慈不斷陪伴著我，她曾經給我一本《想念，再見》。繪本裡很像我一開始的心境，很黑暗，慢慢地能釋懷，坦然面對父母離世。即便過了這麼久，我依然留著這本書，偶爾拿起來翻一下，也會念給兒子聽。</p>
     <p class="body reveal">雖然爸爸媽媽與弟弟離開我，但我的人生中，丈夫與2個兒子進來填補空缺，很巧的是小兒子出生日期，剛好就是8月8日，我沒有強求，孩子在這天呱呱落地，一切都是緣分。</p>
     <p class="body reveal">「你好，他們也會好」，把自己過得很好，就是對逝者最大的安慰。現在，我每年過年或有空時，還是會回山上走走，祭拜天上的家人。如果此時此刻，能對天上的爸爸、媽媽和弟弟說話，我想帶著微笑告訴他們：</p>
     <img loading="lazy" decoding="async" class="quoteimg reveal" src="assets/titles/小詩-我過得很好.png" alt="「爸爸、媽媽、弟弟，我現在過得很好，有了疼我的先生和兩個可愛的孩子，你們在天上不用擔心我了。」">
@@ -1009,7 +1010,7 @@ body.at-hero #cnav{opacity:0!important;pointer-events:none!important}body.at-her
     <img class="profile-img reveal" data-od-id="profile-5" src="assets/profiles/孝慈_profile.png" alt="孝慈 個案小檔案">
     <img loading="lazy" decoding="async" class="story-title-img reveal d1" src="assets/titles/孝慈-文章標題@2x.png" alt="大腦「跳電」用麻木隔絕痛苦，社工接住情緒，十年磨一劍">
     <div class="reveal d1" style="margin:34px auto 32px;max-width:720px;aspect-ratio:16/9;border-radius:12px;overflow:hidden;position:relative;background:linear-gradient(135deg,#1c1f24,#0c0e11);border:1px solid var(--border-soft);box-shadow:0 22px 52px rgba(0,0,0,.4);display:flex;align-items:center;justify-content:center;cursor:pointer"><img loading="lazy" decoding="async" src="assets/孝慈截圖_01.jpg" alt="孝慈 影片封面" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:0"><span style="position:absolute;inset:0;background:rgba(8,10,13,.34);z-index:1"></span><img src="assets/play-button-outline-white.png" alt="播放" style="width:84px;height:auto;position:relative;z-index:2;cursor:pointer"></div>
-    <p class="body reveal d2">從民國101年進到兒福聯盟開始，我先後陪伴19位八八風災中失去至親的孩子，其中有11位更是父母雙亡的失依兒。看著他們從小學三年級一路蹣跚長大到成年，這些故事，也深深雕刻了我的人生。</p>
+    <p class="body reveal d2">從民國101年進到兒福聯盟開始，我先後陪伴19位八八風災中失去至親的孩子，其中有11位更是父母雙亡的失依兒少。看著他們從小學三年級一路蹣跚長大到成年，這些故事，也深深雕刻了我的人生。</p>
     <p class="body reveal">失依兒少的服務最主要是家庭拜訪，孩子被親戚收養、到另一個環境生活，在「家規」這件事就需要很多的磨合。我曾陪伴過一位男孩，高職時身邊的朋友個個都有機車，他也渴望有一台，但相依為命的阿嬤堅守「未成年不能騎車」的安全底線。男孩每次跟朋友出去玩，不是得央求別人載，就是得騎著腳踏車在後面苦苦跟著，讓他覺得既丟臉又不公平。</p>
   </div>
   <div class="wrap narrow">
@@ -1073,7 +1074,7 @@ body.at-hero #cnav{opacity:0!important;pointer-events:none!important}body.at-her
       <img loading="lazy" decoding="async" class="tdeco" src="assets/titles/中標-圖-擘畫3階段陪伴藍圖@3x.png" alt="" aria-hidden="true" style="transform:translateY(-28%)">
       <img loading="lazy" decoding="async" class="ttext" src="assets/titles/中標-擘畫3階段陪伴藍圖@3x.png" alt="擘畫 3 階段陪伴藍圖">
     </div>
-    <p class="body reveal d2">2009年8月8日莫拉克風災迄今，17年來重建計畫陸續完工，政府退場。然而，孩子受傷的心靈如何重建，兒福聯盟（簡稱兒盟）堅守承諾，陪伴最後一位孩童成年，累計19萬公里訪視相當於環台171次，從災後安頓生活到培養出悲傷復原力，迎戰人生。</p>
+    <p class="body reveal d2">2009年8月8日莫拉克風災迄今，17年來重建計畫陸續完工，政府退場。然而，孩子受傷的心靈如何重建，兒福聯盟（簡稱兒盟）堅守承諾，陪伴最後一位孩童成年，累計19.5萬公里訪視相當於環台171次，從災後安頓生活到培養出悲傷復原力，迎戰人生。</p>
     <h3 class="subhead reveal">小林村遭滅、知本金帥飯店倒塌<br>兒盟挺災區照顧幼童</h3>
     <p class="body reveal">風災襲台那天，台東知本溪河畔的金帥飯店應聲倒塌，透過電視畫面放送至全國觀眾眼裡，而暴雨更夾帶大量泥沙傾瀉而下，吞噬高雄甲仙鄉小林村，許多兒少頓失至親，幼小內心承受莫大創傷。國軍進駐災區搶救隊伍中，包含民間團體兒盟，他們帶著繪本跟教具，盼能在災區打造遊憩空間，讓這些被安置在收容所的孩子，能獲得短暫的安頓及秩序感。</p>
     <p class="body reveal">兒盟南區社工處副處長黃英琪接受NOWNEWS專訪，回憶當時同仁進駐建立臨時遊戲區師法有據，根據聯合國兒童基金會（The United Nations Children's Fund）1999年因應科索沃戰爭，所提出「兒童友善空間」概念，孩童在面臨天災戰爭等危險狀態下內心極脆弱，若獲即時安頓，復原力就會長出來。從安頓生活到培養悲復力，兒盟更擘劃心靈陪伴藍圖，直到孩子成年。</p>
@@ -1084,7 +1085,7 @@ body.at-hero #cnav{opacity:0!important;pointer-events:none!important}body.at-her
     <p class="body reveal">黃英琪向NOWNEWS娓娓道來，如何執行三階段陪伴藍圖。首先是「災變緊急任務化階段」，兒盟過去曾參與921地震、中國四川大地震等經驗，了解兒童在面臨災害，內心極其脆弱。八八風災後，帶玩具及文具親赴第一線臨時安置的高雄內門順賢宮，展開「受災兒童災後服務」，打造遊戲空間與安排魔術表演等輕鬆活動，並透過畫冊等方式，讓孩童們抒發心情，讓他們失去家園、親人混沌之際，安頓其身心。</p>
     <p class="body reveal">除安頓兒少之外，由於風災摧毀多處校園，當時全台有超過1300位學生需要被安置，兒盟積極協助聯繫安置處所；訪視工作也不停歇，攤開數據來看，自2009年9月8日至2010年1月31日，兒盟派出39人、502人次，志工55人100人次，總計服務家庭75戶317人，兒少97人。</p>
     <h3 class="subhead reveal">階段二：「原鄉服務在地化階段」</h3>
-    <p class="body reveal">第二是「原鄉服務在地化階段」，桃源區人口約4200人、九成為原住民，當時經風災蹂躪過後社區，大量民間團體進駐設立據點服務災民，形成「社福一條街」。兒盟當時便成立原鄉工作站，打造「太樂鋒的秘密基地」成為兒童遊憩空間，同時提供日間閱讀及照顧，服務突破1萬人次。</p>
+    <p class="body reveal">第二是「原鄉服務在地化階段」，桃源區人口約4200人、九成為原住民，當時經風災蹂躪過後的社區，大量民間團體進駐設立據點服務災民，形成「社福一條街」。兒盟當時便成立桃源工作站，打造「太樂蜂秘密基地」成為兒童遊憩空間，同時提供日間閱讀及照顧，服務突破1萬人次。</p>
     <p class="body reveal">孩童嬉笑聲、師長朗讀童書聲迴盪工作站，替偏遠的桃源山區點綴出一絲活力。2018年加入桃源工作站的拉拉老師，一邊陪伴孩子、一邊接受NOWNEWS訪問，感嘆當年「社福一條街」的盛況已不再，僅剩兒盟與世界展望基金會在這邊設據點。</p>
     <p class="body reveal">「陪伴災民走過一段辛苦的日子。」拉拉收起笑容吐露出這一段心聲，曾是災民的她，過去在工作站受到幫助，如今身分從被照顧者變成照顧者，可以陪伴更多部落孩子，並培育更多家護媽媽，深化社區服務。她透露有曾被兒盟服務的個案，成為媽媽後也把孩子帶來托育。桃源工作站近年更與高雄市社會局簽約成立親子館，提供0歲至6歲以下兒童臨時托育服務。</p>
     <h3 class="subhead reveal">階段三：「兒少陪伴不中斷階段」</h3>
