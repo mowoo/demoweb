@@ -2061,8 +2061,19 @@ footer p+p{margin-top:12px;}
   function drawSeq(idx){
     if (idx === current) return;
     var im = imgs[idx];
-    if (!im || !im.naturalWidth) return;
-    current = idx;
+    /* 尚未載入就退回最接近的已載入影格 —— 放行時只有 16 格到齊，
+       使用者若立刻快速捲動，直接 return 會讓畫面看起來卡住 */
+    if (!im || !im.naturalWidth) {
+      for (var d = 1; d < TOTAL; d++) {
+        var lo = imgs[idx-d], hi = imgs[idx+d];
+        if (lo && lo.naturalWidth) { im = lo; break; }
+        if (hi && hi.naturalWidth) { im = hi; break; }
+      }
+      if (!im || !im.naturalWidth) return;
+      current = -1;                  // 標記為代用影格，之後真格到了要重畫
+    } else {
+      current = idx;
+    }
     var cw = canvas.width, ch = canvas.height;
     var s = Math.max(cw / im.naturalWidth, ch / im.naturalHeight);   /* cover */
     var w = im.naturalWidth * s, h = im.naturalHeight * s;
@@ -2116,21 +2127,37 @@ footer p+p{margin-top:12px;}
     };
     last.src = DIR + 'f' + String(TOTAL).padStart(3, '0') + '.webp';
   } else {
+    /* ── 分批漸進預載 ───────────────────────────────────────────
+       踩過的坑：原本用 for 迴圈一次建立 121 個 Image，等於同時丟出 121 個請求。
+       HTTP/2 沒有 HTTP/1.1 的 6 連線上限，於是全部擠在同一條連線互搶頻寬，
+       沒有任何一格能早早完成 —— 線上實測單格中位 9.1 秒、最後一格 17.8 秒。
+       本機測不出來，因為磁碟讀取沒有頻寬競爭。
+
+       兩層修正：
+       1) 限制併發到 CONCURRENCY，讓請求依序完成而非集體龜速
+       2) 前 READY 格到齊就放行，其餘背景續載 —— 顯示 Hero 本來只需要前幾格 */
+    var CONCURRENCY = 6, READY = 16;
     var loadFill = document.getElementById('loadFill'), loadPct = document.getElementById('loadPct');
-    for (var i = 0; i < TOTAL; i++) {
-      (function(idx){
+    var nextIdx = 0, inflight = 0;
+
+    function onOne(){
+      inflight--; loaded++;
+      loadFill.style.width = Math.min(100, loaded / READY * 100) + '%';
+      loadPct.textContent = Math.min(loaded, READY) + ' / ' + READY;
+      if (loaded === READY) startHero();          // 不等 121 格
+      pump();
+    }
+    function pump(){
+      while (nextIdx < TOTAL && inflight < CONCURRENCY) {
         var im = new Image();
         im.decoding = 'async';
-        im.onload = im.onerror = function(){
-          loaded++;
-          loadFill.style.width = (loaded / TOTAL * 100) + '%';
-          loadPct.textContent = loaded + ' / ' + TOTAL;
-          if (loaded === TOTAL) startHero();
-        };
-        im.src = DIR + 'f' + String(idx + 1).padStart(3, '0') + '.webp';
-        imgs[idx] = im;
-      })(i);
+        im.onload = im.onerror = onOne;
+        im.src = DIR + 'f' + String(nextIdx + 1).padStart(3, '0') + '.webp';
+        imgs[nextIdx] = im;
+        nextIdx++; inflight++;
+      }
     }
+    pump();
   }
 
   /* 定格區的捲動阻力：只擋滾輪、只擋向下、只擋一次；
