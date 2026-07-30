@@ -651,7 +651,9 @@ table.sw{width:100%;border-collapse:collapse;min-width:900px;}
 .ubtn .un{opacity:.55;margin-left:5px;}
 .ubtn[aria-pressed="true"]{background:var(--d-ink);color:#fff;border-color:var(--d-ink);}
 .ubtn[aria-pressed="true"] .un{opacity:.7;}
-.ubtn.ub-all[aria-pressed="true"]{background:var(--d-accent);border-color:var(--d-accent);}
+/* 同 09 的 .gb-all：accent 原色配白字 4.34:1，11.5px 未達 AA，壓暗 12% */
+.ubtn.ub-all[aria-pressed="true"]{background:color-mix(in srgb,var(--d-accent) 88%,#000);
+  border-color:transparent;}
 .ucount{font-family:var(--mono);font-size:11px;color:var(--d-ink2);
   margin-bottom:18px;padding-bottom:12px;border-bottom:1px solid var(--d-line2);}
 .ucount b{color:var(--d-ink);}
@@ -704,8 +706,20 @@ table.sw{width:100%;border-collapse:collapse;min-width:900px;}
 /* ============================================================
    09 · GLOSSARY —— 密集定義列表（Swiss）
    ============================================================ */
-.glossary{display:grid;grid-template-columns:1fr 1fr;gap:38px 48px;}
-@media(max-width:820px){.glossary{grid-template-columns:1fr;}}
+/* ── 09 術語卡片瀑布流 ──────────────────────────────────────
+   原生 masonry 在 Chrome 148 仍全部未實作（grid-template-rows:masonry、
+   item-pack、masonry-template-tracks 三種提案語法都是 false），所以用
+   CSS 多欄流（columns）+ break-inside:avoid 達成等效的高度不一對疊。
+   取捨：多欄流是「欄優先」排序（1、2、3 往下排在第一欄），非橫向。
+   對術語表這種查閱型內容可接受；若要嚴格橫向順序就得改 JS 絕對定位。
+
+   分組改為縱向堆疊、每組內部跨全寬做瀑布流 —— 這樣分組標題的層級得以保留，
+   同時卡片有足夠寬度形成三欄對疊。 */
+.glossary{display:block;}
+.glo-group+.glo-group{margin-top:42px;}
+.glo-group dl{columns:3;column-gap:15px;margin-top:16px;}
+@media(max-width:1000px){.glo-group dl{columns:2;}}
+@media(max-width:620px){.glo-group dl{columns:1;}}
 /* 分組標題定義在此（09 區塊）。原本是 11px 等寬紅字小標，在四組並排的密集
    定義列表裡讀不出「這是分類」—— 它看起來只是另一個條目。改為 21px 粗體
    ＋紅色方塊記號，讓分組層級明確高於條目（條目 dt 是 14.5px 粗體）。 */
@@ -713,9 +727,56 @@ table.sw{width:100%;border-collapse:collapse;min-width:900px;}
   color:var(--d-ink);padding-bottom:12px;border-bottom:2px solid var(--d-line);
   margin-bottom:2px;display:flex;align-items:center;gap:11px;}
 .glo-title::before{content:"";flex:0 0 auto;width:9px;height:9px;background:var(--d-accent);}
-.glo-item{padding:13px 0;border-bottom:1px solid var(--d-line2);}
-.glo-item dt{font-weight:700;font-size:14.5px;margin-bottom:4px;}
+/* 卡片。break-inside:avoid 是多欄流做瀑布流的關鍵 —— 沒有它，一張卡會被
+   拆成兩半分落在相鄰兩欄。
+   view-transition-name:match-element 讓每張卡自動取得獨立的 transition 名稱，
+   不必手寫 31 個（Chrome 148 支援 match-element，但不支援 auto）。 */
+/* 篩到只剩一兩張時欄數會降到 1，此時若不設上限，一張只有一行字的卡會被拉成
+   1150px 寬。520px 約等於兩欄寬，是「少量結果」時仍讀得舒服的行長。
+   三欄時卡寬 369px < 520px，這條不會生效。 */
+.glo-item{max-width:520px;
+  break-inside:avoid;background:#FAFAFA;border:1px solid var(--d-line2);
+  border-left:2px solid var(--d-line2);padding:14px 16px 15px;margin:0 0 15px;
+  view-transition-name:match-element;
+  transition:border-left-color .25s var(--ease),background .25s var(--ease);}
+.glo-item:hover{background:#F5F6F7;border-left-color:var(--d-accent);}
+.glo-item dt{font-weight:700;font-size:14.5px;margin-bottom:5px;line-height:1.45;}
 .glo-item dd{font-size:13.5px;line-height:1.9;color:#4A4A4A;}
+.glo-item.g-hide,.glo-group.g-hide{display:none;}
+
+/* ── 09 篩選按鈕 ────────────────────────────────────────── */
+.gfilter{display:flex;flex-wrap:wrap;align-items:stretch;gap:8px;margin-bottom:14px;}
+.gbtn{font:inherit;font-family:var(--mono);font-size:12px;letter-spacing:.06em;
+  padding:9px 15px;border:1px solid var(--d-line2);background:transparent;
+  color:var(--d-ink2);cursor:pointer;border-radius:0;
+  transition:border-color .2s,color .2s,background .2s;}
+.gbtn:hover{border-color:var(--d-line);color:var(--d-ink);}
+.gbtn:focus-visible{outline:2px solid var(--d-accent);outline-offset:2px;}
+.gbtn .gn{opacity:.55;margin-left:6px;}
+.gbtn[aria-pressed="true"]{background:var(--ctx,var(--d-ink));color:#fff;border-color:transparent;}
+.gbtn[aria-pressed="true"] .gn{opacity:.75;}
+/* 「通用技術解釋」比其他按鈕大一級 —— 它涵蓋 11 條，是最常被查的一類 */
+.gbtn.gb-common{font-size:14px;font-weight:600;padding:11px 22px;letter-spacing:.03em;
+  border-color:var(--d-line);color:var(--d-ink);}
+.gbtn.gb-common[aria-pressed="true"]{background:var(--d-ink);color:#fff;}
+/* --d-accent 原色配白字只有 4.34:1，小字未達 AA 的 4.5。壓暗 12% 得 5.38:1，
+   仍看得出是同一個強調紅，不必為此改動全頁的 accent token（裝飾用途不受對比規範拘束）。 */
+.gbtn.gb-all[aria-pressed="true"]{background:color-mix(in srgb,var(--d-accent) 88%,#000);
+  color:#fff;border-color:transparent;}
+.gcount{font-family:var(--mono);font-size:11px;color:var(--d-ink2);
+  margin-bottom:20px;padding-bottom:12px;border-bottom:1px solid var(--d-line2);}
+.gcount b{color:var(--d-ink);}
+
+/* 命中高亮用 Highlight API —— 不包裝 DOM 節點，所以不污染原始標記 */
+::highlight(gmatch){background:#FFE9A8;color:#4A3400;
+  text-decoration:underline;text-decoration-color:#C99A00;text-underline-offset:2px;}
+
+/* 31 張卡同時形變在低階裝置上會吃力，把時長壓短 */
+::view-transition-group(*){animation-duration:.3s;}
+@media(prefers-reduced-motion:reduce){
+  ::view-transition-group(*),::view-transition-old(*),::view-transition-new(*){animation:none !important;}
+  .glo-item{view-transition-name:none;}
+}
 
 /* ============================================================
    10 · COMMUNITY —— Bento 小磚
@@ -811,7 +872,7 @@ footer p+p{margin-top:12px;}
 <nav id="nav" aria-label="章節導覽">
   <div class="nav-in">
     <span class="nav-brand">BAMBU × SNAPMAKER · 2026</span>
-    <span class="nav-upd">更新 2026-07-30 20:47 (UTC+8)</span>
+    <span class="nav-upd">更新 2026-07-30 21:22 (UTC+8)</span>
     <div class="nav-list">
       <a href="#s01">01</a><a href="#s02">02</a><a href="#s03">03</a><a href="#s04">04</a>
       <a href="#s05">05</a><a href="#s06">06</a><a href="#s07">07</a><a href="#s08">08</a>
@@ -1696,56 +1757,65 @@ footer p+p{margin-top:12px;}
       </div>
     </div>
     <div class="sec-rule"></div>
+    <div class="gfilter rise" role="group" aria-label="依機型關聯篩選術語">
+      <button type="button" class="gbtn gb-all" data-f="all" aria-pressed="true">全部<span class="gn"></span></button>
+      <button type="button" class="gbtn gb-common" data-f="general" aria-pressed="false">通用技術解釋<span class="gn"></span></button>
+      <button type="button" class="gbtn c-a1"  data-f="a1"  aria-pressed="false">A1<span class="gn"></span></button>
+      <button type="button" class="gbtn c-p2s" data-f="p2s" aria-pressed="false">P2S<span class="gn"></span></button>
+      <button type="button" class="gbtn c-x2d" data-f="x2d" aria-pressed="false">X2D<span class="gn"></span></button>
+      <button type="button" class="gbtn c-u1"  data-f="u1"  aria-pressed="false">U1<span class="gn"></span></button>
+    </div>
+    <p class="gcount" id="gcount">顯示 <b></b> / <span id="gtotal"></span> 條　·　關聯判定：該術語的解釋文字裡點名了哪一台機器（點名「拓竹」者計入 A1、P2S、X2D 三台）</p>
     <div class="glossary rise">
       <div class="glo-group">
         <h3 class="glo-title">機構與硬體</h3>
         <dl>
-          <div class="glo-item"><dt>FDM / FFF</dt><dd>熔融沉積成型。加熱熔化線材後逐層堆疊，本頁四款皆屬此類。</dd></div>
-          <div class="glo-item"><dt>CoreXY</dt><dd>噴頭由兩條交叉皮帶共同驅動的結構，慣性小、可高速；P2S／X2D／U1 皆採用。</dd></div>
-          <div class="glo-item"><dt>Bedslinger（龍門式）</dt><dd>熱床沿 Y 軸前後移動的傳統結構（如 A1）。成本低，但高速時整張床甩動。</dd></div>
-          <div class="glo-item"><dt>直驅 vs 遠端（Bowden）</dt><dd>馬達直接裝在噴頭上為直驅，回抽精準、可印軟料；馬達遠端經管推料為 Bowden，噴頭輕但軟料難印。X2D 一機兩者兼具：左直驅主噴頭＋右 Bowden 副噴頭。</dd></div>
-          <div class="glo-item"><dt>封閉腔體／腔溫</dt><dd>密閉機身保溫減少翹曲。「被動」靠熱床餘溫（P2S 約 50°C）、「主動」有加熱器（X2D 65°C）。</dd></div>
-          <div class="glo-item"><dt>HEPA／活性碳濾網</dt><dd>HEPA 濾超細微粒、活性碳吸附 VOC。X2D 的 G3＋H12 HEPA＋活性碳三段式是消費級少見的完整配置。</dd></div>
-          <div class="glo-item"><dt>PEI 列印板</dt><dd>聚醚醯亞胺塗層磁吸鋼板，紋理面好脫模、光滑面底面亮，目前的主流平台。</dd></div>
-          <div class="glo-item"><dt>Micro LiDAR / 視覺編碼器</dt><dd>X1 系用微型光達掃描首層與流量校正；X2D 改為選配「視覺編碼器」提供 50μm 級運動精度——兩者原理不同，前者驗印、後者定位。</dd></div>
+          <div class="glo-item" data-m="a1 p2s x2d u1"><dt>FDM / FFF</dt><dd>熔融沉積成型。加熱熔化線材後逐層堆疊，本頁四款皆屬此類。</dd></div>
+          <div class="glo-item" data-m="p2s x2d u1"><dt>CoreXY</dt><dd>噴頭由兩條交叉皮帶共同驅動的結構，慣性小、可高速；P2S／X2D／U1 皆採用。</dd></div>
+          <div class="glo-item" data-m="a1"><dt>Bedslinger（龍門式）</dt><dd>熱床沿 Y 軸前後移動的傳統結構（如 A1）。成本低，但高速時整張床甩動。</dd></div>
+          <div class="glo-item" data-m="x2d"><dt>直驅 vs 遠端（Bowden）</dt><dd>馬達直接裝在噴頭上為直驅，回抽精準、可印軟料；馬達遠端經管推料為 Bowden，噴頭輕但軟料難印。X2D 一機兩者兼具：左直驅主噴頭＋右 Bowden 副噴頭。</dd></div>
+          <div class="glo-item" data-m="p2s x2d"><dt>封閉腔體／腔溫</dt><dd>密閉機身保溫減少翹曲。「被動」靠熱床餘溫（P2S 約 50°C）、「主動」有加熱器（X2D 65°C）。</dd></div>
+          <div class="glo-item" data-m="x2d"><dt>HEPA／活性碳濾網</dt><dd>HEPA 濾超細微粒、活性碳吸附 VOC。X2D 的 G3＋H12 HEPA＋活性碳三段式是消費級少見的完整配置。</dd></div>
+          <div class="glo-item" data-m="general"><dt>PEI 列印板</dt><dd>聚醚醯亞胺塗層磁吸鋼板，紋理面好脫模、光滑面底面亮，目前的主流平台。</dd></div>
+          <div class="glo-item" data-m="x2d"><dt>Micro LiDAR / 視覺編碼器</dt><dd>X1 系用微型光達掃描首層與流量校正；X2D 改為選配「視覺編碼器」提供 50μm 級運動精度——兩者原理不同，前者驗印、後者定位。</dd></div>
         </dl>
       </div>
       <div class="glo-group">
         <h3 class="glo-title">多色與多材質系統</h3>
         <dl>
-          <div class="glo-item"><dt>AMS / AMS Lite / AMS 2 Pro / AMS HT</dt><dd>拓竹自動供料系統家族。多卷線材輪流餵入單一噴頭，換色需回抽沖料。AMS 2 Pro 加入預烘；HT 為高溫烘乾版；Lite 為 A 系開放式版本。</dd></div>
-          <div class="glo-item"><dt>雙噴頭機械切換（X2D）</dt><dd>兩顆噴頭同在一個工具頭上，以純機械機構升降切換（無額外馬達）。一顆印模型、一顆專跑支撐材——與換頭式、IDEX 都不同的第三種路線。</dd></div>
-          <div class="glo-item"><dt>Toolchanger（換頭式）</dt><dd>整顆噴頭直接更換的多色架構（U1）。每色獨立噴頭與溫度，幾乎零沖料、可混印不同材質。</dd></div>
-          <div class="glo-item"><dt>IDEX</dt><dd>兩顆噴頭可「獨立移動」的雙頭架構（如 Snapmaker J1），可鏡像／複製同時印兩件——注意 X2D 的雙噴頭共用一個工具頭，並非 IDEX。</dd></div>
-          <div class="glo-item"><dt>沖料塔（Purge / Prime Tower）</dt><dd>換色時把舊色殘料擠到犧牲柱上避免混色。單噴頭系統的主要廢料來源；X2D 雙材質與 U1 換頭幾乎免沖料。</dd></div>
-          <div class="glo-item"><dt>線材便便（Filament Poop）</dt><dd>玩家俗稱 AMS 換色時排出的廢料段。U1 與 X2D（雙材質模式）的賣點之一就是「沒有便便」。</dd></div>
-          <div class="glo-item"><dt>RFID 線材辨識</dt><dd>原廠線材卷上的無線標籤，自動讀取材質顏色並套用參數。拓竹與 Snapmaker 皆有；第三方線材手動設定即可。</dd></div>
+          <div class="glo-item" data-m="a1 p2s x2d"><dt>AMS / AMS Lite / AMS 2 Pro / AMS HT</dt><dd>拓竹自動供料系統家族。多卷線材輪流餵入單一噴頭，換色需回抽沖料。AMS 2 Pro 加入預烘；HT 為高溫烘乾版；Lite 為 A 系開放式版本。</dd></div>
+          <div class="glo-item" data-m="x2d"><dt>雙噴頭機械切換（X2D）</dt><dd>兩顆噴頭同在一個工具頭上，以純機械機構升降切換（無額外馬達）。一顆印模型、一顆專跑支撐材——與換頭式、IDEX 都不同的第三種路線。</dd></div>
+          <div class="glo-item" data-m="u1"><dt>Toolchanger（換頭式）</dt><dd>整顆噴頭直接更換的多色架構（U1）。每色獨立噴頭與溫度，幾乎零沖料、可混印不同材質。</dd></div>
+          <div class="glo-item" data-m="x2d"><dt>IDEX</dt><dd>兩顆噴頭可「獨立移動」的雙頭架構（如 Snapmaker J1），可鏡像／複製同時印兩件——注意 X2D 的雙噴頭共用一個工具頭，並非 IDEX。</dd></div>
+          <div class="glo-item" data-m="x2d u1"><dt>沖料塔（Purge / Prime Tower）</dt><dd>換色時把舊色殘料擠到犧牲柱上避免混色。單噴頭系統的主要廢料來源；X2D 雙材質與 U1 換頭幾乎免沖料。</dd></div>
+          <div class="glo-item" data-m="x2d u1"><dt>線材便便（Filament Poop）</dt><dd>玩家俗稱 AMS 換色時排出的廢料段。U1 與 X2D（雙材質模式）的賣點之一就是「沒有便便」。</dd></div>
+          <div class="glo-item" data-m="a1 p2s x2d u1"><dt>RFID 線材辨識</dt><dd>原廠線材卷上的無線標籤，自動讀取材質顏色並套用參數。拓竹與 Snapmaker 皆有；第三方線材手動設定即可。</dd></div>
         </dl>
       </div>
       <div class="glo-group">
         <h3 class="glo-title">軟體、韌體與檔案</h3>
         <dl>
-          <div class="glo-item"><dt>切片軟體（Slicer）</dt><dd>把 3D 模型切成逐層路徑並產生機器指令：Bambu Studio、OrcaSlicer（開源）、Snapmaker Orca。</dd></div>
-          <div class="glo-item"><dt>G-code</dt><dd>列印機實際執行的指令語言，切片軟體的輸出結果。</dd></div>
-          <div class="glo-item"><dt>STL / 3MF / OBJ</dt><dd>模型檔格式。STL 最通用；3MF 可夾帶顏色與列印設定，多色專案建議格式。</dd></div>
-          <div class="glo-item"><dt>Klipper</dt><dd>開源列印機韌體，以外部運算換取高速與高階功能（U1 採用），可玩性高。</dd></div>
-          <div class="glo-item"><dt>Bambu Connect</dt><dd>拓竹 2025 年起強制的中介認證程式：第三方軟體須經它轉送指令才能控制印表機，是生態封閉爭議的核心（詳見 P2S 深入解析）。</dd></div>
-          <div class="glo-item"><dt>Input Shaping／Pressure Advance</dt><dd>振動補償與擠出壓力補償，現代高速機標配，讓高速列印無波紋、轉角不鼓包。</dd></div>
-          <div class="glo-item"><dt>LAN-only／開發者模式</dt><dd>機器只連區域網路、不上雲端的模式；拓竹另提供開發者模式在本地開放 MQTT（自負風險、放棄部分支援）。</dd></div>
-          <div class="glo-item"><dt>MakerWorld / Printables</dt><dd>模型分享平台。MakerWorld 由拓竹營運（全機種可下載、附調好參數）；Printables 由 Prusa 營運、同樣開放全機種。</dd></div>
+          <div class="glo-item" data-m="a1 p2s x2d u1"><dt>切片軟體（Slicer）</dt><dd>把 3D 模型切成逐層路徑並產生機器指令：Bambu Studio、OrcaSlicer（開源）、Snapmaker Orca。</dd></div>
+          <div class="glo-item" data-m="general"><dt>G-code</dt><dd>列印機實際執行的指令語言，切片軟體的輸出結果。</dd></div>
+          <div class="glo-item" data-m="general"><dt>STL / 3MF / OBJ</dt><dd>模型檔格式。STL 最通用；3MF 可夾帶顏色與列印設定，多色專案建議格式。</dd></div>
+          <div class="glo-item" data-m="u1"><dt>Klipper</dt><dd>開源列印機韌體，以外部運算換取高速與高階功能（U1 採用），可玩性高。</dd></div>
+          <div class="glo-item" data-m="a1 p2s x2d"><dt>Bambu Connect</dt><dd>拓竹 2025 年起強制的中介認證程式：第三方軟體須經它轉送指令才能控制印表機，是生態封閉爭議的核心（詳見 P2S 深入解析）。</dd></div>
+          <div class="glo-item" data-m="general"><dt>Input Shaping／Pressure Advance</dt><dd>振動補償與擠出壓力補償，現代高速機標配，讓高速列印無波紋、轉角不鼓包。</dd></div>
+          <div class="glo-item" data-m="a1 p2s x2d"><dt>LAN-only／開發者模式</dt><dd>機器只連區域網路、不上雲端的模式；拓竹另提供開發者模式在本地開放 MQTT（自負風險、放棄部分支援）。</dd></div>
+          <div class="glo-item" data-m="a1 p2s x2d"><dt>MakerWorld / Printables</dt><dd>模型分享平台。MakerWorld 由拓竹營運（全機種可下載、附調好參數）；Printables 由 Prusa 營運、同樣開放全機種。</dd></div>
         </dl>
       </div>
       <div class="glo-group">
         <h3 class="glo-title">列印品質與常見術語</h3>
         <dl>
-          <div class="glo-item"><dt>層高（Layer Height）</dt><dd>每層厚度，常用 0.08～0.28mm；0.2mm 是品質與速度的平衡點。</dd></div>
-          <div class="glo-item"><dt>填充（Infill）</dt><dd>內部結構密度與圖樣（常用 10～25%、Gyroid），影響強度、重量與耗料。</dd></div>
-          <div class="glo-item"><dt>支撐／溶解支撐</dt><dd>撐住懸空處的輔助結構。一般支撐要手拆留痕；溶解支撐（PVA／HIPS）泡水或溶劑即除——X2D 雙噴頭正是為此設計。</dd></div>
-          <div class="glo-item"><dt>回抽（Retraction）／牽絲（Stringing）</dt><dd>移動時回抽線材避免漏料；回抽不足或線材受潮就會牽絲。</dd></div>
-          <div class="glo-item"><dt>翹曲（Warping）／大象腳</dt><dd>冷卻收縮讓邊角掀起（ABS 最嚴重，主動腔溫的價值所在）；大象腳是首層過壓外擴。</dd></div>
-          <div class="glo-item"><dt>炒麵（Spaghetti）</dt><dd>中途脫床後噴頭空擠成一坨麵條狀災難；AI 鏡頭監控就是為此而生。</dd></div>
-          <div class="glo-item"><dt>Benchy（小船）</dt><dd>全球通用的機器體檢模型，涵蓋懸空、橋接、細節考驗。</dd></div>
-          <div class="glo-item"><dt>UFP / VOC</dt><dd>超細微粒與揮發性有機化合物，列印逸散物兩大類，毒性分級的依據。</dd></div>
+          <div class="glo-item" data-m="general"><dt>層高（Layer Height）</dt><dd>每層厚度，常用 0.08～0.28mm；0.2mm 是品質與速度的平衡點。</dd></div>
+          <div class="glo-item" data-m="general"><dt>填充（Infill）</dt><dd>內部結構密度與圖樣（常用 10～25%、Gyroid），影響強度、重量與耗料。</dd></div>
+          <div class="glo-item" data-m="x2d"><dt>支撐／溶解支撐</dt><dd>撐住懸空處的輔助結構。一般支撐要手拆留痕；溶解支撐（PVA／HIPS）泡水或溶劑即除——X2D 雙噴頭正是為此設計。</dd></div>
+          <div class="glo-item" data-m="general"><dt>回抽（Retraction）／牽絲（Stringing）</dt><dd>移動時回抽線材避免漏料；回抽不足或線材受潮就會牽絲。</dd></div>
+          <div class="glo-item" data-m="general"><dt>翹曲（Warping）／大象腳</dt><dd>冷卻收縮讓邊角掀起（ABS 最嚴重，主動腔溫的價值所在）；大象腳是首層過壓外擴。</dd></div>
+          <div class="glo-item" data-m="general"><dt>炒麵（Spaghetti）</dt><dd>中途脫床後噴頭空擠成一坨麵條狀災難；AI 鏡頭監控就是為此而生。</dd></div>
+          <div class="glo-item" data-m="general"><dt>Benchy（小船）</dt><dd>全球通用的機器體檢模型，涵蓋懸空、橋接、細節考驗。</dd></div>
+          <div class="glo-item" data-m="general"><dt>UFP / VOC</dt><dd>超細微粒與揮發性有機化合物，列印逸散物兩大類，毒性分級的依據。</dd></div>
         </dl>
       </div>
     </div>
@@ -2445,6 +2515,125 @@ footer p+p{margin-top:12px;}
         apply(b.getAttribute('aria-pressed') === 'true' ? 'all' : b.dataset.use);
       });
     });
+  })();
+
+  /* ══════════════ 09 章：術語卡片依機型篩選 ══════════════
+     兩個平台 API 上場，這章的「炫技」就在這裡：
+
+     1. View Transitions API —— 篩選本質上是 display:none 的切換，
+        原本會瞬間跳位。包進 startViewTransition() 後，瀏覽器自動比對
+        前後兩幀的畫面，替每張留下來的卡片補上位移補間，
+        於是多欄瀑布流的重排變成滑順的動態流動，而不是閃現。
+        卡片的 view-transition-name 用 match-element（見 CSS），
+        瀏覽器自動配發唯一名稱，不必手寫 31 個。
+
+     2. CSS Highlight API —— 標出「這張卡為什麼命中」的那個機型字串。
+        用 Range 物件而非包 <mark>，DOM 一個節點都不動，
+        所以不會污染原始標記，切換篩選時也不必還原。 */
+  (function(){
+    var sec = document.getElementById('s09');
+    if (!sec) return;
+    var btns   = [].slice.call(sec.querySelectorAll('.gbtn'));
+    var cards  = [].slice.call(sec.querySelectorAll('.glo-item'));
+    var groups = [].slice.call(sec.querySelectorAll('.glo-group'));
+    var out    = document.getElementById('gcount');
+    if (!btns.length || !cards.length || !out) return;
+
+    function has(card, key){ return (' ' + (card.dataset.m || '') + ' ').indexOf(' ' + key + ' ') > -1; }
+
+    /* 按鈕數字一律從 data-m 現算 —— 不信手寫的數字（01 章就是這樣抓到誤算的） */
+    var TOTAL = cards.length;
+    out.querySelector('#gtotal').textContent = TOTAL;
+    btns.forEach(function(b){
+      var k = b.dataset.f;
+      var n = k === 'all' ? TOTAL : cards.filter(function(c){ return has(c, k); }).length;
+      b.querySelector('.gn').textContent = n;
+    });
+
+    /* 命中高亮的關鍵字。拓竹三台共用「拓竹」與「Bambu」，因為關聯判定就是這樣訂的：
+       解釋文字說「拓竹」＝同時關聯 A1、P2S、X2D。
+       「本頁四款」也要收 —— FDM / FFF 那張卡是用這四個字涵蓋全部機型的，
+       漏了它就會出現「有命中卻沒有黃底」的自我矛盾。 */
+    var BAMBU = ['拓竹','Bambu','本頁四款'];
+    var HL = { a1:  ['A1','A 系'].concat(BAMBU),
+               p2s: ['P2S'].concat(BAMBU),
+               x2d: ['X2D'].concat(BAMBU),
+               u1:  ['U1','Snapmaker','本頁四款'] };
+    var canHL = (typeof CSS !== 'undefined') && ('highlights' in CSS) && (typeof Highlight === 'function');
+    var hl = null;
+    if (canHL) { hl = new Highlight(); CSS.highlights.set('gmatch', hl); }
+
+    function mark(key){
+      if (!canHL) return;
+      hl.clear();
+      var words = HL[key];
+      if (!words) return;                        /* all 與 general 沒有可標的機型名 */
+      cards.forEach(function(c){
+        if (c.classList.contains('g-hide')) return;
+        var w = document.createTreeWalker(c, NodeFilter.SHOW_TEXT), t;
+        while ((t = w.nextNode())) {
+          var s = t.nodeValue;
+          words.forEach(function(word){
+            var i = -1;
+            while ((i = s.indexOf(word, i + 1)) > -1) {
+              var r = document.createRange();
+              r.setStart(t, i); r.setEnd(t, i + word.length);
+              hl.add(r);
+            }
+          });
+        }
+      });
+    }
+
+    var LABEL = {};
+    btns.forEach(function(b){ LABEL[b.dataset.f] = b.textContent.replace(/\d+$/, '').trim(); });
+
+    var active = 'all';
+    function paint(){
+      cards.forEach(function(c){
+        c.classList.toggle('g-hide', !(active === 'all' || has(c, active)));
+      });
+      groups.forEach(function(g){
+        var vis = [].slice.call(g.querySelectorAll('.glo-item')).filter(function(c){
+          return !c.classList.contains('g-hide'); }).length;
+        /* 整組落空就連分組標題一起收掉，不留孤零零的空標題 */
+        g.classList.toggle('g-hide', vis === 0);
+        /* 多欄流的 column-fill 預設是 balance（求最矮），4 張卡會排成 2/2/0，
+           右邊三分之一整片空著，看起來像壞版而不是「結果比較少」。
+           依實際張數降欄數，讓每一欄都有東西。CSS 的 max-width 負責擋住
+           欄數降到 1 時卡片被拉太寬。
+           上限取自斷點 —— 內聯值會蓋掉媒體查詢，不設上限的話手機會被逼成兩欄。 */
+        var dl = g.querySelector('dl');
+        if (!dl) return;
+        var base = innerWidth > 1000 ? 3 : (innerWidth > 620 ? 2 : 1);
+        var want = Math.min(base, vis >= 5 ? base : (vis >= 3 ? 2 : 1));
+        dl.style.columnCount = want === base ? '' : String(want);
+      });
+      var shown = cards.filter(function(c){ return !c.classList.contains('g-hide'); }).length;
+      btns.forEach(function(b){ b.setAttribute('aria-pressed', b.dataset.f === active ? 'true' : 'false'); });
+      out.innerHTML = active === 'all'
+        ? '顯示全部 <b>' + shown + '</b> / <span id="gtotal">' + TOTAL + '</span> 條　·　關聯判定：該術語的解釋文字裡點名了哪一台機器（點名「拓竹」者計入 A1、P2S、X2D 三台）'
+        : '「' + LABEL[active] + '」關聯 <b>' + shown + '</b> / <span id="gtotal">' + TOTAL + '</span> 條'
+          + (active === 'general' ? '　·　解釋文字未點名任何機型的通用術語'
+                                  : '　·　黃底標示的就是該卡片命中的字串');
+      mark(active);
+    }
+
+    btns.forEach(function(b){
+      b.addEventListener('click', function(){
+        var k = b.dataset.f;
+        active = (k === active && k !== 'all') ? 'all' : k;   /* 再按一次回到全部 */
+        var reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+        if (document.startViewTransition && !reduce) document.startViewTransition(paint);
+        else paint();
+      });
+    });
+
+    /* 內聯的 columnCount 在換斷點後會過期，重算一次（不帶轉場） */
+    var rz;
+    addEventListener('resize', function(){ clearTimeout(rz); rz = setTimeout(paint, 160); });
+
+    paint();
   })();
 
   /* Nav：離開 hero 才出現 */
