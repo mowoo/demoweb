@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 900" width="1600" height="900" role="img" aria-label="一日講六句">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#7a2e1e"/>
+      <stop offset="0.55" stop-color="#b5451f"/>
+      <stop offset="1" stop-color="#d98324"/>
+    </linearGradient>
+    <linearGradient id="ink" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#fff7ec"/>
+      <stop offset="1" stop-color="#ffe9c7"/>
+    </linearGradient>
+  </defs>
+  <rect width="1600" height="900" fill="url(#bg)"/>
+  <g fill="none" stroke="#ffffff" stroke-opacity="0.10" stroke-width="2">
+    <path d="M0 225 H1600 M0 450 H1600 M0 675 H1600"/>
+    <path d="M400 0 V900 M800 0 V900 M1200 0 V900"/>
+  </g>
+  <text x="120" y="150" font-family="'Noto Serif TC','Noto Serif CJK TC',serif" font-size="46" fill="#ffe9c7" letter-spacing="14">客家公共傳播基金會</text>
+  <text x="112" y="480" font-family="'Noto Serif TC','Noto Serif CJK TC',serif" font-weight="700" font-size="300" fill="url(#ink)" letter-spacing="6">一日</text>
+  <text x="112" y="770" font-family="'Noto Serif TC','Noto Serif CJK TC',serif" font-weight="700" font-size="300" fill="url(#ink)" letter-spacing="6">講六句</text>
+  <g transform="translate(1150,470)">
+    <circle r="220" fill="#ffffff" fill-opacity="0.08"/>
+    <text x="0" y="-40" text-anchor="middle" font-family="'Noto Serif TC',serif" font-weight="700" font-size="150" fill="#fff7ec">六</text>
+    <text x="0" y="120" text-anchor="middle" font-family="'Noto Sans TC',sans-serif" font-size="52" fill="#ffe9c7" letter-spacing="10">句／日</text>
+  </g>
+  <text x="120" y="850" font-family="'Noto Sans TC',sans-serif" font-size="44" fill="#fff7ec" fill-opacity="0.9" letter-spacing="6">逐日換一種腔調 · 聽一句 · 揀一句 · 拼一句</text>
+</svg>
