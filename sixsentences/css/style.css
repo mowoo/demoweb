@@ -85,9 +85,22 @@ h1, h2, h3 { font-family: var(--font-heading); font-weight: 400; }
 
 /* ---------- 版面 ---------- */
 
+/* 內容最大寬度。背景色維持滿版，只有內容被夾住並置中，
+   所以用左右 padding 而非 max-width（後者會把色塊一起縮掉）。
+   需要調整閱讀寬度時改這一個值即可。 */
+:root { --content-max: 1120px; }
+
+/* 這幾個區塊的 HTML 帶著 inline padding（例：padding:64px 48px），
+   優先權高過樣式表，所以必須用 !important 才壓得住左右值。
+   上下的 inline padding 不受影響，各區塊維持原本的垂直節奏。 */
 section.wrap,
-nav.wrap,
 footer.wrap {
+  padding-left: max(48px, calc((100% - var(--content-max)) / 2)) !important;
+  padding-right: max(48px, calc((100% - var(--content-max)) / 2)) !important;
+}
+
+/* 導覽列是浮在主視覺上的膠囊列，不套內容寬度上限 */
+nav.wrap {
   padding-left: max(48px, 15%);
   padding-right: max(48px, 15%);
 }
@@ -312,7 +325,11 @@ footer.wrap {
   .hero { min-height: 78vh; }
   .heroIn { padding: 26px 22px 110px !important; gap: 28px !important; }
   .heroLead { font-size: 19px !important; }
-  .wrap { padding-left: 22px !important; padding-right: 22px !important; }
+  /* 需與 section.wrap / footer.wrap 同等或更高的特異性，否則壓不過上面的內容寬度規則 */
+  .wrap,
+  section.wrap,
+  footer.wrap,
+  nav.wrap { padding-left: 22px !important; padding-right: 22px !important; }
   .split { grid-template-columns: 1fr !important; }
   .tri { grid-template-columns: 1fr !important; }
   .duo { grid-template-columns: 1fr !important; }
