@@ -218,9 +218,278 @@ nav.wrap {
 
 /* ---------- 導覽列 ---------- */
 
-.nav { display: flex; align-items: center; justify-content: space-between; }
-.nav .nav-brand,
+.nav { display: flex; align-items: center; justify-content: space-between; gap: 20px; flex-wrap: wrap; }
+.nav .nav-brand { text-shadow: 0 2px 10px rgba(6,20,44,.85), 0 0 3px rgba(6,20,44,.6); }
+
 .nav a:not(.btn) { text-shadow: 0 2px 10px rgba(6,20,44,.85), 0 0 3px rgba(6,20,44,.6); }
+
+/* ---------- 區塊標題美術字 ---------- */
+
+/* 各大區塊的 h2 改用美術字圖（自帶青綠膠囊底與動物）。
+   文字保留在 alt，螢幕閱讀器與圖片載入失敗時仍讀得到。
+   整體大小改 --title-art-h 一處即可。 */
+.section-title { margin: 0; line-height: 0; font-size: 0; }
+.section-title img {
+  display: block;
+  height: var(--title-art-h, 62px);
+  width: auto;
+  max-width: 100%;
+}
+
+@media (max-width: 860px) {
+  .section-title img { --title-art-h: 46px; }
+}
+
+/* ---------- 願景說明 ---------- */
+
+/* 首頁摘要區（#vision），位於主視覺之後 */
+.vision {
+  /* 天空＝區塊自身的白底。影片只露出下半的山丘，原本影片裡的藍天被裁掉。 */
+  background: #fff;
+  position: relative;
+  overflow: hidden;
+  /* 區塊指定了固定高度，內容靠上對齊（間距由 padding-top 控制） */
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+}
+
+/* 動態背景：草坡微風。
+   區塊比影片扁很多（約 3.1 : 1.79），cover 會上下對稱裁切，
+   天空正好被切掉一半，文字就落到山丘上。改為對齊頂端保留完整天空，
+   多出來的部分從下緣裁掉——山丘只露上半截，反而更接近主視覺的地平線感。 */
+.vision-bg {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  top: auto;
+  width: 100%;
+  /* 只佔下半部。影片以 cover 填滿這個扁框、並靠下對齊，
+     於是影片自己的藍天被裁到框外，畫面上只剩山丘。 */
+  height: 56%;
+  object-fit: cover;
+  object-position: center bottom;
+  z-index: 0;
+  pointer-events: none;
+}
+/* 影片上緣接白底的接縫：由白色淡出到透明，讓山丘像從白色天空裡長出來。 */
+.vision-scrim {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 56%;
+  z-index: 1;
+  pointer-events: none;
+  background: linear-gradient(180deg,
+    #fff 0%,
+    rgba(255, 255, 255, .72) 16%,
+    rgba(255, 255, 255, .22) 38%,
+    rgba(255, 255, 255, 0) 62%);
+}
+.vision-in { position: relative; z-index: 2; max-width: 42em; margin: 0 auto; text-align: center; }
+
+/* 元素依序進場。
+   初始的隱藏狀態掛在 .reveal-ready 底下，而這個 class 由 JS 加上——
+   若 JS 未執行或出錯，文字維持正常顯示，不會變成永遠透明。 */
+.vision.reveal-ready .vision-in > * {
+  opacity: 0;
+  transform: translate3d(0, 28px, 0);
+  transition:
+    opacity .75s cubic-bezier(.22, 1, .36, 1),
+    transform .75s cubic-bezier(.22, 1, .36, 1);
+}
+.vision.reveal-ready.is-in .vision-in > * {
+  opacity: 1;
+  transform: none;
+}
+/* 延遲只寫在 is-in 這一側：進場時依序錯開，離場時延遲歸零，一起淡出不拖泥帶水 */
+.vision.reveal-ready.is-in .vision-in > *:nth-child(1) { transition-delay: .05s; }
+.vision.reveal-ready.is-in .vision-in > *:nth-child(2) { transition-delay: .19s; }
+.vision.reveal-ready.is-in .vision-in > *:nth-child(3) { transition-delay: .33s; }
+.vision.reveal-ready.is-in .vision-in > *:nth-child(4) { transition-delay: .47s; }
+
+/* 標題美術字用彈跳感進場，跟主視覺的 heroPop 同一種語彙 */
+.vision.reveal-ready .vision-in > .section-title {
+  transform: translate3d(0, -20px, 0) scale(.92);
+}
+.vision.reveal-ready.is-in .vision-in > .section-title {
+  transform: none;
+  transition-timing-function: cubic-bezier(.22, 1.15, .36, 1);
+}
+
+.vision-eyebrow {
+  font-size: 14px; font-weight: 700; letter-spacing: .18em;
+  color: var(--color-accent-600); margin: 0 0 14px;
+}
+.vision-title { font-size: 38px; line-height: 1.3; margin: 0 0 22px; }
+.vision-lead {
+  font-size: 18px; line-height: 2; margin: 0 0 30px;
+  color: var(--color-neutral-800); text-align: left; text-wrap: pretty;
+}
+
+/* 願景說明內頁（vision.html） */
+.vision-page-hero {
+  background: var(--color-sky-900);
+  color: #fff;
+  padding-top: 116px;
+  padding-bottom: 54px;
+  text-align: center;
+}
+.vision-page-hero h1 { font-size: 44px; line-height: 1.3; margin: 0; color: var(--color-sun); }
+.vision-page-hero p { margin: 16px auto 0; max-width: 34em; font-size: 17px; line-height: 1.8; color: #cfe3ff; }
+
+.vision-article { max-width: 40em; margin: 0 auto; }
+.vision-article > p {
+  font-size: 18px; line-height: 2.05; margin: 0 0 26px;
+  color: var(--color-neutral-800); text-wrap: pretty;
+}
+.vision-article > p:first-of-type { font-size: 20px; color: var(--color-text); }
+
+.vision-h2 {
+  font-size: 30px; margin: 52px 0 8px; text-align: center;
+  color: var(--color-accent-900);
+}
+.vision-h2 + p { text-align: center; margin: 0 0 30px; color: var(--color-neutral-600); font-size: 16px; }
+
+.vision-steps { display: grid; gap: 18px; margin: 0 0 8px; }
+.vision-step {
+  display: flex; gap: 20px; align-items: flex-start;
+  background: var(--color-surface);
+  border-radius: var(--radius-lg);
+  padding: 24px 28px;
+}
+.vision-step-no {
+  flex: none;
+  width: 52px; height: 52px; border-radius: 999px;
+  background: var(--color-accent); color: #fff;
+  display: grid; place-items: center;
+  font-family: var(--font-heading); font-size: 15px; line-height: 1.15; text-align: center;
+}
+.vision-step h3 { font-size: 22px; margin: 2px 0 6px; }
+.vision-step p { margin: 0; font-size: 16px; line-height: 1.8; color: var(--color-neutral-700); }
+
+.vision-closing {
+  margin: 44px auto 0; max-width: 40em;
+  background: var(--color-accent-2-100);
+  border-left: 6px solid var(--color-accent-2-400);
+  border-radius: var(--radius-md);
+  padding: 26px 30px;
+  font-size: 17px; line-height: 1.95; color: var(--color-neutral-800);
+}
+
+.vision-slogan {
+  margin: 52px auto 0; max-width: 24em; text-align: center;
+  font-family: var(--font-heading); font-size: 30px; line-height: 1.55;
+  color: var(--color-accent-900);
+}
+
+.vision-orgs {
+  margin: 40px auto 0; text-align: center;
+  display: flex; flex-direction: column; gap: 8px;
+  font-size: 16px; color: var(--color-neutral-700);
+}
+
+.vision-back { margin: 52px 0 0; display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; }
+
+/* 願景說明 lightbox（首頁）
+   用原生 <dialog>：焦點鎖定、Esc 關閉、backdrop 都由瀏覽器處理，不需自行實作。 */
+.vision-modal {
+  width: min(780px, calc(100vw - 40px));
+  max-height: min(88vh, 1090px);
+  padding: 0;
+  border: 0;
+  border-radius: var(--radius-lg);
+  background: var(--color-bg);
+  color: var(--color-text);
+  box-shadow: var(--shadow-lg);
+  overflow: hidden;
+}
+.vision-modal[open] { display: flex; flex-direction: column; }
+.vision-modal::backdrop { background: rgba(10, 33, 73, .66); backdrop-filter: blur(3px); }
+
+.vision-modal-head {
+  flex: none;
+  background: var(--color-sky-900);
+  color: #fff;
+  padding: 26px 32px;
+  display: flex;
+  align-items: flex-start;
+  gap: 20px;
+}
+.vision-modal-head h2 { font-size: 28px; line-height: 1.35; margin: 0; color: var(--color-sun); }
+.vision-modal-head p { margin: 8px 0 0; font-size: 15px; line-height: 1.7; color: #cfe3ff; }
+
+.vision-modal-close {
+  flex: none;
+  margin-left: auto;
+  width: 42px; height: 42px;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, .35);
+  background: rgba(255, 255, 255, .1);
+  color: #fff;
+  font-size: 20px; line-height: 1;
+  cursor: pointer;
+  display: grid; place-items: center;
+  transition: background-color .15s ease;
+}
+.vision-modal-close:hover { background: rgba(255, 255, 255, .22); }
+.vision-modal-close:focus-visible { outline: 3px solid var(--color-sun); outline-offset: 2px; }
+
+.vision-modal-body {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  padding: 34px 36px 40px;
+}
+/* lightbox 內的欄寬已由對話框本身限制，不再另外收窄 */
+.vision-modal-body .vision-article { max-width: none; }
+.vision-modal-body .vision-h2 { margin-top: 40px; }
+
+/* 結尾襯底：小山坡圖延伸到對話框左右邊緣，上緣用底色漸層淡入，不留硬邊。
+   負 margin 抵銷 .vision-modal-body 的 padding（34px 36px 40px）。 */
+.vision-modal-outro {
+  position: relative;
+  margin: 44px -36px -40px;
+  /* 下內距 48 + 150：襯底圖靠下對齊，容器往下長 150px，
+     山丘就跟著往下移 150px，文字與山丘之間留出空間。 */
+  padding: 40px 36px 198px;
+  background-image:
+    linear-gradient(180deg,
+      var(--color-bg) 0%,
+      rgba(242, 248, 252, .90) 22%,
+      rgba(242, 248, 252, .74) 55%,
+      rgba(242, 248, 252, .60) 100%),
+    url("../assets/img/vision-bg-poster.jpg");
+  background-size: auto, cover;
+  background-position: center top, center bottom;
+  background-repeat: no-repeat, no-repeat;
+}
+.vision-modal-outro .vision-slogan { margin-top: 0; font-size: 26px; }
+.vision-modal-outro .vision-orgs { margin-top: 32px; }
+.vision-modal-outro .vision-back { margin-top: 36px; }
+
+@media (max-width: 860px) {
+  .vision-modal-outro { margin: 36px -22px -32px; padding: 32px 22px 40px; }
+}
+
+@media (max-width: 860px) {
+  .vision-modal { width: calc(100vw - 24px); max-height: 90vh; }
+  .vision-modal-head { padding: 20px 22px; }
+  .vision-modal-head h2 { font-size: 22px; }
+  .vision-modal-body { padding: 26px 22px 32px; }
+}
+
+@media (max-width: 860px) {
+  .vision-title { font-size: 30px; }
+  .vision-page-hero { padding-top: 96px; }
+  .vision-page-hero h1 { font-size: 32px; }
+  .vision-article > p { font-size: 17px; }
+  .vision-slogan { font-size: 24px; }
+  .vision-step { flex-direction: column; gap: 14px; }
+}
 
 /* ---------- 頁尾（沿用 hpcf.tw 官網版型） ---------- */
 

@@ -515,10 +515,99 @@
 
   // ---------- 起動 ----------
 
+  /* 願景說明 lightbox。
+     用原生 <dialog>：焦點鎖定、Esc 關閉、backdrop 都由瀏覽器負責。
+     按鈕的 href 指向 vision.html，JS 在此攔截改開燈箱；
+     沒有 JS（或 dialog 不支援）時就正常連到那一頁，不會變成死連結。 */
+  function initVisionModal() {
+    var dlg = $("#visionModal");
+    var open = $("#visionOpen");
+    var close = $("#visionClose");
+    if (!dlg || !open || typeof dlg.showModal !== "function") return;
+
+    open.addEventListener("click", function (e) {
+      e.preventDefault();
+      dlg.showModal();
+    });
+
+    close.addEventListener("click", function () { dlg.close(); });
+
+    // 點 backdrop 關閉：點在 dialog 本身（而非內容）才算
+    dlg.addEventListener("click", function (e) {
+      if (e.target === dlg) dlg.close();
+    });
+
+    // 燈箱內的錨點連結：先關閉再讓瀏覽器捲過去
+    dlg.addEventListener("click", function (e) {
+      var a = e.target.closest('[data-act="visionGoto"]');
+      if (a) dlg.close();
+    });
+  }
+
+  /* 願景說明的動態背景：無限循環。
+     進入視線才播、離開視線就暫停 —— 背景影片在畫面外持續解碼是白耗
+     CPU 與電量，尤其手機。 */
+  function initVisionBg() {
+    var v = $("#visionBg");
+    if (!v) return;
+
+    // 使用者偏好減少動態時完全不播，只留 poster 靜圖
+    var reduce = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)");
+    if (reduce && reduce.matches) return;
+
+    var section = v.closest("section");
+
+    function play() {
+      v.preload = "auto";
+      var p = v.play();
+      if (p && p.catch) p.catch(function () {});   // 自動播放被擋下時不要噴錯
+    }
+
+    if (!("IntersectionObserver" in window)) { play(); return; }
+
+    /* threshold 必須是 0，不能用比例。
+       threshold 是「區塊自身高度的百分比」，這個區塊高 900px，
+       0.35 就要求 315px 落在偵測範圍內；而 rootMargin 又把範圍縮小，
+       視窗一矮（例如 540px）範圍就不足 315px，條件永遠成立不了，影片不會播。
+       改用 threshold 0 + rootMargin：只要區塊進到視窗上方 75% 就開始，
+       與區塊高度無關。 */
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) {
+        if (e.isIntersecting) play();
+        else if (!v.paused) v.pause();
+      });
+    }, { threshold: 0, rootMargin: "0px 0px -25% 0px" });
+    io.observe(section);   // 不 disconnect：要持續依進出視線切換播放
+  }
+
+  /* 願景說明的元素進出場。
+     .reveal-ready 由這裡加上，CSS 的隱藏狀態才會生效——
+     JS 沒跑到就等於沒有動畫，內容照常顯示。 */
+  function initVisionReveal() {
+    var sec = document.querySelector("#vision");
+    if (!sec) return;
+
+    var reduce = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)");
+    if ((reduce && reduce.matches) || !("IntersectionObserver" in window)) return;
+
+    sec.classList.add("reveal-ready");
+
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) {
+        // 不 disconnect：捲出去再回來會重新進場
+        sec.classList.toggle("is-in", e.isIntersecting);
+      });
+    }, { threshold: 0, rootMargin: "0px 0px -20% 0px" });
+    io.observe(sec);
+  }
+
   document.addEventListener("DOMContentLoaded", function () {
     renderCounts();
     renderVideos();
     render();
+    initVisionModal();
+    initVisionBg();
+    initVisionReveal();
 
     // hero 影片：靜音自動播放，被瀏覽器擋下時不要噴錯
     var v = $("#heroVideo");
