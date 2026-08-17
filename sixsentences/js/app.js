@@ -142,7 +142,7 @@
     speaking: false,
     flt: "all",    // 名單篩選 all | person | org
     sent: false,
-    form: { name: "", org: "", title: "", email: "", publish: true }
+    form: { type: "org", org: "", name: "", email: "", publish: true }
   };
 
   var speakTimer = null;
@@ -450,15 +450,61 @@
   function renderForm() {
     $("#formSent").hidden = !state.sent;
     $("#formEntry").hidden = state.sent;
-    if (state.sent) $("#sentName").textContent = state.form.name || "朋友";
+    // 團體連署顯示單位名稱，個人連署顯示姓名
+    if (state.sent) {
+      setText("#sentName", state.form.org || state.form.name || "朋友");
+    }
+  }
+
+  /* 團體／個人二選一。
+     未選取那一組的欄位設為 disabled —— 不能輸入、不參與 HTML5 驗證、
+     也不會隨表單送出，避免兩組資料同時被帶走。 */
+  function initSignModes() {
+    var form = $("#signForm");
+    if (!form) return;
+    var modes = Array.prototype.slice.call(form.querySelectorAll(".sign-mode"));
+
+    function apply() {
+      modes.forEach(function (m) {
+        var radio = m.querySelector('input[type="radio"]');
+        var active = radio.checked;
+        m.classList.toggle("is-active", active);
+        Array.prototype.forEach.call(m.querySelectorAll(".sign-mode-body .input"), function (input) {
+          input.disabled = !active;
+          input.required = active;
+        });
+      });
+    }
+
+    form.addEventListener("change", function (e) {
+      if (e.target.name === "signType") apply();
+    });
+
+    // 直接點未選取那組的欄位時自動切換過去，不必先點單選鈕
+    modes.forEach(function (m) {
+      m.addEventListener("mousedown", function () {
+        var radio = m.querySelector('input[type="radio"]');
+        if (!radio.checked) { radio.checked = true; apply(); }
+      });
+    });
+
+    apply();
+    return { form: form };
+  }
+
+  /* 這些節點會隨文案調整而增減（例如連署名單的 #listCount 已隨文案改寫移除），
+     逐一判空，少一個不會讓整段初始化中斷。 */
+  function setText(sel, value) {
+    var el = $(sel);
+    if (el) el.textContent = value;
   }
 
   function renderCounts() {
     var t = CONFIG.signatureCount.toLocaleString("en-US");
-    $("#heroCount").textContent = t;
-    $("#listCount").textContent = t;
-    $("#streak").textContent = CONFIG.streak;
-    $("#dayLabel").textContent = CONFIG.dayLabel;
+    setText("#heroCount", t);
+    setText("#listCount", t);
+    setText("#streak", CONFIG.streak);
+    setText("#dayLabel", CONFIG.dayLabel);
   }
 
   function render() {
@@ -510,7 +556,7 @@
     }
     else if (act === "restart") set({ ri: 0, picked: null, tiles: [], phase: "ask" });
     else if (act === "filter") set({ flt: el.dataset.id });
-    else if (act === "resetForm") set({ sent: false, form: { name: "", org: "", title: "", email: "", publish: true } });
+    else if (act === "resetForm") set({ sent: false, form: { type: "org", org: "", name: "", email: "", publish: true } });
   });
 
   // ---------- 起動 ----------
@@ -617,18 +663,23 @@
       if (p && p.catch) p.catch(function () {});
     }
 
+    initSignModes();
+
     $("#signForm").addEventListener("submit", function (e) {
       e.preventDefault();
       // 尚無後端，維持原稿行為：僅切換為感謝畫面，資料不送出也不留存
-      var f = e.target;
+      // 一律走 form.elements 取值：form.name 之類的屬性會被 HTMLFormElement
+      // 自身的同名屬性遮蔽，直接用 f.name 取欄位並不可靠
+      var el = e.target.elements;
+      var isOrg = el.signType.value === "org";
       set({
         sent: true,
         form: {
-          name: f.name.value.trim(),
-          org: f.org.value.trim(),
-          title: f.title.value.trim(),
-          email: f.email.value.trim(),
-          publish: f.publish.checked
+          type: isOrg ? "org" : "person",
+          org: isOrg ? el.orgName.value.trim() : "",
+          name: isOrg ? "" : el.personName.value.trim(),
+          email: (isOrg ? el.orgEmail : el.personEmail).value.trim(),
+          publish: el.publish.checked
         }
       });
     });

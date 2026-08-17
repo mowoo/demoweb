@@ -221,7 +221,19 @@ nav.wrap {
 .nav { display: flex; align-items: center; justify-content: space-between; gap: 20px; flex-wrap: wrap; }
 .nav .nav-brand { text-shadow: 0 2px 10px rgba(6,20,44,.85), 0 0 3px rgba(6,20,44,.6); }
 
-.nav a:not(.btn) { text-shadow: 0 2px 10px rgba(6,20,44,.85), 0 0 3px rgba(6,20,44,.6); }
+/* 導覽連結。顏色寫在這裡而非 inline，hover 才不必用 !important 硬壓 */
+.nav-link {
+  color: #cfe3ff;
+  padding: 0 10px;
+  text-shadow: 0 2px 10px rgba(6, 20, 44, .85), 0 0 3px rgba(6, 20, 44, .6);
+  transition: color .18s ease, text-shadow .18s ease;
+}
+.nav-link:hover,
+.nav-link:focus-visible {
+  color: var(--color-sun);
+  text-shadow: 0 2px 12px rgba(6, 20, 44, .9), 0 0 14px rgba(255, 210, 74, .55);
+}
+.nav-link[aria-current="page"] { color: var(--color-sun); }
 
 /* ---------- 區塊標題美術字 ---------- */
 
@@ -238,6 +250,119 @@ nav.wrap {
 
 @media (max-width: 860px) {
   .section-title img { --title-art-h: 46px; }
+}
+
+/* ---------- 連署表單：團體／個人二選一 ---------- */
+
+.sign-form { display: grid; gap: 22px; }
+
+.sign-modes {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 18px;
+  align-items: start;
+}
+
+.sign-mode {
+  border: 2px solid var(--color-neutral-300);
+  border-radius: var(--radius-lg);
+  background: rgba(255, 255, 255, .55);
+  padding: 18px 20px 22px;
+  transition: border-color .18s ease, background-color .18s ease, box-shadow .18s ease;
+}
+.sign-mode.is-active {
+  border-color: var(--color-accent);
+  background: #fff;
+  box-shadow: var(--shadow-md);
+}
+
+.sign-mode-head {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  cursor: pointer;
+  margin-bottom: 16px;
+}
+/* 真正的 radio 隱藏但保留在無障礙樹中，外觀由 .sign-radio 負責 */
+.sign-mode-head input {
+  position: absolute;
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+.sign-radio {
+  flex: none;
+  width: 24px; height: 24px;
+  border-radius: 999px;
+  border: 2px solid var(--color-neutral-400);
+  background: #fff;
+  display: grid; place-items: center;
+  transition: border-color .18s ease;
+}
+.sign-radio::after {
+  content: "";
+  width: 12px; height: 12px;
+  border-radius: 999px;
+  background: transparent;
+  transition: background-color .18s ease;
+}
+.sign-mode.is-active .sign-radio { border-color: var(--color-accent); }
+.sign-mode.is-active .sign-radio::after { background: var(--color-accent); }
+.sign-mode-head input:focus-visible + .sign-radio {
+  outline: 3px solid var(--color-accent-400);
+  outline-offset: 2px;
+}
+
+.sign-mode-title {
+  font-family: var(--font-heading);
+  font-size: 20px;
+  line-height: 1.3;
+  color: var(--color-text);
+}
+
+.sign-mode-body { display: grid; gap: 14px; }
+/* 未選取的一組整體降低存在感，但仍看得見欄位名稱 */
+.sign-mode:not(.is-active) .sign-mode-body { opacity: .48; }
+
+/* 依設計稿，欄位做成膠囊 */
+.sign-mode .input {
+  border-radius: var(--radius-pill);
+  min-height: 48px;
+  background: var(--color-surface);
+  border-color: transparent;
+}
+.sign-mode.is-active .input { background: #fff; border-color: var(--color-neutral-300); }
+.sign-mode .input:disabled { cursor: not-allowed; }
+
+@media (max-width: 860px) {
+  .sign-modes { grid-template-columns: 1fr; }
+}
+
+/* ---------- 連署區塊組（連署名單＋我要連署） ---------- */
+
+/* 兩區以金色粗邊框成一組 */
+.sign-group {
+  border: 8px solid var(--color-sun);
+}
+
+/* 兩區之間的細金線。
+   用 #form 的 ::before 而非 border-top，border 會從邊到邊、直接接上粗邊；
+   絕對定位才能左右內縮，與粗邊保持斷開。
+   內縮值對齊內容欄寬，看起來才像刻意設計而非隨手留白。 */
+.sign-group > #form { position: relative; }
+.sign-group > #form::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: max(48px, calc((100% - var(--content-max)) / 2));
+  right: max(48px, calc((100% - var(--content-max)) / 2));
+  height: 2px;
+  background: var(--color-sun);
+}
+
+@media (max-width: 860px) {
+  .sign-group { border-width: 5px; }
+  .sign-group > #form::before { left: 22px; right: 22px; }
 }
 
 /* ---------- 願景說明 ---------- */

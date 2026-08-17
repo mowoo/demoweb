@@ -12,18 +12,18 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Caprasimo&family=Figtree:wght@400;500;600;700&family=Noto+Sans+TC:wght@400;500;700&display=swap">
 <!-- ?v= 為快取破除用。每次部署請一併更新（css 與 js 共三處、vision.html 另兩處）。
      日後若導入 build step，改以檔名雜湊取代即可。 -->
-<link rel="stylesheet" href="css/style.css?v=20260813j">
+<link rel="stylesheet" href="css/style.css?v=20260817f">
 </head>
 <body>
 
 <nav class="nav wrap" style="padding:10px 48px;gap:26px;position:sticky;top:0;z-index:40;background:transparent;border-bottom:0">
   <span class="nav-brand" style="font-size:18px;color:#fff;padding:10px 22px;border-radius:999px;background:rgba(10,33,73,.55);backdrop-filter:blur(6px)">客家公共傳播基金會</span>
   <div style="display:flex;align-items:center;gap:10px;padding:10px 18px;border-radius:999px;background:rgba(10,33,73,.55);backdrop-filter:blur(6px)">
-    <a href="#vision" style="color:#cfe3ff;padding:0 10px">願景說明</a>
-    <a href="#list" style="color:#cfe3ff;padding:0 10px">連署名單</a>
-    <a href="#form" style="color:#cfe3ff;padding:0 10px">我要連署</a>
-    <a href="#six" style="color:#cfe3ff;padding:0 10px">六句專區</a>
-    <a href="#video" style="color:#cfe3ff;padding:0 10px">影音專區</a>
+    <a class="nav-link" href="#vision">願景說明</a>
+    <a class="nav-link" href="#list">連署名單</a>
+    <a class="nav-link" href="#form">我要連署</a>
+    <a class="nav-link" href="#six">六句專區</a>
+    <a class="nav-link" href="#video">影音專區</a>
   </div>
 </nav>
 
@@ -66,7 +66,7 @@
        尊重 prefers-reduced-motion：偏好減少動態時不播放，只留 poster 靜圖。 -->
   <video class="vision-bg" id="visionBg" muted loop playsinline preload="none"
          poster="assets/img/vision-bg-poster.jpg" aria-hidden="true" tabindex="-1">
-    <source src="assets/video/vision-bg.mp4?v=20260813j" type="video/mp4">
+    <source src="assets/video/vision-bg.mp4?v=20260817f" type="video/mp4">
   </video>
   <div class="vision-scrim"></div>
 
@@ -128,7 +128,7 @@
       </div>
     </div>
 
-    <p class="vision-closing">最後，別忘了驕傲地告訴身邊的親朋好友：「我做到了！」因為你的每一次連署、每一句母語、每一次分享，都是公民社會凝聚的力量。</p>
+    <p class="vision-closing">我們期待未來在學校、社區、公司、政府機關及各種公共場合，以及每個公民的日常生活裡，都能自然地聽見不同族群彼此學習、彼此問候。</p>
 
     <!-- 結尾襯底：小山坡圖，上緣以底色漸層淡入 -->
     <div class="vision-modal-outro">
@@ -148,20 +148,8 @@
   </div>
 </dialog>
 
-<section id="six" class="wrap" style="background:var(--color-turq);padding:64px 48px">
-  <div style="display:flex;align-items:flex-end;justify-content:space-between;gap:24px;flex-wrap:wrap">
-    <h2 class="section-title"><img src="assets/img/title/six.png" alt="六句專區" width="301" height="51"></h2>
-    <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap">
-      <span class="tag" style="font-size:14px;padding:8px 18px;background:var(--color-sun);color:var(--color-sky-900)">連續 <span id="streak">—</span> 日</span>
-      <span class="tag" style="font-size:14px;padding:8px 18px;background:rgba(255,255,255,.7);color:var(--color-accent-900)" id="dayLabel">—</span>
-    </div>
-  </div>
-  <p style="font-size:16px;margin:10px 0 24px;max-width:44em;color:var(--color-accent-900)">一日六句，逐日換一个情境。聽一句、揀一句、拼一句——六句講煞，今日就過關。</p>
-
-  <div id="chips" style="display:flex;flex-wrap:wrap;gap:10px;margin-bottom:24px" role="group" aria-label="選擇情境"></div>
-
-  <div id="game" class="card elev-md" style="padding:0;gap:0;overflow:hidden;background:var(--color-bg)"></div>
-</section>
+<!-- 連署名單＋我要連署：以金色粗邊框成一組 -->
+<div class="sign-group">
 
 <section id="list" class="wrap" style="position:relative;overflow:hidden;padding:66px 48px 76px">
   <div style="position:absolute;left:-140px;top:-90px;width:460px;height:460px;border-radius:999px;background:var(--color-turq);filter:blur(95px);opacity:.55;pointer-events:none;animation:glow 17s ease-in-out infinite"></div>
@@ -172,7 +160,7 @@
     <div style="display:flex;align-items:flex-end;justify-content:space-between;gap:24px;flex-wrap:wrap">
       <div>
         <h2 class="section-title"><img src="assets/img/title/list.png" alt="連署名單" width="301" height="51"></h2>
-        <p class="text-muted" style="font-size:16px;margin:10px 0 0">承蒙這 <span id="listCount">—</span> 位名人、團體與個人，答應每日講六句。</p>
+        <p class="text-muted" style="font-size:16px;margin:10px 0 0">響應理念，成為多元文化的推動者。</p>
         <p class="text-muted" style="font-size:13px;margin:8px 0 0">※ 示意頁面：以下名單為模擬資料，非實際連署者。</p>
       </div>
       <div id="filters" style="display:flex;gap:10px;flex-wrap:wrap" role="group" aria-label="篩選名單"></div>
@@ -184,7 +172,8 @@
   </div>
 </section>
 
-<section id="form" class="wrap" style="background:var(--color-accent-100);padding:64px 48px;border-top:6px solid var(--color-sun)">
+<!-- 原本的 border-top 移除，改由 .sign-group 的粗邊與 ::before 的細金線負責 -->
+<section id="form" class="wrap" style="background:var(--color-accent-100);padding:64px 48px">
   <div id="formSent" hidden style="display:flex;flex-direction:column;align-items:flex-start;gap:14px;padding:26px 0">
     <div style="width:78px;height:78px;border-radius:999px;background:var(--color-sun);display:grid;place-items:center;font-family:var(--font-heading);font-size:26px;color:var(--color-sky-900)">承蒙</div>
     <h2 style="font-size:42px;margin:8px 0 0">承蒙你，<span id="sentName"></span></h2>
@@ -195,37 +184,80 @@
   <div id="formEntry" class="split" style="display:grid;grid-template-columns:.85fr 1.15fr;gap:44px;align-items:start">
     <div>
       <h2 class="section-title"><img src="assets/img/title/form.png" alt="我要連署" width="301" height="51"></h2>
-      <p style="font-size:16px;line-height:1.8;margin:12px 0 0">留下你的名仔，就是答應每日講六句。我們會把名單公開在這頁，也會寄六句的音檔同字幕給你。</p>
-      <p class="text-muted" style="font-size:14px;margin:12px 0 0">單位連署請填單位全名同聯絡人職稱。</p>
+      <p style="font-size:16px;line-height:1.8;margin:16px 0 0">響應理念，成為多元文化的推動者。</p>
       <p class="text-muted" style="font-size:13px;margin:16px 0 0">※ 示意頁面：表單尚未接後端，送出後資料不會留存。</p>
     </div>
-    <form id="signForm" class="duo" style="display:grid;grid-template-columns:1fr 1fr;gap:18px">
-      <div class="field">
-        <label for="f-name">姓名</label>
-        <input class="input" id="f-name" name="name" required placeholder="請填你的名仔" style="min-height:48px">
+
+    <!-- 團體／個人二選一。未選取那組的欄位會被停用，不參與驗證也不送出 -->
+    <form id="signForm" class="sign-form">
+      <div class="sign-modes">
+
+        <div class="sign-mode" data-mode="org">
+          <label class="sign-mode-head">
+            <input type="radio" name="signType" value="org" checked>
+            <span class="sign-radio" aria-hidden="true"></span>
+            <span class="sign-mode-title">團體連署</span>
+          </label>
+          <div class="sign-mode-body">
+            <div class="field">
+              <label for="f-org-name">單位名稱</label>
+              <input class="input" id="f-org-name" name="orgName" placeholder="請填單位全名">
+            </div>
+            <div class="field">
+              <label for="f-org-email">聯絡信箱</label>
+              <input class="input" id="f-org-email" name="orgEmail" type="email" placeholder="name@example.com">
+            </div>
+          </div>
+        </div>
+
+        <div class="sign-mode" data-mode="person">
+          <label class="sign-mode-head">
+            <input type="radio" name="signType" value="person">
+            <span class="sign-radio" aria-hidden="true"></span>
+            <span class="sign-mode-title">個人連署</span>
+          </label>
+          <div class="sign-mode-body">
+            <div class="field">
+              <label for="f-person-name">姓名</label>
+              <input class="input" id="f-person-name" name="personName" placeholder="請填你的名仔">
+            </div>
+            <div class="field">
+              <label for="f-person-email">聯絡信箱</label>
+              <input class="input" id="f-person-email" name="personEmail" type="email" placeholder="name@example.com">
+            </div>
+          </div>
+        </div>
+
       </div>
-      <div class="field">
-        <label for="f-org">單位</label>
-        <input class="input" id="f-org" name="org" placeholder="個人連署可留空" style="min-height:48px">
-      </div>
-      <div class="field">
-        <label for="f-title">職稱</label>
-        <input class="input" id="f-title" name="title" placeholder="例：理事長、老師" style="min-height:48px">
-      </div>
-      <div class="field">
-        <label for="f-email">電子信箱</label>
-        <input class="input" id="f-email" name="email" type="email" required placeholder="name@example.com" style="min-height:48px">
-      </div>
-      <label class="radio" style="grid-column:1 / -1;font-size:15px">
-        <input type="checkbox" name="publish" checked><span class="dot"></span>同意公開顯示我的姓名同單位
+
+      <label class="radio" style="font-size:15px">
+        <input type="checkbox" name="publish" checked><span class="dot"></span>同意公開顯示單位與姓名
       </label>
-      <button class="btn btn-primary" type="submit" style="grid-column:1 / -1;padding:16px;font-size:18px">送出連署</button>
+      <button class="btn btn-primary" type="submit" style="padding:16px;font-size:18px">送出連署</button>
     </form>
   </div>
 </section>
 
+</div><!-- /.sign-group -->
+
+<section id="six" class="wrap" style="background:var(--color-turq);padding:64px 48px">
+  <div style="display:flex;align-items:flex-end;justify-content:space-between;gap:24px;flex-wrap:wrap">
+    <h2 class="section-title"><img src="assets/img/title/six.png" alt="六句專區" width="301" height="51"></h2>
+    <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap">
+      <span class="tag" style="font-size:14px;padding:8px 18px;background:var(--color-sun);color:var(--color-sky-900)">連續 <span id="streak">—</span> 日</span>
+      <span class="tag" style="font-size:14px;padding:8px 18px;background:rgba(255,255,255,.7);color:var(--color-accent-900)" id="dayLabel">—</span>
+    </div>
+  </div>
+  <p style="font-size:16px;margin:10px 0 24px;max-width:44em;color:var(--color-accent-900)">兩句太少，十句太多，六句，剛剛好，誠意滿滿。</p>
+
+  <div id="chips" style="display:flex;flex-wrap:wrap;gap:10px;margin-bottom:24px" role="group" aria-label="選擇情境"></div>
+
+  <div id="game" class="card elev-md" style="padding:0;gap:0;overflow:hidden;background:var(--color-bg)"></div>
+</section>
+
 <section id="video" class="wrap" style="padding:64px 48px 72px">
-  <h2 class="section-title" style="margin-bottom:28px"><img src="assets/img/title/video.png" alt="影音專區" width="301" height="51"></h2>
+  <h2 class="section-title"><img src="assets/img/title/video.png" alt="影音專區" width="301" height="51"></h2>
+  <p class="text-muted" style="font-size:16px;margin:10px 0 28px">歡迎大家用影片分享學到的六句。</p>
   <div id="videos" class="tri" style="display:grid;grid-template-columns:repeat(3,1fr);gap:24px"></div>
 </section>
 
@@ -306,7 +338,7 @@
   </p>
 </footer>
 
-<script src="js/data.js?v=20260813j"></script>
-<script src="js/app.js?v=20260813j"></script>
+<script src="js/data.js?v=20260817f"></script>
+<script src="js/app.js?v=20260817f"></script>
 </body>
 </html>
