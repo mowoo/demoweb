@@ -1,0 +1,278 @@
+<!doctype html>
+<html lang="zh-Hant-TW">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>版本 B｜商品頁｜KADOYA 官網改版線框</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='7' fill='%232E2A26'/><circle cx='16' cy='17' r='7' fill='none' stroke='%23C4552E' stroke-width='2.6'/></svg>">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&family=Space+Mono:wght@400;700&display=swap">
+  <style>
+    :root{
+      --ink:#2E2A26; --line:#BDB3A5; --strong:#6E6459;
+      --paper:#FBF8F3; --box:#EFEAE1; --muted:#8C8377; --accent:#C4552E;
+    }
+    body{margin:0;background:var(--paper);color:var(--ink);
+      font-family:"Noto Sans TC",system-ui,"PingFang TC","Microsoft JhengHei",sans-serif;
+      -webkit-font-smoothing:antialiased;}
+    a{color:var(--accent);text-decoration:none;} a:hover{color:#9A3F20;}
+    .wrap{width:1200px;margin:0 auto;}
+    .lbl{font-family:"Space Mono",ui-monospace,monospace;font-size:11px;letter-spacing:.1em;color:var(--accent);}
+    .ph{background:var(--box);border:1.5px solid var(--line);
+      background-image:linear-gradient(to top right,transparent calc(50% - .75px),var(--line) 50%,transparent calc(50% + .75px)),
+      linear-gradient(to bottom right,transparent calc(50% - .75px),var(--line) 50%,transparent calc(50% + .75px));
+      display:flex;align-items:center;justify-content:center;}
+    .phtxt{font-family:"Space Mono",monospace;font-size:11px;color:var(--strong);background:var(--box);padding:3px 9px;}
+    .bar{height:9px;background:var(--box);border-radius:2px;}
+    .btn{border:1.5px solid var(--ink);padding:12px 22px;font-size:14px;font-weight:500;
+      display:inline-flex;align-items:center;justify-content:center;background:#fff;}
+    .btn-p{background:var(--ink);color:var(--paper);}
+    .note{border:1.5px dashed var(--accent);color:var(--accent);
+      font-family:"Space Mono",monospace;font-size:11px;padding:7px 11px;line-height:1.6;}
+    .h2{font-size:22px;font-weight:700;margin:0;}
+    .cap{font-size:12px;color:var(--muted);line-height:1.7;}
+    .card{border:1.5px solid var(--line);background:#fff;}
+    .tag{border:1px solid var(--strong);color:var(--strong);font-size:11px;padding:3px 8px;
+      font-family:"Space Mono",monospace;}
+    .opt{border:1.5px solid var(--line);padding:11px 20px;font-size:14px;background:#fff;}
+    .opt-on{border:1.5px solid var(--ink);padding:11px 20px;font-size:14px;background:#fff;font-weight:700;}
+    .spec{display:flex;gap:16px;border-bottom:1px solid var(--line);padding:11px 0;font-size:13px;}
+    .spec-k{width:110px;flex-shrink:0;color:var(--muted);}
+    .acc{border-bottom:1.5px solid var(--line);min-height:56px;display:flex;align-items:center;
+      justify-content:space-between;font-size:15px;}
+  </style>
+<style>
+.kd-switch{position:sticky;top:0;z-index:9000;background:#141210;color:#EDE7DC;
+  border-bottom:1px solid #35302A;font-family:"Space Mono",ui-monospace,SFMono-Regular,Menlo,monospace;}
+.kd-switch-in{max-width:1400px;margin:0 auto;padding:0 20px;height:46px;
+  display:flex;align-items:center;gap:22px;overflow-x:auto;white-space:nowrap;}
+.kd-brand{font-size:11px;letter-spacing:.14em;color:#8C8377;flex-shrink:0;}
+.kd-brand a{color:#8C8377;text-decoration:none;}
+.kd-brand a:hover{color:#EDE7DC;}
+.kd-vs{display:flex;align-items:center;gap:6px;flex-shrink:0;}
+.kd-v{font-size:12px;color:#8C8377;text-decoration:none;padding:5px 11px;border:1px solid transparent;}
+.kd-v:hover{color:#EDE7DC;border-color:#35302A;}
+.kd-v.on{color:#141210;background:#C4552E;border-color:#C4552E;}
+.kd-sep{width:1px;height:18px;background:#35302A;flex-shrink:0;}
+.kd-sc{font-size:12px;color:#8C8377;text-decoration:none;padding:5px 11px;border:1px solid #35302A;}
+.kd-sc:hover{color:#EDE7DC;border-color:#6E6459;}
+.kd-sc.on{color:#EDE7DC;border-color:#EDE7DC;}
+.kd-tail{margin-left:auto;font-size:11px;color:#6E6459;flex-shrink:0;padding-left:20px;}
+@media(max-width:720px){.kd-brand,.kd-tail{display:none;}}
+body{min-width:1280px;}</style>
+</head>
+<body>
+<div class="kd-switch"><div class="kd-switch-in"><div class="kd-brand"><a href="index.html">← KADOYA 線框 · 入口頁</a></div><div class="kd-vs"><a class="kd-v" href="home.html">A　官網首頁</a><a class="kd-v on" href="list.html">B　商品瀏覽動線</a><a class="kd-v" href="onepage.html">C　情境一頁式</a></div><div class="kd-sep"></div><div class="kd-vs"><a class="kd-sc" href="list.html">商品列表</a><a class="kd-sc on" href="product.html">商品頁</a></div><div class="kd-tail">低保真線框 · 未定視覺風格</div></div></div>
+<div style="background: #FBF8F3;">
+
+  <!-- HEADER -->
+  <div style="border-bottom: 1.5px solid #BDB3A5; background: #fff;">
+    <div class="wrap" style="display: flex; align-items: center; justify-content: space-between; height: 84px;">
+      <div class="ph" style="width: 148px; height: 46px;"><span class="phtxt">LOGO</span></div>
+      <div style="display: flex; gap: 30px; font-size: 15px; font-weight: 500;">
+        <div style="border-bottom: 2px solid #C4552E; padding-bottom: 3px;">商品</div>
+        <div>送禮情境</div><div>緣起</div><div>門市</div><div>消息</div>
+      </div>
+      <div style="display: flex; gap: 18px; align-items: center;">
+        <div class="ph" style="width: 26px; height: 26px;"></div>
+        <div class="btn" style="padding: 9px 16px; font-size: 13px;">購物車 (0)</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 麵包屑 -->
+  <div class="wrap" style="padding: 22px 0 26px;">
+    <div class="cap">首頁 ／ 商品 ／ お菓子｜甜點・餅乾 ／ <span style="color: #2E2A26;">金賞長崎蛋糕－原味</span></div>
+  </div>
+
+  <!-- 主要購買區 -->
+  <div class="wrap" style="display: grid; grid-template-columns: 1fr 1fr; gap: 56px; padding-bottom: 56px;">
+
+    <!-- 圖廊 -->
+    <div style="display: flex; flex-direction: column; gap: 14px;">
+      <div class="lbl">01 · 圖廊</div>
+      <div class="ph" style="height: 520px;"><span class="phtxt">主圖 ≥ 1600px</span></div>
+      <div style="display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 10px;">
+        <div class="ph" style="height: 86px;"></div>
+        <div class="ph" style="height: 86px;"><span class="phtxt">切面</span></div>
+        <div class="ph" style="height: 86px;"><span class="phtxt">包裝</span></div>
+        <div class="ph" style="height: 86px;"><span class="phtxt">情境</span></div>
+        <div class="ph" style="height: 86px;"><span class="phtxt">比例</span></div>
+      </div>
+      <div class="note">切面圖是長崎蛋糕的關鍵 — 用特選紅蛋、蛋糕體偏紅，那是別人抄不走的識別</div>
+    </div>
+
+    <!-- 購買資訊 -->
+    <div style="display: flex; flex-direction: column; gap: 20px;">
+      <div class="lbl">02 · 購買決策區</div>
+
+      <div style="display: flex; gap: 8px;">
+        <span class="tag">常溫</span><span class="tag">可宅配</span><span class="tag">可自取</span>
+      </div>
+
+      <div>
+        <div style="font-size: 32px; font-weight: 700; line-height: 1.35;">金賞長崎蛋糕－原味</div>
+        <div style="font-size: 15px; color: #6E6459; margin-top: 10px;">一句無厘頭的商品標語，帶點裝正經的反差</div>
+      </div>
+
+      <!-- 獎項徽章 -->
+      <div style="border: 1.5px solid #C4552E; background: #FCF3EF; padding: 14px 16px; display: flex; gap: 14px; align-items: center;">
+        <div class="ph" style="width: 44px; height: 44px; flex-shrink: 0; border-color: #C4552E;"></div>
+        <div style="font-size: 13px; line-height: 1.6;"><strong>2024 日本伴手禮設計大賽 金賞</strong><br><span class="cap">現況：這句話埋在商品內文最後一行</span></div>
+      </div>
+
+      <div style="font-size: 28px; font-weight: 700;">NT 450</div>
+
+      <!-- 規格 -->
+      <div>
+        <div style="font-size: 13px; font-weight: 700; margin-bottom: 10px;">口味</div>
+        <div style="display: flex; gap: 10px;">
+          <div class="opt-on">原味</div>
+          <div class="opt">抹茶</div>
+          <div class="opt" style="color: #B0A79B; text-decoration: line-through;">酒漬（補貨中）</div>
+        </div>
+      </div>
+
+      <!-- 預購資訊卡 —— 核心改善 -->
+      <div style="border: 1.5px solid #2E2A26; background: #fff; padding: 18px;">
+        <div class="lbl" style="margin-bottom: 14px;">預購與取貨（現況埋在 FAQ 文字牆）</div>
+        <div style="display: flex; flex-direction: column; gap: 0;">
+          <div class="spec"><div class="spec-k">最早可取貨</div><div><strong>付款完成後第 3 天</strong>（自取為第 4 天）</div></div>
+          <div class="spec"><div class="spec-k">出貨日</div><div>一～四訂購 → 週一寄出　／　五～日訂購 → 週四寄出</div></div>
+          <div class="spec"><div class="spec-k">取貨方式</div><div>宅配（黑貓・常溫）／ 台南門市自取</div></div>
+          <div class="spec" style="border-bottom: none;"><div class="spec-k">公休</div><div style="color: #C4552E;">週二不出貨、不自取</div></div>
+        </div>
+        <div style="margin-top: 16px;">
+          <div style="font-size: 13px; font-weight: 700; margin-bottom: 10px;">選擇取貨日</div>
+          <div class="ph" style="height: 190px;"><span class="phtxt">行事曆：公休／額滿日直接反灰不可選</span></div>
+        </div>
+      </div>
+
+      <!-- 數量 + CTA -->
+      <div style="display: flex; gap: 12px; align-items: stretch;">
+        <div style="border: 1.5px solid #BDB3A5; display: flex; align-items: center; background: #fff;">
+          <div style="width: 46px; height: 52px; display: flex; align-items: center; justify-content: center;">－</div>
+          <div style="width: 46px; text-align: center; font-weight: 700;">1</div>
+          <div style="width: 46px; height: 52px; display: flex; align-items: center; justify-content: center;">＋</div>
+        </div>
+        <div class="btn btn-p" style="flex-grow: 1; font-size: 16px;">加入購物車</div>
+      </div>
+
+      <div class="note">加入購物車＝蓋章動畫（呼應福砂屋的硃紅印章意象），不用制式 toast</div>
+
+      <!-- 加購 -->
+      <div style="border-top: 1.5px solid #BDB3A5; padding-top: 20px;">
+        <div style="font-size: 13px; font-weight: 700; margin-bottom: 12px;">一起帶走</div>
+        <div style="display: flex; flex-direction: column; gap: 10px;">
+          <div style="display: flex; gap: 12px; align-items: center; border: 1.5px solid #BDB3A5; padding: 10px; background: #fff;">
+            <div style="width: 15px; height: 15px; border: 1.5px solid #6E6459; flex-shrink: 0;"></div>
+            <div class="ph" style="width: 52px; height: 52px; flex-shrink: 0;"></div>
+            <div style="flex-grow: 1; font-size: 13px;">品牌紙袋（大）</div>
+            <div style="font-size: 13px; font-weight: 700;">＋NT --</div>
+          </div>
+          <div style="display: flex; gap: 12px; align-items: center; border: 1.5px solid #BDB3A5; padding: 10px; background: #fff;">
+            <div style="width: 15px; height: 15px; border: 1.5px solid #6E6459; flex-shrink: 0;"></div>
+            <div class="ph" style="width: 52px; height: 52px; flex-shrink: 0;"></div>
+            <div style="flex-grow: 1; font-size: 13px;">手寫賀卡（可留言）</div>
+            <div style="font-size: 13px; font-weight: 700;">＋NT --</div>
+          </div>
+        </div>
+        <div class="note" style="margin-top: 12px;">紙袋現在是獨立商品，改成加購項就能拉客單價</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 內容分頁 -->
+  <div style="background: #fff; border-top: 1.5px solid #BDB3A5; border-bottom: 1.5px solid #BDB3A5; padding: 48px 0;">
+    <div class="wrap">
+      <div class="lbl" style="margin-bottom: 20px;">03 · 商品內容分頁</div>
+      <div style="display: flex; gap: 0; border-bottom: 1.5px solid #BDB3A5; margin-bottom: 32px;">
+        <div style="padding: 14px 26px; font-size: 15px; font-weight: 700; border-bottom: 2.5px solid #2E2A26; margin-bottom: -1.5px;">商品介紹</div>
+        <div style="padding: 14px 26px; font-size: 15px; color: #6E6459;">保存與配送</div>
+        <div style="padding: 14px 26px; font-size: 15px; color: #6E6459;">成分與過敏原</div>
+        <div style="padding: 14px 26px; font-size: 15px; color: #6E6459;">怎麼吃</div>
+      </div>
+
+      <div style="display: grid; grid-template-columns: 1.15fr 1fr; gap: 56px; align-items: start;">
+        <div style="display: flex; flex-direction: column; gap: 22px;">
+          <div>
+            <div class="h2" style="margin-bottom: 14px;">特地跟日本師傅學的那一款</div>
+            <div style="display: flex; flex-direction: column; gap: 9px;">
+              <div class="bar" style="width: 100%;"></div>
+              <div class="bar" style="width: 97%;"></div>
+              <div class="bar" style="width: 92%;"></div>
+              <div class="bar" style="width: 58%;"></div>
+            </div>
+          </div>
+          <div class="ph" style="height: 240px;"><span class="phtxt">製程／原料情境圖</span></div>
+          <div>
+            <div style="font-size: 16px; font-weight: 700; margin-bottom: 12px;">五三燒比例・100% 純龍眼蜜・特選紅蛋</div>
+            <div style="display: flex; flex-direction: column; gap: 9px;">
+              <div class="bar" style="width: 100%;"></div>
+              <div class="bar" style="width: 88%;"></div>
+              <div class="bar" style="width: 46%;"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 規格表（法規） -->
+        <div class="card" style="padding: 24px;">
+          <div style="font-size: 15px; font-weight: 700; margin-bottom: 16px;">商品規格</div>
+          <div class="spec"><div class="spec-k">品名</div><div>金賞長崎蛋糕－原味</div></div>
+          <div class="spec"><div class="spec-k">淨重</div><div>290g ± 5g（可分切 8～10 片）</div></div>
+          <div class="spec"><div class="spec-k">內容物</div><div style="color: #C4552E;">[待補：依食藥署規範全列]</div></div>
+          <div class="spec"><div class="spec-k">食品添加物</div><div style="color: #C4552E;">[待補]</div></div>
+          <div class="spec"><div class="spec-k">過敏原</div><div style="color: #C4552E;">[待補：蛋・乳・含麩質穀物…]</div></div>
+          <div class="spec"><div class="spec-k">保存方式</div><div style="color: #C4552E;">[待補]</div></div>
+          <div class="spec"><div class="spec-k">保存期限</div><div style="color: #C4552E;">[待補]</div></div>
+          <div class="spec"><div class="spec-k">原產地</div><div>台灣</div></div>
+          <div class="spec" style="border-bottom: none;"><div class="spec-k">製造商</div><div>KADOYA 喫茶店・台南市東區樹林街一段 36 號</div></div>
+          <div class="note" style="margin-top: 18px;">現況商品頁完全沒有保存期限、成分、過敏原 — 這既是法規要求，也是食品電商的信任門檻</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- FAQ -->
+  <div style="background: #FBF8F3; padding: 48px 0;">
+    <div class="wrap" style="display: grid; grid-template-columns: 1fr 1.4fr; gap: 56px;">
+      <div>
+        <div class="lbl" style="margin-bottom: 14px;">04 · 就地 FAQ</div>
+        <div class="h2">買之前常問的</div>
+        <div class="cap" style="margin-top: 12px;">把 FAQ 文字牆裡跟「這件商品」有關的那幾條，搬到決策當下</div>
+      </div>
+      <div>
+        <div class="acc" style="border-top: 1.5px solid #BDB3A5;"><span>我下單後最快什麼時候拿得到？</span><span class="cap">＋</span></div>
+        <div class="acc"><span>蛋糕為什麼不能宅配？</span><span class="cap">＋</span></div>
+        <div class="acc"><span>常溫和冷藏一起買，運費怎麼算？</span><span class="cap">＋</span></div>
+        <div class="acc"><span>已付款可以改期或取消嗎？</span><span class="cap">＋</span></div>
+        <div class="acc"><span>可以指定到貨時段嗎？</span><span class="cap">＋</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 相關商品 -->
+  <div style="background: #fff; border-top: 1.5px solid #BDB3A5; padding: 48px 0;">
+    <div class="wrap">
+      <div class="lbl" style="margin-bottom: 14px;">05 · 相關商品</div>
+      <div class="h2" style="margin-bottom: 26px;">配這個一起送更好</div>
+      <div style="display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 24px;">
+        <div class="card"><div class="ph" style="height: 200px; border: none; border-bottom: 1.5px solid #BDB3A5;"></div><div style="padding: 16px;"><div style="font-size: 14px; font-weight: 500;">糖鼓燒餅〔9入〕</div><div style="font-size: 15px; font-weight: 700; margin-top: 8px;">NT 699</div></div></div>
+        <div class="card"><div class="ph" style="height: 200px; border: none; border-bottom: 1.5px solid #BDB3A5;"></div><div style="padding: 16px;"><div style="font-size: 14px; font-weight: 500;">金賞長崎蛋糕－抹茶</div><div style="font-size: 15px; font-weight: 700; margin-top: 8px;">NT ---</div></div></div>
+        <div class="card"><div class="ph" style="height: 200px; border: none; border-bottom: 1.5px solid #BDB3A5;"></div><div style="padding: 16px;"><div style="font-size: 14px; font-weight: 500;">KADOYA 耳掛咖啡包</div><div style="font-size: 15px; font-weight: 700; margin-top: 8px;">NT ---</div></div></div>
+        <div class="card"><div class="ph" style="height: 200px; border: none; border-bottom: 1.5px solid #BDB3A5;"></div><div style="padding: 16px;"><div style="font-size: 14px; font-weight: 500;">經典禮盒</div><div style="font-size: 15px; font-weight: 700; margin-top: 8px;">NT ---</div></div></div>
+      </div>
+    </div>
+  </div>
+
+  <div style="background: #fff; border-top: 1.5px solid #BDB3A5; padding: 36px 0;">
+    <div class="wrap" style="display: flex; justify-content: space-between;">
+      <div class="cap">© KADOYA 喫茶店</div>
+      <div class="cap">FOOTER 同首頁</div>
+    </div>
+  </div>
+
+</div>
+<style>.demoweb-home-fab{position:fixed;right:24px;bottom:24px;width:56px;height:56px;border-radius:50%;background:rgba(20,20,20,.92);color:#fff;display:flex;align-items:center;justify-content:center;text-decoration:none;box-shadow:0 4px 16px rgba(0,0,0,.35),0 0 0 1px rgba(255,255,255,.08);z-index:2147483647;backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);transition:transform .2s ease,background .2s ease}.demoweb-home-fab:hover{transform:scale(1.08);background:rgba(40,40,40,.95)}.demoweb-home-fab svg{width:24px;height:24px;display:block}@media (max-width:640px){.demoweb-home-fab{right:16px;bottom:16px;width:52px;height:52px}}</style><a class="demoweb-home-fab" href="../index.html" title="回 demoweb 首頁" aria-label="回 demoweb 首頁"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9.5L12 3l9 6.5V20a1 1 0 0 1-1 1h-5v-6h-6v6H4a1 1 0 0 1-1-1V9.5z"/></svg></a>
+</body>
+</html>

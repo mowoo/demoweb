@@ -1,0 +1,290 @@
+<!doctype html>
+<html lang="zh-Hant-TW">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>版本 A｜官網首頁（手機）｜KADOYA 官網改版線框</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='7' fill='%232E2A26'/><circle cx='16' cy='17' r='7' fill='none' stroke='%23C4552E' stroke-width='2.6'/></svg>">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&family=Space+Mono:wght@400;700&display=swap">
+  <style>
+    :root{
+      --ink:#2E2A26; --line:#BDB3A5; --strong:#6E6459;
+      --paper:#FBF8F3; --box:#EFEAE1; --muted:#8C8377; --accent:#C4552E;
+    }
+    body{margin:0;background:var(--paper);color:var(--ink);
+      font-family:"Noto Sans TC",system-ui,"PingFang TC","Microsoft JhengHei",sans-serif;
+      -webkit-font-smoothing:antialiased;}
+    a{color:var(--accent);text-decoration:none;} a:hover{color:#9A3F20;}
+    .pad{padding-left:20px;padding-right:20px;}
+    .lbl{font-family:"Space Mono",ui-monospace,monospace;font-size:10px;letter-spacing:.1em;color:var(--accent);}
+    .ph{background:var(--box);border:1.5px solid var(--line);
+      background-image:linear-gradient(to top right,transparent calc(50% - .75px),var(--line) 50%,transparent calc(50% + .75px)),
+      linear-gradient(to bottom right,transparent calc(50% - .75px),var(--line) 50%,transparent calc(50% + .75px));
+      display:flex;align-items:center;justify-content:center;}
+    .phtxt{font-family:"Space Mono",monospace;font-size:10px;color:var(--strong);background:var(--box);padding:3px 8px;}
+    .bar{height:9px;background:var(--box);border-radius:2px;}
+    .btn{border:1.5px solid var(--ink);min-height:48px;font-size:15px;font-weight:500;
+      display:flex;align-items:center;justify-content:center;background:#fff;}
+    .btn-p{background:var(--ink);color:var(--paper);}
+    .note{border:1.5px dashed var(--accent);color:var(--accent);
+      font-family:"Space Mono",monospace;font-size:10px;padding:7px 10px;line-height:1.6;}
+    .h2{font-size:20px;font-weight:700;margin:0;}
+    .cap{font-size:12px;color:var(--muted);line-height:1.7;}
+    .card{border:1.5px solid var(--line);background:#fff;}
+    .tag{border:1px solid var(--strong);color:var(--strong);font-size:10px;padding:3px 7px;
+      font-family:"Space Mono",monospace;}
+  </style>
+<style>
+.kd-switch{position:sticky;top:0;z-index:9000;background:#141210;color:#EDE7DC;
+  border-bottom:1px solid #35302A;font-family:"Space Mono",ui-monospace,SFMono-Regular,Menlo,monospace;}
+.kd-switch-in{max-width:1400px;margin:0 auto;padding:0 20px;height:46px;
+  display:flex;align-items:center;gap:22px;overflow-x:auto;white-space:nowrap;}
+.kd-brand{font-size:11px;letter-spacing:.14em;color:#8C8377;flex-shrink:0;}
+.kd-brand a{color:#8C8377;text-decoration:none;}
+.kd-brand a:hover{color:#EDE7DC;}
+.kd-vs{display:flex;align-items:center;gap:6px;flex-shrink:0;}
+.kd-v{font-size:12px;color:#8C8377;text-decoration:none;padding:5px 11px;border:1px solid transparent;}
+.kd-v:hover{color:#EDE7DC;border-color:#35302A;}
+.kd-v.on{color:#141210;background:#C4552E;border-color:#C4552E;}
+.kd-sep{width:1px;height:18px;background:#35302A;flex-shrink:0;}
+.kd-sc{font-size:12px;color:#8C8377;text-decoration:none;padding:5px 11px;border:1px solid #35302A;}
+.kd-sc:hover{color:#EDE7DC;border-color:#6E6459;}
+.kd-sc.on{color:#EDE7DC;border-color:#EDE7DC;}
+.kd-tail{margin-left:auto;font-size:11px;color:#6E6459;flex-shrink:0;padding-left:20px;}
+@media(max-width:720px){.kd-brand,.kd-tail{display:none;}}
+body{background:#E7E1D6;padding:28px 0;}
+      body>div{margin:0 auto;box-shadow:0 6px 34px rgba(0,0,0,.16);border:1px solid #BDB3A5;}</style>
+</head>
+<body>
+<div class="kd-switch"><div class="kd-switch-in"><div class="kd-brand"><a href="index.html">← KADOYA 線框 · 入口頁</a></div><div class="kd-vs"><a class="kd-v on" href="home.html">A　官網首頁</a><a class="kd-v" href="list.html">B　商品瀏覽動線</a><a class="kd-v" href="onepage.html">C　情境一頁式</a></div><div class="kd-sep"></div><div class="kd-vs"><a class="kd-sc" href="home.html">桌機</a><a class="kd-sc on" href="home-mobile.html">手機</a></div><div class="kd-tail">低保真線框 · 未定視覺風格</div></div></div>
+<div style="width: 390px; background: #FBF8F3;">
+
+  <!-- STICKY HEADER -->
+  <div style="border-bottom: 1.5px solid #BDB3A5; background: #fff;">
+    <div class="pad" style="display: flex; align-items: center; justify-content: space-between; height: 60px;">
+      <div class="ph" style="width: 44px; height: 44px;"><span class="phtxt">☰</span></div>
+      <div class="ph" style="width: 110px; height: 34px;"><span class="phtxt">LOGO</span></div>
+      <div style="display: flex; gap: 8px;">
+        <div class="ph" style="width: 44px; height: 44px;"></div>
+        <div class="ph" style="width: 44px; height: 44px;"></div>
+      </div>
+    </div>
+    <div class="pad" style="padding-bottom: 12px;">
+      <div style="border: 1.5px solid #BDB3A5; height: 44px; display: flex; align-items: center; padding: 0 14px; color: #8C8377; font-size: 14px;">搜尋商品…</div>
+    </div>
+  </div>
+
+  <div class="pad" style="padding-top: 12px; padding-bottom: 4px;">
+    <div class="note">觸控區一律 ≥ 44px。現況 33 個可點元素有 21 個不到 44px</div>
+  </div>
+
+  <!-- HERO -->
+  <div style="background: #fff; border-top: 1.5px solid #BDB3A5; border-bottom: 1.5px solid #BDB3A5; margin-top: 12px;">
+    <div class="pad" style="padding-top: 16px;"><div class="lbl">03 · HERO</div></div>
+    <div class="ph" style="height: 260px; border-left: none; border-right: none; margin-top: 12px;"><span class="phtxt">主視覺（純圖，不含文字）</span></div>
+    <div class="pad" style="padding-top: 20px; padding-bottom: 24px; display: flex; flex-direction: column; gap: 14px;">
+      <div class="tag" style="align-self: flex-start;">季節主打</div>
+      <div style="font-size: 26px; font-weight: 700; line-height: 1.4;">主標語一句話<br>（真 HTML 文字）</div>
+      <div class="cap" style="font-size: 14px; color: #6E6459;">副標一至兩行。</div>
+      <div style="display: flex; flex-direction: column; gap: 10px; margin-top: 4px;">
+        <div class="btn btn-p">立即選購</div>
+        <div class="btn">看禮盒</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TRUST -->
+  <div style="background: #F4F0E8; border-bottom: 1.5px solid #BDB3A5;">
+    <div class="pad" style="padding-top: 20px; padding-bottom: 20px;">
+      <div class="lbl" style="margin-bottom: 14px;">04 · 信任列</div>
+      <div style="display: flex; flex-direction: column; gap: 14px;">
+        <div style="display: flex; gap: 12px; align-items: center;">
+          <div class="ph" style="width: 36px; height: 36px; flex-shrink: 0;"></div>
+          <div style="font-size: 13px;"><strong>2024 日本伴手禮設計大賽</strong> 金賞・銀賞</div>
+        </div>
+        <div style="display: flex; gap: 12px; align-items: center;">
+          <div class="ph" style="width: 36px; height: 36px; flex-shrink: 0;"></div>
+          <div style="font-size: 13px;"><strong>台南實體門市</strong>・全品項接單製作</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 招牌商品 橫向捲動 -->
+  <div style="background: #fff; border-bottom: 1.5px solid #BDB3A5; padding-top: 28px; padding-bottom: 28px;">
+    <div class="pad">
+      <div class="lbl" style="margin-bottom: 12px;">05 · 招牌商品</div>
+      <div class="h2" style="margin-bottom: 16px;">先吃這幾樣就對了</div>
+    </div>
+    <div style="display: flex; gap: 14px; padding-left: 20px; padding-right: 20px; overflow: hidden;">
+      <div class="card" style="width: 190px; flex-shrink: 0;">
+        <div class="ph" style="height: 170px; border: none; border-bottom: 1.5px solid #BDB3A5;"><span class="phtxt">商品圖</span></div>
+        <div style="padding: 14px; display: flex; flex-direction: column; gap: 8px;">
+          <div style="display: flex; gap: 5px;"><span class="tag">金賞</span><span class="tag">常溫</span></div>
+          <div style="font-size: 14px; font-weight: 500;">金賞長崎蛋糕－原味</div>
+          <div style="font-size: 15px; font-weight: 700;">NT 450</div>
+        </div>
+      </div>
+      <div class="card" style="width: 190px; flex-shrink: 0;">
+        <div class="ph" style="height: 170px; border: none; border-bottom: 1.5px solid #BDB3A5;"><span class="phtxt">商品圖</span></div>
+        <div style="padding: 14px; display: flex; flex-direction: column; gap: 8px;">
+          <div style="display: flex; gap: 5px;"><span class="tag">銀賞</span></div>
+          <div style="font-size: 14px; font-weight: 500;">糖鼓燒餅〔9入〕</div>
+          <div style="font-size: 15px; font-weight: 700;">NT 699</div>
+        </div>
+      </div>
+    </div>
+    <div class="pad" style="padding-top: 14px;"><div class="cap">← 橫向捲動 →</div></div>
+  </div>
+
+  <!-- 送禮情境 -->
+  <div style="background: #F4F0E8; border-bottom: 1.5px solid #BDB3A5; padding-top: 28px; padding-bottom: 28px;">
+    <div class="pad">
+      <div class="lbl" style="margin-bottom: 12px;">06 · 送禮情境</div>
+      <div class="h2" style="margin-bottom: 6px;">送給誰？</div>
+      <div class="cap" style="margin-bottom: 18px;">手機上這是最好用的入口</div>
+      <div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px;">
+        <div class="card"><div class="ph" style="height: 96px; border: none; border-bottom: 1.5px solid #BDB3A5;"></div><div style="padding: 14px; font-size: 15px; font-weight: 700;">彌月</div></div>
+        <div class="card"><div class="ph" style="height: 96px; border: none; border-bottom: 1.5px solid #BDB3A5;"></div><div style="padding: 14px; font-size: 15px; font-weight: 700;">喜餅</div></div>
+        <div class="card"><div class="ph" style="height: 96px; border: none; border-bottom: 1.5px solid #BDB3A5;"></div><div style="padding: 14px; font-size: 15px; font-weight: 700;">節慶禮盒</div></div>
+        <div class="card"><div class="ph" style="height: 96px; border: none; border-bottom: 1.5px solid #BDB3A5;"></div><div style="padding: 14px; font-size: 15px; font-weight: 700;">企業送禮</div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 商品分類 -->
+  <div style="background: #fff; border-bottom: 1.5px solid #BDB3A5; padding-top: 28px; padding-bottom: 28px;">
+    <div class="pad">
+      <div class="lbl" style="margin-bottom: 12px;">07 · 商品分類</div>
+      <div class="h2" style="margin-bottom: 16px;">想吃什麼？</div>
+      <div style="display: flex; flex-direction: column; gap: 10px;">
+        <div class="card" style="display: flex; gap: 14px; padding: 12px; align-items: center; min-height: 48px;">
+          <div class="ph" style="width: 56px; height: 56px; flex-shrink: 0;"></div>
+          <div style="font-size: 15px; font-weight: 500;">ケーキ｜蛋糕</div>
+        </div>
+        <div class="card" style="display: flex; gap: 14px; padding: 12px; align-items: center; min-height: 48px;">
+          <div class="ph" style="width: 56px; height: 56px; flex-shrink: 0;"></div>
+          <div style="font-size: 15px; font-weight: 500;">お菓子｜甜點・餅乾</div>
+        </div>
+        <div class="card" style="display: flex; gap: 14px; padding: 12px; align-items: center; min-height: 48px;">
+          <div class="ph" style="width: 56px; height: 56px; flex-shrink: 0;"></div>
+          <div style="font-size: 15px; font-weight: 500;">タルト・パイ｜塔・派</div>
+        </div>
+        <div class="card" style="display: flex; gap: 14px; padding: 12px; align-items: center; min-height: 48px;">
+          <div class="ph" style="width: 56px; height: 56px; flex-shrink: 0;"></div>
+          <div style="font-size: 15px; font-weight: 500;">ギフト｜禮盒</div>
+        </div>
+        <div class="card" style="display: flex; gap: 14px; padding: 12px; align-items: center; min-height: 48px;">
+          <div class="ph" style="width: 56px; height: 56px; flex-shrink: 0;"></div>
+          <div style="font-size: 15px; font-weight: 500;">彌月・喜餅</div>
+        </div>
+        <div class="card" style="display: flex; gap: 14px; padding: 12px; align-items: center; min-height: 48px;">
+          <div class="ph" style="width: 56px; height: 56px; flex-shrink: 0;"></div>
+          <div style="font-size: 15px; font-weight: 500;">雑貨｜周邊</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 緣起 -->
+  <div style="background: #fff; border-bottom: 1.5px solid #BDB3A5; padding-bottom: 28px;">
+    <div class="pad" style="padding-top: 28px;"><div class="lbl">08 · 緣起摘要</div></div>
+    <div class="ph" style="height: 200px; border-left: none; border-right: none; margin-top: 14px;"><span class="phtxt">職人／製程 老照片</span></div>
+    <div class="pad" style="padding-top: 18px; display: flex; flex-direction: column; gap: 14px;">
+      <div class="h2">かどや、是這樣開始的</div>
+      <div style="display: flex; flex-direction: column; gap: 8px;">
+        <div class="bar" style="width: 100%;"></div>
+        <div class="bar" style="width: 94%;"></div>
+        <div class="bar" style="width: 66%;"></div>
+      </div>
+      <div class="btn">讀品牌故事</div>
+    </div>
+  </div>
+
+  <!-- 門市 -->
+  <div style="background: #F4F0E8; border-bottom: 1.5px solid #BDB3A5; padding-bottom: 28px;">
+    <div class="pad" style="padding-top: 28px;"><div class="lbl">09 · 門市資訊</div></div>
+    <div class="ph" style="height: 190px; border-left: none; border-right: none; margin-top: 14px;"><span class="phtxt">Google 地圖</span></div>
+    <div class="pad" style="padding-top: 18px; display: flex; flex-direction: column; gap: 14px;">
+      <div>
+        <div style="font-size: 17px; font-weight: 700;">KADOYA 喫茶店</div>
+        <div class="cap" style="margin-top: 6px;">台南市東區樹林街一段 36 號</div>
+      </div>
+      <div style="border: 1.5px solid #BDB3A5; background: #fff; padding: 14px;">
+        <div style="display: flex; justify-content: space-between; font-size: 13px; margin-bottom: 8px;"><span>一・三～日</span><span>09:00 – 18:30</span></div>
+        <div style="display: flex; justify-content: space-between; font-size: 13px; color: #C4552E; font-weight: 700;"><span>週二</span><span>本日公休</span></div>
+      </div>
+      <div style="display: flex; gap: 10px;">
+        <div class="btn" style="flex-grow: 1;">撥打電話</div>
+        <div class="btn" style="flex-grow: 1;">導航</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 消息 -->
+  <div style="background: #fff; border-bottom: 1.5px solid #BDB3A5; padding-top: 28px; padding-bottom: 28px;">
+    <div class="pad">
+      <div class="lbl" style="margin-bottom: 12px;">10 · 消息與報導</div>
+      <div class="h2" style="margin-bottom: 16px;">最近在忙什麼</div>
+      <div style="display: flex; flex-direction: column; gap: 16px;">
+        <div style="display: flex; gap: 14px;">
+          <div class="ph" style="width: 110px; height: 82px; flex-shrink: 0;"></div>
+          <div style="display: flex; flex-direction: column; gap: 6px;">
+            <div class="lbl" style="color: #8C8377;">2024.08 · 獲獎</div>
+            <div style="font-size: 14px; font-weight: 500; line-height: 1.5;">勇奪日本伴手禮設計大賽金牌・銀牌</div>
+          </div>
+        </div>
+        <div style="display: flex; gap: 14px;">
+          <div class="ph" style="width: 110px; height: 82px; flex-shrink: 0;"></div>
+          <div style="display: flex; flex-direction: column; gap: 6px;">
+            <div class="lbl" style="color: #8C8377;">2024.07 · 聯名</div>
+            <div style="font-size: 14px; font-weight: 500; line-height: 1.5;">林百貨 × KADOYA 假日限定快閃櫃</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- LINE -->
+  <div style="background: #F4F0E8; border-bottom: 1.5px solid #BDB3A5; padding-top: 26px; padding-bottom: 26px;">
+    <div class="pad" style="display: flex; flex-direction: column; gap: 14px;">
+      <div class="lbl">11 · 導流</div>
+      <div style="font-size: 17px; font-weight: 700; line-height: 1.5;">加 LINE，季節限定開賣先通知你</div>
+      <div class="btn btn-p">加入 LINE 好友</div>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <div style="background: #fff; padding-top: 26px; padding-bottom: 100px;">
+    <div class="pad">
+      <div class="lbl" style="margin-bottom: 16px;">12 · FOOTER（手風琴收合）</div>
+      <div style="display: flex; flex-direction: column; gap: 0;">
+        <div style="border-top: 1.5px solid #BDB3A5; min-height: 50px; display: flex; align-items: center; justify-content: space-between; font-size: 14px;"><span>選購</span><span class="cap">＋</span></div>
+        <div style="border-top: 1.5px solid #BDB3A5; min-height: 50px; display: flex; align-items: center; justify-content: space-between; font-size: 14px;"><span>關於 KADOYA</span><span class="cap">＋</span></div>
+        <div style="border-top: 1.5px solid #BDB3A5; min-height: 50px; display: flex; align-items: center; justify-content: space-between; font-size: 14px;"><span>服務與條款</span><span class="cap">＋</span></div>
+        <div style="border-top: 1.5px solid #BDB3A5; border-bottom: 1.5px solid #BDB3A5; min-height: 50px; display: flex; align-items: center; justify-content: space-between; font-size: 14px;"><span>語言 ／ Language</span><span class="cap">＋</span></div>
+      </div>
+      <div style="display: flex; gap: 10px; margin-top: 20px;">
+        <div class="ph" style="width: 44px; height: 44px;"></div>
+        <div class="ph" style="width: 44px; height: 44px;"></div>
+        <div class="ph" style="width: 44px; height: 44px;"></div>
+        <div class="ph" style="width: 44px; height: 44px;"></div>
+      </div>
+      <div class="cap" style="margin-top: 18px;">© KADOYA 喫茶店</div>
+    </div>
+  </div>
+
+  <!-- STICKY BOTTOM BAR -->
+  <div style="border-top: 1.5px solid #2E2A26; background: #fff; padding: 12px 20px; display: flex; gap: 12px; align-items: center;">
+    <div class="ph" style="width: 48px; height: 48px; flex-shrink: 0;"><span class="phtxt">LINE</span></div>
+    <div class="btn btn-p" style="flex-grow: 1;">立即選購</div>
+  </div>
+  <div class="pad" style="padding-top: 10px; padding-bottom: 20px;">
+    <div class="note">底部固定列：手機上最短的購買路徑，捲到哪都在</div>
+  </div>
+
+</div>
+<style>.demoweb-home-fab{position:fixed;right:24px;bottom:24px;width:56px;height:56px;border-radius:50%;background:rgba(20,20,20,.92);color:#fff;display:flex;align-items:center;justify-content:center;text-decoration:none;box-shadow:0 4px 16px rgba(0,0,0,.35),0 0 0 1px rgba(255,255,255,.08);z-index:2147483647;backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);transition:transform .2s ease,background .2s ease}.demoweb-home-fab:hover{transform:scale(1.08);background:rgba(40,40,40,.95)}.demoweb-home-fab svg{width:24px;height:24px;display:block}@media (max-width:640px){.demoweb-home-fab{right:16px;bottom:16px;width:52px;height:52px}}</style><a class="demoweb-home-fab" href="../index.html" title="回 demoweb 首頁" aria-label="回 demoweb 首頁"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9.5L12 3l9 6.5V20a1 1 0 0 1-1 1h-5v-6h-6v6H4a1 1 0 0 1-1-1V9.5z"/></svg></a>
+</body>
+</html>

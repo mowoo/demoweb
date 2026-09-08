@@ -1,0 +1,218 @@
+<!doctype html>
+<html lang="zh-Hant-TW">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>KADOYA 喫茶店 官網改版線框｜三版本</title>
+<meta name="description" content="KADOYA 喫茶店官網改版的低保真線框，三個版本：官網首頁、商品瀏覽動線、情境一頁式。">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='7' fill='%232E2A26'/><circle cx='16' cy='17' r='7' fill='none' stroke='%23C4552E' stroke-width='2.6'/></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400..900;1,9..144,400..900&family=Noto+Sans+TC:wght@300;400;500;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0a0a0a; --elev:#161616; --hover:#1f1f1f;
+    --border:#2a2a2a; --border-h:#4a4a4a;
+    --text:#f0f0f0; --muted:#9a9a9a; --dim:#6a6a6a;
+    --accent:#e8c87a; --mark:#C4552E;
+  }
+  *,*::before,*::after{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:var(--bg); color:var(--text); line-height:1.65;
+    font-family:"Noto Sans TC",-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+    -webkit-font-smoothing:antialiased;
+  }
+  a{color:inherit;}
+  .container{width:100%;max-width:1120px;margin:0 auto;padding:0 24px;}
+  .mono{font-family:"Space Mono",ui-monospace,SFMono-Regular,Menlo,monospace;}
+
+  /* header */
+  header{padding:clamp(56px,9vw,104px) 0 clamp(36px,5vw,56px);border-bottom:1px solid var(--border);}
+  .eyebrow{margin:0 0 20px;font-size:12px;font-weight:500;letter-spacing:.3em;color:var(--accent);}
+  h1{
+    font-family:"Fraunces","Noto Serif TC",Georgia,serif;
+    font-size:clamp(42px,7vw,86px);font-weight:600;line-height:1.08;
+    margin:0 0 22px;letter-spacing:-.015em;
+  }
+  h1 .sub{display:block;font-size:.42em;font-weight:400;font-style:italic;color:var(--muted);margin-top:16px;letter-spacing:0;}
+  .lede{margin:0;max-width:720px;font-size:16px;color:var(--muted);}
+  .meta{display:flex;flex-wrap:wrap;gap:10px;margin-top:30px;}
+  .chip{font-size:11px;letter-spacing:.1em;color:var(--dim);border:1px solid var(--border);padding:6px 12px;}
+
+  /* how to read */
+  .howto{border-bottom:1px solid var(--border);padding:44px 0;}
+  .howto h2{margin:0 0 22px;font-size:12px;font-weight:500;letter-spacing:.26em;color:var(--accent);}
+  .rules{display:grid;grid-template-columns:repeat(auto-fit,minmax(228px,1fr));gap:24px;}
+  .rule{display:flex;gap:14px;align-items:flex-start;}
+  .swatch{width:38px;height:38px;flex-shrink:0;border:1.5px solid #BDB3A5;background:#EFEAE1;
+    background-image:linear-gradient(to top right,transparent calc(50% - .75px),#BDB3A5 50%,transparent calc(50% + .75px)),
+                     linear-gradient(to bottom right,transparent calc(50% - .75px),#BDB3A5 50%,transparent calc(50% + .75px));}
+  .swatch.note{border:1.5px dashed var(--mark);background:none;background-image:none;}
+  .swatch.bar{border:none;background:none;background-image:none;display:flex;flex-direction:column;justify-content:center;gap:5px;}
+  .swatch.bar i{display:block;height:7px;background:#EFEAE1;}
+  .swatch.todo{border:1px solid var(--mark);background:none;background-image:none;
+    display:flex;align-items:center;justify-content:center;color:var(--mark);font-size:10px;font-family:"Space Mono",monospace;}
+  .rule p{margin:0;font-size:13px;color:var(--muted);line-height:1.7;}
+  .rule strong{color:var(--text);font-weight:500;display:block;margin-bottom:3px;}
+
+  /* versions */
+  main{padding:56px 0 24px;}
+  .vgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:26px;}
+  .vcard{
+    background:var(--elev);border:1px solid var(--border);
+    display:flex;flex-direction:column;transition:border-color .25s ease,background .25s ease,transform .25s ease;
+  }
+  .vcard:hover{border-color:var(--border-h);background:var(--hover);transform:translateY(-3px);}
+  .vhead{padding:26px 26px 0;display:flex;align-items:baseline;gap:14px;}
+  .vno{
+    font-family:"Fraunces","Noto Serif TC",Georgia,serif;font-style:italic;font-weight:300;
+    font-size:52px;line-height:.85;color:var(--accent);letter-spacing:-.05em;
+  }
+  .vlabel{font-size:11px;letter-spacing:.2em;color:var(--dim);font-family:"Space Mono",monospace;}
+  .vbody{padding:20px 26px 26px;flex:1;display:flex;flex-direction:column;}
+  .vbody h3{margin:0 0 12px;font-size:22px;font-weight:700;letter-spacing:.01em;}
+  .vbody .desc{margin:0 0 18px;font-size:14px;color:var(--muted);}
+  .solves{margin:0 0 22px;padding:16px 18px;border-left:2px solid var(--mark);background:rgba(196,85,46,.07);}
+  .solves span{display:block;font-size:11px;letter-spacing:.16em;color:var(--mark);margin-bottom:8px;font-family:"Space Mono",monospace;}
+  .solves p{margin:0;font-size:13px;color:var(--muted);line-height:1.75;}
+  .screens{margin-top:auto;display:flex;flex-direction:column;gap:9px;}
+  .screen{
+    display:flex;align-items:center;justify-content:space-between;gap:12px;
+    border:1px solid var(--border);padding:13px 16px;text-decoration:none;
+    font-size:14px;transition:border-color .2s ease,background .2s ease;
+  }
+  .screen:hover{border-color:var(--accent);background:rgba(232,200,122,.06);}
+  .screen .arrow{color:var(--accent);font-size:13px;}
+  .screen .size{font-size:11px;color:var(--dim);font-family:"Space Mono",monospace;}
+  .screen .nm{display:flex;align-items:baseline;gap:10px;}
+
+  footer{border-top:1px solid var(--border);margin-top:56px;padding:36px 0 64px;}
+  footer p{margin:0 0 10px;font-size:12px;color:var(--dim);line-height:1.8;max-width:780px;}
+  footer a{color:var(--muted);}
+
+  .demoweb-home-fab{position:fixed;right:24px;bottom:24px;width:56px;height:56px;border-radius:50%;
+    background:rgba(20,20,20,.92);color:#fff;display:flex;align-items:center;justify-content:center;
+    text-decoration:none;box-shadow:0 4px 16px rgba(0,0,0,.35),0 0 0 1px rgba(255,255,255,.08);
+    z-index:2147483647;backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);
+    transition:transform .2s ease,background .2s ease;}
+  .demoweb-home-fab:hover{transform:scale(1.08);background:rgba(40,40,40,.95);}
+  .demoweb-home-fab svg{width:24px;height:24px;display:block;}
+  @media(max-width:640px){.demoweb-home-fab{right:16px;bottom:16px;width:52px;height:52px;}}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="container">
+    <p class="eyebrow mono">WIREFRAME · 討論用</p>
+    <h1>KADOYA 喫茶店<span class="sub">官網改版線框　三個版本</span></h1>
+    <p class="lede">低保真線框，只談<strong style="color:var(--text);font-weight:500">區塊順序與資訊架構</strong>。視覺風格（昭和復古感、幽默語氣、配色與字體）刻意還沒上——那是方向拍板之後的事。</p>
+    <div class="meta">
+      <span class="chip mono">2026.09</span>
+      <span class="chip mono">3 VERSIONS · 5 SCREENS</span>
+      <span class="chip mono">現況站：kadoya.tw</span>
+    </div>
+  </div>
+</header>
+
+<section class="howto">
+  <div class="container">
+    <h2 class="mono">怎麼看這份線框</h2>
+    <div class="rules">
+      <div class="rule">
+        <div class="swatch" aria-hidden="true"></div>
+        <p><strong>打叉的灰框</strong>是圖片位置，不是設計。實際攝影另外處理。</p>
+      </div>
+      <div class="rule">
+        <div class="swatch bar" aria-hidden="true"><i style="width:100%"></i><i style="width:80%"></i><i style="width:55%"></i></div>
+        <p><strong>灰色橫條</strong>是還沒寫的文案，長度代表大概的份量。</p>
+      </div>
+      <div class="rule">
+        <div class="swatch note" aria-hidden="true"></div>
+        <p><strong>紅色虛線框</strong>是我的說明，對照現況網站的問題——不是頁面內容。</p>
+      </div>
+      <div class="rule">
+        <div class="swatch todo" aria-hidden="true">待填</div>
+        <p><strong>紅字 [待填]</strong>是需要你或客戶提供的資料，例如保存期限、過敏原、優惠條件。</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<main>
+  <div class="container">
+    <div class="vgrid">
+
+      <article class="vcard">
+        <div class="vhead">
+          <div class="vno">A</div>
+          <div class="vlabel">VERSION A</div>
+        </div>
+        <div class="vbody">
+          <h3>官網首頁</h3>
+          <p class="desc">改版後的常態首頁。兩條動線刻意並行：「送給誰」（送禮情境）和「想吃什麼」（商品分類），讓兩種心態的客人都有路走。</p>
+          <div class="solves">
+            <span class="mono">這一版在解決</span>
+            <p>現況首頁 95% 是圖片、文字燒在圖裡，桌機糊、Google 讀不到、英文翻不了。這一版全部改成真 HTML 文字，並把金賞／銀賞獲獎與品牌故事拉到看得見的位置。</p>
+          </div>
+          <div class="screens">
+            <a class="screen" href="home.html"><span class="nm">桌機版 <span class="size">1440</span></span><span class="arrow">看 →</span></a>
+            <a class="screen" href="home-mobile.html"><span class="nm">手機版 <span class="size">390</span></span><span class="arrow">看 →</span></a>
+          </div>
+        </div>
+      </article>
+
+      <article class="vcard">
+        <div class="vhead">
+          <div class="vno">B</div>
+          <div class="vlabel">VERSION B</div>
+        </div>
+        <div class="vbody">
+          <h3>商品瀏覽動線</h3>
+          <p class="desc">從分類列表逛到單一商品，完整走一次。列表的篩選把「溫層」提到第一層，商品頁補上預購規則與法規標示。</p>
+          <div class="solves">
+            <span class="mono">這一版在解決</span>
+            <p>現況 17 個分類混了四種軸線、還夾著活動殘留（「中秋節專用標籤」「起司棒10包免運」）。商品頁則完全沒有保存期限、成分與過敏原，預購取貨規則被埋在 FAQ 文字牆裡。</p>
+          </div>
+          <div class="screens">
+            <a class="screen" href="list.html"><span class="nm">商品列表頁</span><span class="arrow">看 →</span></a>
+            <a class="screen" href="product.html"><span class="nm">商品頁</span><span class="arrow">看 →</span></a>
+          </div>
+        </div>
+      </article>
+
+      <article class="vcard">
+        <div class="vhead">
+          <div class="vno">C</div>
+          <div class="vlabel">VERSION C</div>
+        </div>
+        <div class="vbody">
+          <h3>情境一頁式</h3>
+          <p class="desc">檔期活動頁的可複用模板，這裡用中秋禮盒當範例。頂端錨點列吸頂、可點捲動；彌月、喜餅、年節都能套同一套骨架。</p>
+          <div class="solves">
+            <span class="mono">這一版在解決</span>
+            <p>季節檔期現在只能靠開新分類硬撐，檔期一過就變殭屍分類。這一版把檔期時間軸、優惠條件、配送須知、客服窗口收在同一頁，售罄改成「登記候補」而不是死路。</p>
+          </div>
+          <div class="screens">
+            <a class="screen" href="onepage.html"><span class="nm">中秋禮盒活動頁 <span class="size">15 區</span></span><span class="arrow">看 →</span></a>
+          </div>
+        </div>
+      </article>
+
+    </div>
+  </div>
+</main>
+
+<footer>
+  <div class="container">
+    <p>本頁為 KADOYA 喫茶店官網改版的討論用線框，非正式提案，內容與數字多為佔位。頁面設定 noindex，不對搜尋引擎開放。</p>
+    <p>聯絡信箱：<a href="mailto:q.mowoo@gmail.com">q.mowoo@gmail.com</a></p>
+  </div>
+</footer>
+
+<a class="demoweb-home-fab" href="../index.html" title="回 demoweb 首頁" aria-label="回 demoweb 首頁"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9.5L12 3l9 6.5V20a1 1 0 0 1-1 1h-5v-6h-6v6H4a1 1 0 0 1-1-1V9.5z"/></svg></a>
+
+</body>
+</html>
