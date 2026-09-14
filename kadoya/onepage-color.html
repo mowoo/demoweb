@@ -1,0 +1,1112 @@
+<!doctype html>
+<html lang="zh-Hant-TW">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>版本 C 色稿｜2026 中秋禮盒｜KADOYA 喫茶店</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='7' fill='%23E50011'/><text x='16' y='22' font-size='14' text-anchor='middle' fill='%23FFF6DD' font-family='sans-serif' font-weight='900'>カ</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DotGothic16&family=Noto+Sans+TC:wght@400;500;700&family=Noto+Serif+TC:wght@600;900&family=Zen+Maru+Gothic:wght@500;700&display=swap" rel="stylesheet">
+<style>
+/* ==========================================================
+   色票：全部取樣自 kadoya.tw 現有主視覺
+   紅 logo／芥末黃 糖鼓燒餅／棕 看板字／磚紅 報喜框／
+   喫茶綠 可麗露底／奶油 長崎底／金 四葉紋
+   ========================================================== */
+:root{
+  --paper:#FFF6DD; --paper-2:#F8EBCC; --paper-3:#EFDDB3;
+  --ink:#3B2418; --ink-2:#6B4A36; --ink-3:#977A62;
+  --kanban:#954C07;
+  --red:#E50011; --red-deep:#B8000D;
+  --brick:#B44A3D; --brick-soft:#F2E3D4;
+  --mustard:#F5C04E;
+  --green:#1F3F2C; --green-2:#2A5540;
+  --caramel:#A65716;
+  --gold:#D39A2D;
+  --navy:#1F2E55;
+
+  --serif:"Noto Serif TC","Songti TC","PMingLiU",serif;
+  --sans:"Noto Sans TC","PingFang TC","Microsoft JhengHei",sans-serif;
+  --kana:"Zen Maru Gothic","Noto Sans TC",sans-serif;
+  --pixel:"DotGothic16","Noto Sans TC",monospace;
+  --latin:"DM Serif Display",Georgia,serif;
+  --mono:"Space Mono",ui-monospace,SFMono-Regular,Menlo,monospace;
+  --wrap:1180px;
+}
+*,*::before,*::after{box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--sans);
+  line-height:1.75;-webkit-font-smoothing:antialiased;padding-bottom:84px;}
+img{max-width:100%;display:block;}
+a{color:inherit;}
+a:hover{color:var(--red);}
+.wrap{width:100%;max-width:var(--wrap);margin:0 auto;padding:0 28px;}
+[id^="s-"]{scroll-margin-top:118px;}
+
+/* ---------- 版本切換列（demoweb 共用） ---------- */
+.kd-switch{position:sticky;top:0;z-index:9000;background:#141210;color:#EDE7DC;
+  border-bottom:1px solid #35302A;font-family:var(--mono);}
+.kd-switch-in{max-width:1400px;margin:0 auto;padding:0 20px;height:46px;
+  display:flex;align-items:center;gap:22px;overflow-x:auto;white-space:nowrap;}
+.kd-brand{font-size:11px;letter-spacing:.14em;flex-shrink:0;}
+.kd-brand a{color:#8C8377;text-decoration:none;} .kd-brand a:hover{color:#EDE7DC;}
+.kd-vs{display:flex;align-items:center;gap:6px;flex-shrink:0;}
+.kd-v{font-size:12px;color:#8C8377;text-decoration:none;padding:5px 11px;border:1px solid transparent;}
+.kd-v:hover{color:#EDE7DC;border-color:#35302A;}
+.kd-v.on{color:#141210;background:#C4552E;border-color:#C4552E;}
+.kd-sep{width:1px;height:18px;background:#35302A;flex-shrink:0;}
+.kd-sc{font-size:12px;color:#8C8377;text-decoration:none;padding:5px 11px;border:1px solid #35302A;}
+.kd-sc:hover{color:#EDE7DC;border-color:#6E6459;}
+.kd-sc.on{color:#EDE7DC;border-color:#EDE7DC;}
+.kd-tail{margin-left:auto;font-size:11px;color:#6E6459;flex-shrink:0;padding-left:20px;}
+@media(max-width:720px){.kd-brand,.kd-tail{display:none;}}
+
+/* ---------- 色稿說明條 ---------- */
+.comp-note{background:var(--ink);color:var(--paper-3);font-size:12px;letter-spacing:.04em;}
+.comp-note .wrap{display:flex;flex-wrap:wrap;gap:6px 22px;padding-top:9px;padding-bottom:9px;}
+.comp-note b{color:var(--mustard);font-weight:500;}
+
+/* ---------- 共用元件 ---------- */
+.kana{font-family:var(--kana);font-weight:700;letter-spacing:.18em;color:var(--brick);font-size:14px;}
+.eyebrow{display:flex;align-items:center;gap:12px;justify-content:center;}
+.eyebrow svg{width:26px;height:26px;flex-shrink:0;}
+.sec-head{text-align:center;margin-bottom:48px;}
+.sec-head h2{font-family:var(--serif);font-weight:900;font-size:clamp(28px,3.6vw,42px);
+  line-height:1.3;margin:10px 0 0;letter-spacing:.04em;color:var(--ink);text-wrap:balance;}
+.sec-head p{margin:14px auto 0;max-width:640px;color:var(--ink-2);font-size:15px;}
+
+/* 看板字：棕填色＋奶油內框＋棕色落影 —— 取自「糖鼓燒餅」「長崎」字樣 */
+.kanban{font-family:var(--serif);font-weight:900;color:var(--kanban);letter-spacing:.06em;line-height:1.15;
+  text-shadow:
+    2px 0 0 var(--paper),-2px 0 0 var(--paper),0 2px 0 var(--paper),0 -2px 0 var(--paper),
+    2px 2px 0 var(--paper),-2px -2px 0 var(--paper),2px -2px 0 var(--paper),-2px 2px 0 var(--paper),
+    6px 7px 0 var(--kanban);}
+.kanban--cream{color:var(--paper);
+  text-shadow:
+    3px 0 0 var(--kanban),-3px 0 0 var(--kanban),0 3px 0 var(--kanban),0 -3px 0 var(--kanban),
+    3px 3px 0 var(--kanban),-3px -3px 0 var(--kanban),3px -3px 0 var(--kanban),-3px 3px 0 var(--kanban),
+    8px 9px 0 #2a1406;}
+
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;min-height:52px;padding:0 28px;
+  font-family:var(--sans);font-weight:700;font-size:15px;letter-spacing:.06em;text-decoration:none;
+  border-radius:999px;border:2px solid transparent;cursor:pointer;transition:transform .15s ease,box-shadow .15s ease,background .15s ease;}
+.btn:hover{transform:translateY(-2px);}
+.btn-red{background:var(--red);color:var(--paper);box-shadow:0 4px 0 var(--red-deep);}
+.btn-red:hover{color:var(--paper);box-shadow:0 6px 0 var(--red-deep);}
+.btn-ghost{border-color:currentColor;color:var(--paper);background:transparent;}
+.btn-ghost:hover{background:rgba(255,246,221,.12);color:var(--paper);}
+.btn-ink{border-color:var(--ink);color:var(--ink);background:var(--paper);}
+.btn-ink:hover{background:var(--ink);color:var(--paper);}
+
+.ai-tag{position:absolute;left:12px;bottom:12px;font-family:var(--mono);font-size:10px;letter-spacing:.12em;
+  color:var(--paper);background:rgba(20,14,10,.62);padding:4px 9px;border-radius:3px;pointer-events:none;}
+.todo{color:var(--brick);font-weight:700;}
+
+/* 像素對白框 —— 呼應原站像素店長 */
+.pixel-bubble{position:relative;font-family:var(--pixel);font-size:15px;line-height:1.7;color:var(--ink);
+  background:#fff;padding:14px 18px;
+  box-shadow:
+    0 -4px 0 0 var(--red), 0 4px 0 0 var(--red), -4px 0 0 0 var(--red), 4px 0 0 0 var(--red),
+    0 -8px 0 -4px #fff, 0 8px 0 -4px #fff;}
+.pixel-bubble::after{content:"";position:absolute;left:-16px;bottom:18px;width:12px;height:12px;background:var(--red);
+  box-shadow:-4px 4px 0 var(--red), 4px -4px 0 var(--red);}
+/* 尾巴朝下：說話的人在對白框下方 */
+.pixel-bubble--down::after{left:34px;bottom:-16px;box-shadow:-4px 4px 0 var(--red), 4px -4px 0 var(--red);}
+.nw{white-space:nowrap;}
+p,.quote{text-wrap:pretty;}
+
+/* ---------- A HERO ---------- */
+.hero{position:relative;background:#20140d;color:var(--paper);overflow:hidden;}
+.hero-bg{position:absolute;inset:0;}
+.hero-bg img{width:100%;height:100%;object-fit:cover;object-position:30% 50%;}
+.hero-bg::after{content:"";position:absolute;inset:0;
+  background:linear-gradient(90deg,rgba(32,20,13,0) 0%,rgba(32,20,13,.15) 38%,rgba(32,20,13,.82) 58%,rgba(32,20,13,.93) 100%);}
+.hero-in{position:relative;min-height:min(760px,92vh);display:grid;grid-template-columns:1fr 1fr;align-items:center;}
+.hero-copy{grid-column:2;padding:64px 0 72px 12px;}
+.hero-logo{width:132px;margin-bottom:26px;}
+.hero .kana{color:var(--mustard);}
+.hero h1{margin:14px 0 6px;font-size:clamp(58px,8.2vw,112px);}
+.hero-lead{font-family:var(--serif);font-weight:600;font-size:clamp(20px,2.2vw,26px);margin:26px 0 12px;letter-spacing:.06em;}
+.hero-sub{max-width:470px;font-size:15px;color:rgba(255,246,221,.82);margin:0;}
+.hero-cta{display:flex;flex-wrap:wrap;gap:14px;margin-top:32px;}
+
+/* 倒數 —— 做成昭和車票 */
+.ticket{position:relative;display:grid;grid-template-columns:auto 1fr;margin-top:38px;max-width:470px;
+  background:var(--paper);color:var(--ink);border-radius:6px;
+  -webkit-mask:radial-gradient(circle 10px at 108px 0,transparent 98%,#000) top/100% 51% no-repeat,
+               radial-gradient(circle 10px at 108px 100%,transparent 98%,#000) bottom/100% 51% no-repeat;
+          mask:radial-gradient(circle 10px at 108px 0,transparent 98%,#000) top/100% 51% no-repeat,
+               radial-gradient(circle 10px at 108px 100%,transparent 98%,#000) bottom/100% 51% no-repeat;}
+.ticket-stub{width:108px;padding:16px 10px;text-align:center;border-right:2px dashed var(--paper-3);
+  display:flex;flex-direction:column;justify-content:center;background:var(--red);color:var(--paper);}
+.ticket-stub small{font-family:var(--kana);font-size:11px;letter-spacing:.14em;}
+.ticket-stub b{font-family:var(--latin);font-size:46px;font-weight:400;line-height:1;margin-top:4px;}
+.ticket-stub span{font-size:12px;}
+.ticket-body{padding:14px 20px;}
+.ticket-body strong{display:block;font-size:15px;}
+.ticket-body p{margin:4px 0 0;font-size:13px;color:var(--ink-2);line-height:1.6;}
+.ticket-body .todo{font-size:11px;}
+
+/* ---------- B 錨點列 ---------- */
+.anchor{position:sticky;top:46px;z-index:800;background:var(--paper);border-bottom:3px double var(--brick);}
+.anchor-in{display:flex;align-items:center;justify-content:space-between;gap:20px;height:64px;}
+.anchor nav{display:flex;align-items:center;gap:4px;overflow-x:auto;scrollbar-width:none;}
+.anchor nav::-webkit-scrollbar{display:none;}
+.anchor nav a{flex-shrink:0;text-decoration:none;font-size:14px;font-weight:500;color:var(--ink-2);
+  padding:8px 14px;border-radius:999px;transition:background .2s,color .2s;}
+.anchor nav a:hover{background:var(--paper-2);color:var(--ink);}
+.anchor nav a.on{background:var(--brick);color:var(--paper);}
+.anchor-logo{width:62px;flex-shrink:0;}
+.anchor .btn{min-height:42px;font-size:13px;padding:0 20px;flex-shrink:0;}
+
+/* ---------- C 情境 ---------- */
+.story{padding:104px 0 96px;}
+.story-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:32px;}
+.story-card{background:#fff;border-radius:14px;padding:12px 12px 26px;
+  box-shadow:0 0 0 2px var(--paper-3),0 14px 30px -18px rgba(59,36,24,.35);}
+.story-photo{position:relative;border-radius:8px;overflow:hidden;aspect-ratio:4/5;}
+.story-photo img{width:100%;height:100%;object-fit:cover;}
+.story-card h3{font-family:var(--serif);font-weight:900;font-size:22px;margin:22px 14px 0;letter-spacing:.04em;}
+.story-card .quote{margin:10px 14px 0;font-size:15px;color:var(--ink-2);line-height:1.8;}
+.story-card .rec{display:flex;align-items:center;justify-content:space-between;margin:18px 14px 0;padding-top:14px;
+  border-top:1px dashed var(--paper-3);font-size:13px;}
+.story-card .rec a{color:var(--brick);font-weight:700;text-decoration:none;}
+
+/* ---------- D 時間軸 ---------- */
+.timeline{background:var(--green);color:var(--paper);padding:92px 0;position:relative;}
+.timeline .sec-head h2{color:var(--paper);}
+.timeline .kana{color:var(--mustard);}
+.tl-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:18px;}
+.tl-step{background:var(--paper);color:var(--ink);border-radius:10px;padding:22px 20px 20px;position:relative;}
+.tl-step .date{font-family:var(--latin);font-size:40px;line-height:1;color:var(--kanban);}
+.tl-step .dow{font-size:13px;color:var(--ink-3);margin-left:4px;}
+.tl-step h3{font-size:16px;margin:12px 0 6px;}
+.tl-step p{margin:0;font-size:13px;color:var(--ink-2);line-height:1.65;}
+.tl-step.past{opacity:.55;}
+.tl-step.now{box-shadow:0 0 0 4px var(--mustard);}
+.tl-step .flag{position:absolute;top:-12px;right:16px;background:var(--mustard);color:var(--ink);
+  font-size:12px;font-weight:700;padding:3px 12px;border-radius:999px;}
+.tl-alert{display:flex;flex-wrap:wrap;align-items:center;gap:10px 26px;margin-top:30px;padding:18px 24px;
+  border:2px dashed rgba(255,246,221,.4);border-radius:10px;font-size:14px;}
+.tl-alert strong{color:var(--mustard);}
+.tl-alert small{flex-basis:100%;color:rgba(255,246,221,.6);font-size:12px;}
+
+/* ---------- E 優惠 ---------- */
+.promo{background:var(--mustard);padding:100px 0;position:relative;
+  background-image:radial-gradient(circle at 12px 12px,rgba(149,76,7,.13) 3px,transparent 3.5px);
+  background-size:24px 24px;}
+.promo .sec-head h2{font-size:clamp(46px,6vw,76px);}
+.promo .kana{color:var(--kanban);}
+.promo-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:24px;}
+.promo-card{position:relative;background:var(--paper);border-radius:14px;padding:30px 28px 28px;
+  box-shadow:inset 0 0 0 2px var(--kanban),inset 0 0 0 6px var(--paper),inset 0 0 0 7px var(--kanban);}
+.promo-card .tier{font-family:var(--kana);font-weight:700;font-size:13px;letter-spacing:.14em;color:var(--brick);}
+.promo-card .big{font-family:var(--serif);font-weight:900;font-size:52px;line-height:1.1;margin:10px 0 4px;color:var(--ink);}
+.promo-card .big small{font-size:22px;margin-left:4px;}
+.promo-card .when{font-size:14px;font-weight:700;}
+.promo-card p{margin:10px 0 0;font-size:13px;color:var(--ink-2);line-height:1.7;}
+.promo-card.ended{opacity:.72;}
+.stamp{position:absolute;top:22px;right:18px;width:88px;height:88px;border-radius:50%;
+  border:3px solid var(--red);color:var(--red);display:flex;align-items:center;justify-content:center;
+  font-family:var(--serif);font-weight:900;font-size:19px;letter-spacing:.08em;transform:rotate(-14deg);
+  box-shadow:inset 0 0 0 3px var(--paper),inset 0 0 0 5px var(--red);opacity:.85;}
+.live{position:absolute;top:24px;right:22px;background:var(--red);color:var(--paper);font-size:12px;font-weight:700;
+  padding:4px 12px;border-radius:999px;}
+.live::before{content:"";display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--paper);
+  margin-right:6px;vertical-align:1px;animation:blink 1.4s infinite;}
+@keyframes blink{50%{opacity:.25}}
+.ship-bar{display:flex;align-items:center;gap:24px;margin-top:26px;background:var(--paper);border-radius:14px;padding:20px 26px;}
+.ship-bar .track{flex:1;}
+.ship-bar .row{display:flex;justify-content:space-between;font-size:14px;margin-bottom:9px;}
+.ship-bar .bar{height:12px;border-radius:99px;background:var(--paper-3);overflow:hidden;}
+.ship-bar .bar i{display:block;height:100%;width:72%;background:repeating-linear-gradient(-45deg,var(--red) 0 10px,#ff3a45 10px 20px);border-radius:99px;}
+.fine{margin:18px 0 0;font-size:12px;color:var(--kanban);text-align:center;}
+
+/* ---------- F 選購指南 ---------- */
+.guide{background:var(--paper-2);padding:100px 0;position:relative;overflow:hidden;}
+.guide-in{display:grid;grid-template-columns:260px 1fr;gap:36px;align-items:start;}
+.mascot-col{position:relative;padding-top:10px;}
+.mascot-col img{width:200px;image-rendering:pixelated;margin-left:-28px;}
+.mascot-col .pixel-bubble{margin:0 0 26px 10px;}
+.guide-steps{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px;}
+.g-step{background:var(--paper);border-radius:14px;padding:22px;box-shadow:0 0 0 2px var(--paper-3);}
+.g-step .no{font-family:var(--latin);font-size:34px;line-height:1;color:var(--brick);}
+.g-step h3{font-size:17px;margin:6px 0 14px;}
+.chips{display:flex;flex-wrap:wrap;gap:8px;}
+.chip{font-family:var(--sans);font-size:14px;min-height:40px;padding:0 16px;border-radius:999px;cursor:pointer;
+  border:2px solid var(--ink);background:transparent;color:var(--ink);transition:.15s;}
+.chip:hover{background:var(--paper-3);}
+.chip.on{background:var(--ink);color:var(--paper);}
+.g-result{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:16px;margin-top:22px;
+  background:var(--ink);color:var(--paper);border-radius:14px;padding:20px 26px;}
+.g-result b{color:var(--mustard);}
+.g-result .names{font-family:var(--serif);font-weight:600;font-size:17px;}
+
+/* ---------- G 禮盒列表 ---------- */
+.boxes{padding:104px 0 90px;}
+.frame-head{position:relative;text-align:center;margin:0 auto 54px;max-width:760px;}
+.frame-head::before{content:"";position:absolute;left:0;right:0;top:50%;height:70px;transform:translateY(-50%);
+  background:repeating-linear-gradient(90deg,var(--brick) 0 5px,transparent 5px 13px);opacity:.9;}
+.cartouche{position:relative;display:inline-block;background:var(--brick);color:var(--paper);
+  padding:22px 64px 18px;border-radius:999px;
+  box-shadow:0 0 0 6px var(--paper),0 0 0 9px var(--brick);}
+.cartouche small{display:block;font-family:var(--latin);font-style:italic;letter-spacing:.2em;font-size:14px;opacity:.9;}
+.cartouche b{display:block;font-family:var(--serif);font-weight:900;font-size:clamp(34px,4.4vw,52px);letter-spacing:.12em;line-height:1.2;}
+.cartouche span{display:block;font-family:var(--kana);font-size:13px;letter-spacing:.3em;}
+.box-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:26px;}
+.box-card{position:relative;background:#fff;border-radius:16px;overflow:hidden;display:flex;flex-direction:column;
+  box-shadow:0 0 0 2px var(--paper-3),0 18px 36px -24px rgba(59,36,24,.5);transition:transform .2s;}
+.box-card:hover{transform:translateY(-4px);}
+.box-photo{position:relative;aspect-ratio:1/1;overflow:hidden;background:var(--paper-2);}
+.box-photo img{width:100%;height:100%;object-fit:cover;transition:transform .5s;}
+.box-card:hover .box-photo img{transform:scale(1.05);}
+.box-tags{position:absolute;top:12px;left:12px;display:flex;gap:6px;flex-wrap:wrap;}
+.t{font-size:11px;font-weight:700;padding:3px 10px;border-radius:999px;background:var(--paper);color:var(--ink);}
+.t-red{background:var(--red);color:var(--paper);}
+.t-green{background:var(--green);color:var(--paper);}
+.box-body{padding:20px 20px 22px;display:flex;flex-direction:column;gap:6px;flex:1;}
+.box-body h3{font-family:var(--serif);font-weight:900;font-size:19px;margin:0;line-height:1.4;}
+.box-body .joke{font-size:13px;color:var(--brick);margin:0;}
+.box-body .meta{font-size:12px;color:var(--ink-3);margin:4px 0 0;line-height:1.6;}
+.price{display:flex;align-items:baseline;gap:10px;margin-top:auto;padding-top:12px;}
+.price b{font-family:var(--latin);font-weight:400;font-size:30px;color:var(--red);line-height:1;}
+.price b small{font-family:var(--sans);font-size:13px;margin-right:2px;}
+.price s{font-size:13px;color:var(--ink-3);}
+.box-body .btn{min-height:44px;font-size:14px;margin-top:12px;width:100%;}
+.box-card.sold .box-photo img{filter:grayscale(.9) brightness(.9);}
+.sold-cover{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;
+  background:rgba(59,36,24,.45);}
+.sold-cover .stamp{position:static;width:110px;height:110px;font-size:22px;background:rgba(255,246,221,.92);}
+.state-note{position:absolute;right:10px;bottom:10px;font-family:var(--mono);font-size:10px;color:var(--paper);
+  background:rgba(20,14,10,.6);padding:3px 8px;border-radius:3px;}
+.addons-row{display:grid;grid-template-columns:auto 1fr 1fr;gap:26px;align-items:stretch;margin-top:44px;}
+.addons-row .label{writing-mode:vertical-rl;font-family:var(--serif);font-weight:900;font-size:22px;letter-spacing:.3em;
+  color:var(--kanban);display:flex;align-items:center;justify-content:center;padding:0 6px;
+  border-left:3px double var(--kanban);border-right:3px double var(--kanban);}
+.single{display:grid;grid-template-columns:150px 1fr;gap:20px;align-items:center;background:#fff;border-radius:16px;padding:14px;
+  box-shadow:0 0 0 2px var(--paper-3);}
+.single-photo{position:relative;aspect-ratio:1/1;border-radius:10px;overflow:hidden;}
+.single-photo img{width:100%;height:100%;object-fit:cover;}
+.single .award{position:absolute;right:6px;top:4px;width:38px;filter:drop-shadow(0 2px 3px rgba(0,0,0,.3));}
+.single h4{font-family:var(--serif);font-weight:900;font-size:18px;margin:0;}
+.single p{margin:4px 0 8px;font-size:13px;color:var(--ink-2);line-height:1.6;}
+.single .price{padding-top:0;}
+.single .price b{font-size:24px;}
+
+/* ---------- H 比較表 ---------- */
+.compare{background:var(--paper-2);padding:96px 0;}
+.table-scroll{overflow-x:auto;border-radius:16px;box-shadow:0 0 0 2px var(--brick);}
+table{width:100%;border-collapse:collapse;min-width:820px;background:var(--paper);font-size:14px;table-layout:fixed;}
+thead th{background:var(--brick);color:var(--paper);font-family:var(--serif);font-weight:900;font-size:16px;
+  padding:18px 16px;text-align:left;letter-spacing:.04em;}
+thead th:first-child{width:130px;}
+tbody th{text-align:left;font-weight:500;color:var(--ink-3);padding:14px 16px;font-size:13px;white-space:nowrap;}
+tbody td{padding:14px 16px;line-height:1.65;border-left:1px solid var(--paper-3);vertical-align:top;}
+tbody tr+tr th,tbody tr+tr td{border-top:1px solid var(--paper-3);}
+tbody tr:nth-child(even){background:#FFFaEC;}
+td .red{color:var(--red);font-family:var(--latin);font-size:20px;}
+
+/* ---------- I 信任 ---------- */
+.trust{background:var(--green);color:var(--paper);padding:84px 0;position:relative;}
+.trust::before,.trust::after{content:"";position:absolute;left:0;right:0;height:14px;
+  background:repeating-linear-gradient(90deg,var(--mustard) 0 5px,transparent 5px 12px);opacity:.55;}
+.trust::before{top:18px;} .trust::after{bottom:18px;}
+.trust-in{display:grid;grid-template-columns:1.25fr 1fr;gap:56px;align-items:center;}
+.awards{display:flex;gap:28px;align-items:flex-end;margin-bottom:22px;}
+.awards figure{margin:0;text-align:center;}
+.awards img{height:128px;width:auto;margin:0 auto 10px;filter:drop-shadow(0 6px 10px rgba(0,0,0,.35));}
+.awards figcaption{font-size:13px;line-height:1.55;}
+.awards figcaption b{display:block;font-family:var(--serif);font-size:17px;color:var(--mustard);}
+.trust h2{font-family:var(--serif);font-weight:900;font-size:clamp(26px,3vw,36px);margin:0 0 10px;line-height:1.4;}
+.trust p{margin:0;color:rgba(255,246,221,.8);font-size:15px;}
+.facts{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;}
+.fact{border:1.5px solid rgba(255,246,221,.28);border-radius:12px;padding:18px 20px;}
+.fact b{display:block;font-family:var(--latin);font-size:34px;line-height:1.1;color:var(--mustard);font-weight:400;}
+.fact b.zh{font-family:var(--serif);font-weight:900;font-size:24px;}
+.fact span{font-size:13px;color:rgba(255,246,221,.82);}
+
+/* ---------- J 加值服務 ---------- */
+.addon{padding:100px 0;}
+.addon-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:20px;}
+.a-card{background:#fff;border-radius:14px;padding:26px 22px;box-shadow:0 0 0 2px var(--paper-3);}
+.a-card svg{width:44px;height:44px;color:var(--brick);}
+.a-card h3{font-size:17px;margin:14px 0 6px;}
+.a-card p{margin:0;font-size:13px;color:var(--ink-2);line-height:1.7;}
+.custom-quote{display:grid;grid-template-columns:150px 1fr;gap:28px;align-items:center;margin-top:34px;
+  background:var(--brick-soft);border-radius:16px;padding:22px 30px 22px 0;overflow:hidden;
+  box-shadow:inset 0 0 0 2px var(--brick);}
+.custom-quote img{width:150px;image-rendering:pixelated;align-self:end;margin-bottom:-22px;}
+.custom-quote .pixel-bubble{font-size:15px;}
+.custom-quote small{display:block;margin-top:10px;font-size:12px;color:var(--ink-3);}
+
+/* ---------- K 配送須知 ---------- */
+.ship{background:var(--paper-2);padding:100px 0;}
+.ship-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:24px;}
+.s-card{background:var(--paper);border-radius:16px;padding:30px 32px;box-shadow:0 0 0 2px var(--paper-3);}
+.s-card h3{display:flex;align-items:center;gap:12px;font-family:var(--serif);font-weight:900;font-size:22px;margin:0 0 18px;}
+.s-card h3 svg{width:34px;height:34px;color:var(--brick);}
+.s-card dl{margin:0;display:grid;grid-template-columns:88px 1fr;gap:10px 16px;font-size:14px;}
+.s-card dt{color:var(--ink-3);}
+.s-card dd{margin:0;}
+.s-card dd b{color:var(--red);}
+.risk{margin-top:24px;border-radius:16px;padding:24px 30px;background:var(--brick);color:var(--paper);}
+.risk h3{margin:0 0 8px;font-size:17px;}
+.risk p{margin:0;font-size:14px;line-height:1.85;color:rgba(255,246,221,.92);}
+
+/* ---------- L FAQ ---------- */
+.faq{padding:100px 0;}
+.faq-in{display:grid;grid-template-columns:1.45fr 1fr;gap:48px;align-items:start;}
+details{border-bottom:2px solid var(--paper-3);}
+details:first-child{border-top:2px solid var(--paper-3);}
+summary{list-style:none;cursor:pointer;display:flex;align-items:center;justify-content:space-between;gap:18px;
+  min-height:64px;font-size:16px;font-weight:500;}
+summary::-webkit-details-marker{display:none;}
+summary::after{content:"＋";font-size:20px;color:var(--brick);transition:transform .2s;}
+details[open] summary::after{transform:rotate(45deg);}
+details p{margin:0 0 20px;font-size:14px;color:var(--ink-2);line-height:1.85;}
+.contact{position:relative;background:var(--ink);color:var(--paper);border-radius:18px;padding:30px 30px 34px;}
+.contact h3{font-family:var(--serif);font-weight:900;font-size:22px;margin:0 0 18px;}
+.contact dl{display:grid;grid-template-columns:52px 1fr;gap:12px 14px;margin:0 0 22px;font-size:14px;}
+.contact dt{color:var(--ink-3);}
+.contact dd{margin:0;}
+.contact dd a{color:var(--mustard);text-decoration:none;font-weight:700;}
+.contact .btn{width:100%;}
+.contact .mascot-mini{display:flex;gap:14px;align-items:flex-end;margin-top:26px;}
+.contact .mascot-mini img{width:84px;image-rendering:pixelated;flex-shrink:0;}
+.contact .pixel-bubble{flex:1;font-size:14px;padding:10px 14px;margin-bottom:10px;}
+
+/* ---------- M 企業洽詢 ---------- */
+.biz{background:var(--paper-2);padding:100px 0;}
+.biz-box{background:var(--paper);border-radius:22px;padding:46px 52px;
+  box-shadow:inset 0 0 0 2px var(--brick),inset 0 0 0 8px var(--paper),inset 0 0 0 10px var(--brick);}
+.form{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px 22px;}
+.form label{display:flex;flex-direction:column;gap:7px;font-size:13px;color:var(--ink-2);}
+.form input,.form select,.form textarea{font:inherit;font-size:15px;color:var(--ink);background:#fff;
+  border:2px solid var(--paper-3);border-radius:10px;min-height:50px;padding:10px 14px;}
+.form input:focus,.form select:focus,.form textarea:focus{outline:none;border-color:var(--brick);}
+.form .full{grid-column:1/-1;}
+.form textarea{min-height:110px;resize:vertical;}
+.form-foot{display:flex;flex-wrap:wrap;align-items:center;gap:18px;margin-top:26px;}
+.form-foot small{color:var(--ink-3);font-size:13px;}
+
+/* ---------- N 尾端 ---------- */
+.finale{background:var(--green);color:var(--paper);padding:90px 0;overflow:hidden;}
+.finale-in{display:grid;grid-template-columns:1fr 380px;gap:48px;align-items:center;}
+.finale h2{margin:12px 0 16px;font-size:clamp(40px,5.4vw,70px);}
+.finale .kana{color:var(--mustard);}
+.finale p{margin:0;font-size:16px;color:rgba(255,246,221,.82);}
+.finale .cta{display:flex;flex-wrap:wrap;gap:14px;margin-top:30px;}
+.moon{position:relative;border-radius:50%;overflow:hidden;aspect-ratio:1;box-shadow:0 0 0 10px rgba(255,246,221,.08),0 0 0 22px rgba(255,246,221,.04);}
+.moon img{width:100%;height:100%;object-fit:cover;}
+.moon .ai-tag{left:50%;transform:translateX(-50%);bottom:18px;}
+
+/* ---------- footer ---------- */
+footer{background:var(--paper-3);padding:56px 0 40px;color:var(--ink-2);font-size:14px;}
+.foot-in{display:grid;grid-template-columns:1.3fr 1fr 1fr 1fr;gap:36px;}
+.foot-in img{width:112px;margin-bottom:14px;}
+.foot-in h4{margin:0 0 10px;font-size:14px;color:var(--ink);}
+.foot-in ul{list-style:none;margin:0;padding:0;display:grid;gap:6px;}
+.foot-in a{text-decoration:none;}
+.foot-bottom{display:flex;flex-wrap:wrap;justify-content:space-between;gap:10px;margin-top:40px;padding-top:18px;
+  border-top:1px solid rgba(59,36,24,.2);font-size:12px;color:var(--ink-3);}
+
+/* ---------- O 底部固定列 ---------- */
+.dock{position:fixed;left:0;right:0;bottom:0;z-index:700;background:var(--ink);color:var(--paper);
+  transform:translateY(110%);transition:transform .3s ease;box-shadow:0 -10px 30px -12px rgba(0,0,0,.5);}
+.dock.show{transform:none;}
+.dock-in{display:flex;align-items:center;gap:18px;height:76px;}
+.dock img{width:54px;}
+.dock .txt{flex:1;min-width:0;}
+.dock .txt b{display:block;font-family:var(--serif);font-size:16px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.dock .txt span{font-size:12px;color:var(--mustard);}
+.dock .btn{min-height:46px;}
+.dock .top{min-height:46px;width:46px;padding:0;border-color:rgba(255,246,221,.4);color:var(--paper);}
+.demoweb-home-fab{bottom:98px !important;}
+
+/* ---------- responsive ---------- */
+@media (max-width:1040px){
+  .box-grid{grid-template-columns:repeat(2,minmax(0,1fr));}
+  .tl-grid{grid-template-columns:repeat(2,minmax(0,1fr));}
+  .addon-grid{grid-template-columns:repeat(2,minmax(0,1fr));}
+  .guide-in{grid-template-columns:1fr;}
+  .mascot-col{display:grid;grid-template-columns:130px 1fr;align-items:end;gap:10px;}
+  .mascot-col img{width:130px;margin-left:-28px;order:-1;}
+  .mascot-col .pixel-bubble{margin:0 0 30px 16px;}
+  .mascot-col .pixel-bubble--down::after{left:-16px;bottom:18px;}
+  .trust-in,.faq-in{grid-template-columns:1fr;}
+  .foot-in{grid-template-columns:1fr 1fr;}
+}
+@media (max-width:820px){
+  .hero-in{grid-template-columns:1fr;min-height:0;}
+  .hero-bg{bottom:auto;height:420px;}
+  .hero-bg img{object-position:8% 40%;}
+  .hero-bg::after{background:linear-gradient(180deg,rgba(32,20,13,0) 45%,rgba(32,20,13,.7) 80%,#20140d 100%);}
+  .hero-copy{grid-column:1;padding:250px 0 56px;}
+  .hero-logo{width:104px;margin-bottom:18px;}
+  .story-grid,.promo-grid,.guide-steps,.ship-grid{grid-template-columns:1fr;}
+  .story-grid{gap:26px;}
+  .addons-row{grid-template-columns:1fr;}
+  .addons-row .label{writing-mode:horizontal-tb;border:none;border-top:3px double var(--kanban);border-bottom:3px double var(--kanban);padding:6px;}
+  .finale-in{grid-template-columns:1fr;}
+  .moon{max-width:300px;margin:0 auto;}
+  .biz-box{padding:32px 24px;}
+  .form{grid-template-columns:1fr;}
+  .anchor-logo{display:none;}
+  .anchor .btn{display:none;}
+  .custom-quote{grid-template-columns:96px 1fr;padding-right:18px;}
+  .ship-bar{flex-direction:column;align-items:stretch;gap:14px;padding:18px 20px;}
+  .ship-bar .row{flex-direction:column;gap:2px;}
+  .ship-bar .btn{width:100%;}
+  .custom-quote img{width:96px;}
+}
+@media (max-width:560px){
+  .wrap{padding:0 18px;}
+  .comp-note .wrap>span:nth-child(1),.comp-note .wrap>span:nth-child(2){display:none;}
+  .comp-note .wrap{gap:2px 12px;font-size:11px;}
+  .box-grid,.tl-grid,.addon-grid{grid-template-columns:1fr;}
+  .single{grid-template-columns:110px 1fr;}
+  .ticket-stub{width:92px;}
+  .ticket{-webkit-mask:none;mask:none;}
+  .dock img,.dock .top{display:none;}
+  .foot-in{grid-template-columns:1fr;}
+  .cartouche{padding:18px 34px 14px;}
+}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important;scroll-behavior:auto!important;}}
+</style>
+</head>
+<body>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <!-- 金色四葉紋：取自原站「關於かどや」「過往活動」框飾 -->
+  <symbol id="yotsuba" viewBox="0 0 40 40">
+    <circle cx="20" cy="9" r="7.5" fill="#D39A2D"/><circle cx="20" cy="31" r="7.5" fill="#D39A2D"/>
+    <circle cx="9" cy="20" r="7.5" fill="#D39A2D"/><circle cx="31" cy="20" r="7.5" fill="#D39A2D"/>
+    <circle cx="20" cy="20" r="4" fill="#FFF6DD"/>
+  </symbol>
+</svg>
+
+<!-- 版本切換列 -->
+<div class="kd-switch"><div class="kd-switch-in">
+  <div class="kd-brand"><a href="index.html">← KADOYA 線框 · 入口頁</a></div>
+  <div class="kd-vs">
+    <a class="kd-v" href="home.html">A　官網首頁</a>
+    <a class="kd-v" href="list.html">B　商品瀏覽動線</a>
+    <a class="kd-v on" href="onepage-color.html">C　情境一頁式</a>
+  </div>
+  <div class="kd-sep"></div>
+  <div class="kd-vs">
+    <a class="kd-sc on" href="onepage-color.html">色稿</a>
+    <a class="kd-sc" href="onepage.html">線框</a>
+  </div>
+  <div class="kd-tail">色稿 v1 · 2026.09</div>
+</div></div>
+
+<div class="comp-note"><div class="wrap">
+  <span><b>色稿 v1</b>　配色與字樣取樣自 kadoya.tw 現有主視覺</span>
+  <span>商品照片、價格、內容物：取自官網</span>
+  <span>情境照片：<b>AI 示意圖</b>，正式版需實拍</span>
+  <span>日期、折扣、免運門檻：<b>示意</b>，待店家確認</span>
+</div></div>
+
+<!-- ============ A HERO ============ -->
+<header class="hero" id="top">
+  <div class="hero-bg">
+    <img src="assets/hero-kissaten.webp" alt="昭和喫茶店的中秋夜，窗外滿月，桌上擺著銀托盤與咖啡">
+    <span class="ai-tag">AI 示意圖</span>
+  </div>
+  <div class="wrap hero-in">
+    <div class="hero-copy">
+      <img class="hero-logo" src="assets/logo-cream.png" alt="喫茶 カドヤ COFFEE &amp; SWEETS">
+      <div class="kana">月見の贈り物　・　2026 中秋</div>
+      <h1 class="kanban kanban--cream">中秋禮盒</h1>
+      <p class="hero-lead">月亮一年圓一次，<span class="nw">我們的禮盒也是。</span></p>
+      <p class="hero-sub">台南街角的昭和喫茶店，把蝴蝶酥、費南雪、椰子蜜糖卵燒，連同<span class="nw">一點點不正經</span>，裝進盒子裡。全品項接單現做。</p>
+      <div class="hero-cta">
+        <a class="btn btn-red" href="#s-list">挑一盒中秋禮盒</a>
+        <a class="btn btn-ghost" href="#s-guide">不知道挑哪盒</a>
+      </div>
+      <div class="ticket" role="status" aria-live="polite">
+        <div class="ticket-stub">
+          <small>宅配截止</small>
+          <b id="cd-days">3</b>
+          <span id="cd-unit">天</span>
+        </div>
+        <div class="ticket-body">
+          <strong id="cd-title">宅配最後下單：9/17（四）23:59</strong>
+          <p id="cd-desc">9/21（一）寄出，中秋前送到。門市自取收單到 9/20（日）。</p>
+          <span class="todo">＊日期依官網現行出貨規則推算，示意</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- ============ B 錨點列 ============ -->
+<div class="anchor">
+  <div class="wrap anchor-in">
+    <img class="anchor-logo" src="assets/logo-red.png" alt="カドヤ">
+    <nav aria-label="頁內導覽">
+      <a href="#s-story">送給誰</a>
+      <a href="#s-promo">優惠</a>
+      <a href="#s-guide">選購指南</a>
+      <a href="#s-list">中秋禮盒</a>
+      <a href="#s-addon">加值服務</a>
+      <a href="#s-ship">配送須知</a>
+      <a href="#s-faq">常見問題</a>
+    </nav>
+    <a class="btn btn-red" href="#s-list">立即預購</a>
+  </div>
+</div>
+
+<main>
+
+<!-- ============ C 情境 ============ -->
+<section class="story" id="s-story">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="eyebrow"><svg><use href="#yotsuba"/></svg><span class="kana">だれに贈る？</span><svg><use href="#yotsuba"/></svg></div>
+      <h2>同一盒，三種送法</h2>
+      <p>中秋禮盒不是只有「送長輩」一種劇本。挑一個最像你的情境。</p>
+    </div>
+    <div class="story-grid">
+      <article class="story-card">
+        <div class="story-photo"><img src="assets/scene-elder.webp" alt="長輩雙手接過用紅繩綁好的禮盒" loading="lazy"><span class="ai-tag">AI 示意圖</span></div>
+        <h3>給挑剔的長輩</h3>
+        <p class="quote">「阿嬤嘴巴說不用買，手倒是接得很快。」</p>
+        <div class="rec"><span>推薦：玉兔團圓禮盒</span><a href="#box-yutu">看這盒 →</a></div>
+      </article>
+      <article class="story-card">
+        <div class="story-photo"><img src="assets/scene-client.webp" alt="辦公室櫃台遞交牛皮紙提袋" loading="lazy"><span class="ai-tag">AI 示意圖</span></div>
+        <h3>給合作一整年的客戶</h3>
+        <p class="quote">「簡報沒講完的感謝，交給蝴蝶酥。」</p>
+        <div class="rec"><span>推薦：深情牛郎禮盒</span><a href="#box-niulang">看這盒 →</a></div>
+      </article>
+      <article class="story-card">
+        <div class="story-photo"><img src="assets/scene-overtime.webp" alt="深夜加班桌上的長崎蛋糕與咖啡" loading="lazy"><span class="ai-tag">AI 示意圖</span></div>
+        <h3>給加班的自己</h3>
+        <p class="quote">「外面大家在賞月，你在賞 Excel。至少配一塊長崎蛋糕。」</p>
+        <div class="rec"><span>推薦：金賞長崎蛋糕</span><a href="#single-castella">看這個 →</a></div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ============ D 時間軸 ============ -->
+<section class="timeline" aria-labelledby="tl-title">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="eyebrow"><span class="kana">スケジュール</span></div>
+      <h2 id="tl-title">重要日期，一次看完</h2>
+    </div>
+    <div class="tl-grid">
+      <div class="tl-step past" data-until="2026-09-01">
+        <div><span class="date">9/01</span><span class="dow">（二）</span></div>
+        <h3>預購開跑</h3>
+        <p>早鳥優惠同步開始。</p>
+      </div>
+      <div class="tl-step" data-until="2026-09-17">
+        <span class="flag">宅配看這天</span>
+        <div><span class="date">9/17</span><span class="dow">（四）</span></div>
+        <h3>宅配最後下單</h3>
+        <p>週一到週四的訂單，下週一寄出 → 9/21（一）出貨。</p>
+      </div>
+      <div class="tl-step" data-until="2026-09-20">
+        <div><span class="date">9/20</span><span class="dow">（日）</span></div>
+        <h3>門市自取最後下單</h3>
+        <p>自取日為下單後第 4 天起 → 最晚 9/24（四）來拿。</p>
+      </div>
+      <div class="tl-step" data-until="2026-09-25">
+        <div><span class="date">9/25</span><span class="dow">（五）</span></div>
+        <h3>中秋節</h3>
+        <p>建議提前 1–2 天收到，物流尖峰很難說。</p>
+      </div>
+    </div>
+    <div class="tl-alert">
+      <span><strong>9/22（二）店休</strong>　不出貨、不自取</span>
+      <span><strong>全品項接單現做</strong>　付款完成後才開始排單</span>
+      <small>＊出貨規則取自官網 FAQ；檔期日期為示意，待店家確認後替換。</small>
+    </div>
+  </div>
+</section>
+
+<!-- ============ E 優惠 ============ -->
+<section class="promo" id="s-promo">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="eyebrow"><span class="kana">おトク情報</span></div>
+      <h2 class="kanban">優惠</h2>
+    </div>
+    <div class="promo-grid">
+      <div class="promo-card ended">
+        <span class="stamp">已結束</span>
+        <div class="tier">早鳥</div>
+        <div class="big">88<small>折</small></div>
+        <div class="when">9/01 – 9/10</div>
+        <p>中秋禮盒全系列適用。錯過的朋友，明年請早。</p>
+      </div>
+      <div class="promo-card">
+        <span class="live">進行中</span>
+        <div class="tier">預購</div>
+        <div class="big">95<small>折</small></div>
+        <div class="when">9/11 – 9/17</div>
+        <p>宅配截止前都算。價格已含禮盒費用。</p>
+      </div>
+      <div class="promo-card">
+        <div class="tier">企業・團購</div>
+        <div class="big">10<small>盒起</small></div>
+        <div class="when">另外報價</div>
+        <p>可開統編、可分點寄送，走下方<a href="#s-biz">洽詢表單</a>。</p>
+      </div>
+    </div>
+    <div class="ship-bar">
+      <div class="track">
+        <div class="row"><span>購物車 NT 1,450</span><b>再 NT <span class="todo">[待確認]</span> 就免運</b></div>
+        <div class="bar"><i></i></div>
+      </div>
+      <a class="btn btn-ink" href="#s-list">去湊單</a>
+    </div>
+    <p class="fine">＊早鳥 88 折／預購 95 折沿用去年官網折數，日期為示意｜常溫、低溫分開計運費｜優惠不可合併</p>
+  </div>
+</section>
+
+<!-- ============ F 選購指南 ============ -->
+<section class="guide" id="s-guide">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="eyebrow"><svg><use href="#yotsuba"/></svg><span class="kana">選び方</span><svg><use href="#yotsuba"/></svg></div>
+      <h2>不知道挑哪盒？三步就好</h2>
+    </div>
+    <div class="guide-in">
+      <div class="mascot-col">
+        <div class="pixel-bubble pixel-bubble--down">不知道挑哪盒？店長幫你挑。預算不足的話……店長也沒辦法。</div>
+        <img src="assets/mascot.png" alt="KADOYA 像素店長">
+      </div>
+      <div>
+        <div class="guide-steps">
+          <div class="g-step">
+            <div class="no">01</div>
+            <h3>送給誰</h3>
+            <div class="chips" data-group="who">
+              <button class="chip on" type="button">長輩</button>
+              <button class="chip" type="button">客戶</button>
+              <button class="chip" type="button">同事</button>
+              <button class="chip" type="button">自己</button>
+            </div>
+          </div>
+          <div class="g-step">
+            <div class="no">02</div>
+            <h3>預算一盒</h3>
+            <div class="chips" data-group="budget">
+              <button class="chip" type="button" data-max="450">450 以下</button>
+              <button class="chip on" type="button" data-min="450" data-max="700">450–700</button>
+              <button class="chip" type="button" data-min="700">700 以上</button>
+            </div>
+          </div>
+          <div class="g-step">
+            <div class="no">03</div>
+            <h3>怎麼拿到</h3>
+            <div class="chips" data-group="how">
+              <button class="chip on" type="button">宅配</button>
+              <button class="chip" type="button">台南門市自取</button>
+            </div>
+          </div>
+        </div>
+        <div class="g-result" aria-live="polite">
+          <div>符合條件 <b id="g-count">1</b> 款：<span class="names" id="g-names">深情牛郎禮盒</span></div>
+          <a class="btn btn-red" href="#s-list">去看看</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ G 禮盒列表 ============ -->
+<section class="boxes" id="s-list">
+  <div class="wrap">
+    <div class="frame-head">
+      <div class="cartouche">
+        <small>Mid-Autumn Gift</small>
+        <b>中秋禮盒</b>
+        <span>月見ギフト</span>
+      </div>
+    </div>
+
+    <div class="box-grid">
+      <article class="box-card" id="box-yutu">
+        <div class="box-photo"><img src="assets/box-yutu.webp" alt="玉兔團圓禮盒內容物" loading="lazy">
+          <div class="box-tags"><span class="t t-red">分量最多</span><span class="t">常溫宅配</span></div></div>
+        <div class="box-body">
+          <h3>玉兔團圓禮盒</h3>
+          <p class="joke">一家人分得到，吵架的時間就少了。</p>
+          <p class="meta">6 種點心・24 × 24 × 8.6 cm</p>
+          <div class="price"><b><small>NT</small>931</b><s>NT 980</s></div>
+          <button class="btn btn-red" type="button">加入購物車</button>
+        </div>
+      </article>
+      <article class="box-card" id="box-niulang">
+        <div class="box-photo"><img src="assets/box-niulang.webp" alt="深情牛郎禮盒內容物" loading="lazy">
+          <div class="box-tags"><span class="t t-green">送客戶</span><span class="t">常溫宅配</span></div></div>
+        <div class="box-body">
+          <h3>深情牛郎禮盒</h3>
+          <p class="joke">適合送給一年只見一次面的那位。</p>
+          <p class="meta">4 種點心・26.5 × 12.5 × 9.2 cm</p>
+          <div class="price"><b><small>NT</small>518</b><s>NT 545</s></div>
+          <button class="btn btn-red" type="button">加入購物車</button>
+        </div>
+      </article>
+      <article class="box-card" id="box-zhinu">
+        <div class="box-photo"><img src="assets/box-zhinu.webp" alt="繁花織女禮盒內容物" loading="lazy">
+          <div class="box-tags"><span class="t">常溫宅配</span></div></div>
+        <div class="box-body">
+          <h3>繁花織女禮盒</h3>
+          <p class="joke">盒子花成這樣，拆之前會先拍照。</p>
+          <p class="meta">3 種點心・15.7 × 15.7 × 7.3 cm</p>
+          <div class="price"><b><small>NT</small>413</b><s>NT 435</s></div>
+          <button class="btn btn-red" type="button">加入購物車</button>
+        </div>
+      </article>
+      <article class="box-card sold" id="box-mini">
+        <div class="box-photo"><img src="assets/box-mini.webp" alt="綜合迷你蛋黃酥禮盒" loading="lazy">
+          <div class="sold-cover"><span class="stamp">本檔<br>額滿</span></div>
+          <span class="state-note">售罄狀態示意</span></div>
+        <div class="box-body">
+          <h3>綜合迷你蛋黃酥禮盒</h3>
+          <p class="joke">紅豆、細雪、金萱，三種口味不用猜拳。</p>
+          <p class="meta">9 入 3 口味・15.6 × 15.6 × 4.3 cm</p>
+          <div class="price"><b><small>NT</small>399</b><s>NT 420</s></div>
+          <button class="btn btn-ink" type="button">登記明年開賣通知</button>
+        </div>
+      </article>
+    </div>
+
+    <div class="addons-row">
+      <div class="label">順手帶</div>
+      <div class="single" id="single-castella">
+        <div class="single-photo"><img src="assets/single-castella.webp" alt="金賞長崎蛋糕" loading="lazy"><img class="award" src="assets/award-gold.png" alt="2024 日本伴手禮大賞 金賞"></div>
+        <div>
+          <h4>金賞長崎蛋糕－原味</h4>
+          <p>五三燒比例、純龍眼蜜、特選紅蛋，所以比別人紅一點。</p>
+          <div class="price"><b><small>NT</small>450</b></div>
+        </div>
+      </div>
+      <div class="single">
+        <div class="single-photo"><img src="assets/single-tanggu.webp" alt="糖鼓燒餅" loading="lazy"><img class="award" src="assets/award-silver.png" alt="2024 日本伴手禮大賞 銀賞"></div>
+        <div>
+          <h4>糖鼓燒餅〔9入／盒〕</h4>
+          <p>2.0 版：表皮加芝麻，再撒一點馬爾頓片鹽。連盒子都很昭和。</p>
+          <div class="price"><b><small>NT</small>699</b></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ H 比較表 ============ -->
+<section class="compare" aria-labelledby="cmp-title">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="eyebrow"><span class="kana">くらべてみる</span></div>
+      <h2 id="cmp-title">四盒擺在一起比</h2>
+    </div>
+    <div class="table-scroll">
+      <table>
+        <thead><tr><th></th><th>玉兔團圓</th><th>深情牛郎</th><th>繁花織女</th><th>迷你蛋黃酥</th></tr></thead>
+        <tbody>
+          <tr><th>預購價</th><td><span class="red">931</span></td><td><span class="red">518</span></td><td><span class="red">413</span></td><td><span class="red">399</span></td></tr>
+          <tr><th>內容</th>
+            <td>火山豆玉米花脆餅／香草彎月餅乾、叻沙咖哩法式仙貝、咖哩起司洋芋酥（辣）、楓糖胡桃費南雪×2、椰子蜜糖卵燒×4、經典蝴蝶酥×2</td>
+            <td>咖哩起司洋芋酥餅（辣）、經典蝴蝶酥×2、椰子蜜糖卵燒×2、火山豆玉米花脆餅／香草彎月餅乾</td>
+            <td>叻沙咖哩法式仙貝（4入）、楓糖胡桃費南雪×2、椰子蜜糖卵燒×2</td>
+            <td>紅豆蛋黃×3、細雪豆沙×3、金萱茶香×3</td></tr>
+          <tr><th>盒子尺寸</th><td>24 × 24 × 8.6 cm</td><td>26.5 × 12.5 × 9.2 cm</td><td>15.7 × 15.7 × 7.3 cm</td><td>15.6 × 15.6 × 4.3 cm</td></tr>
+          <tr><th>配送</th><td>常溫宅配・可自取</td><td>常溫宅配・可自取</td><td>常溫宅配・可自取</td><td>常溫宅配・可自取</td></tr>
+          <tr><th>附紙袋</th><td>隨盒附</td><td>隨盒附</td><td>隨盒附</td><td>隨盒附</td></tr>
+          <tr><th>保存期限</th><td class="todo">[待填]</td><td class="todo">[待填]</td><td class="todo">[待填]</td><td class="todo">[待填]</td></tr>
+          <tr><th>過敏原</th><td class="todo">[待填]</td><td class="todo">[待填]</td><td class="todo">[待填]</td><td class="todo">[待填]</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- ============ I 信任 ============ -->
+<section class="trust" aria-labelledby="trust-title">
+  <div class="wrap trust-in">
+    <div>
+      <div class="awards">
+        <figure><img src="assets/award-gold.png" alt="JISDC 2024 GOLD AWARD"><figcaption><b>金賞</b>金賞長崎蛋糕</figcaption></figure>
+        <figure><img src="assets/award-silver.png" alt="JISDC 2024 SILVER AWARD"><figcaption><b>銀賞</b>糖鼓燒餅</figcaption></figure>
+      </div>
+      <h2 id="trust-title">2024 日本伴手禮大賞，<br>一次拿兩座。</h2>
+      <p>不是自己說好吃，是評審說的。</p>
+    </div>
+    <div class="facts">
+      <div class="fact"><b>2012</b><span>在台南開幕</span></div>
+      <div class="fact"><b class="zh">角屋</b><span>「かどや」的日文原意，我們就在街角</span></div>
+      <div class="fact"><b class="zh">接單現做</b><span>全品項不預作</span></div>
+      <div class="fact"><b class="zh">昭和午茶</b><span>日式復古建築與懷舊裝潢</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ J 加值服務 ============ -->
+<section class="addon" id="s-addon">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="eyebrow"><svg><use href="#yotsuba"/></svg><span class="kana">サービス</span><svg><use href="#yotsuba"/></svg></div>
+      <h2>送出去之前，還可以做這些</h2>
+    </div>
+    <div class="addon-grid">
+      <div class="a-card">
+        <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M10 16h28l-2.5 26h-23z"/><path d="M17 16v-3a7 7 0 0 1 14 0v3"/></svg>
+        <h3>品牌紙袋</h3>
+        <p>每盒出貨都隨附紙袋，不用另外買。</p>
+      </div>
+      <div class="a-card">
+        <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><rect x="7" y="11" width="34" height="26" rx="2"/><path d="M7 13l17 13 17-13"/></svg>
+        <h3>手寫卡片</h3>
+        <p>留一句話，我們幫你寫。<span class="todo">[服務待確認]</span></p>
+      </div>
+      <div class="a-card">
+        <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 6h24v36l-4-3-4 3-4-3-4 3-4-3-4 3z"/><path d="M18 16h12M18 23h12M18 30h7"/></svg>
+        <h3>統編發票</h3>
+        <p>品項或數量要分開開立的話，請分開下單。</p>
+      </div>
+      <div class="a-card">
+        <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><rect x="7" y="19" width="34" height="22" rx="2"/><path d="M5 13h38v6H5zM24 13v28"/><path d="M24 13c-3-6-11-7-11-2 0 3 6 2 11 2zM24 13c3-6 11-7 11-2 0 3-6 2-11 2z"/></svg>
+        <h3>客製禮盒</h3>
+        <p>小量也可以。理由不限，見下方。</p>
+      </div>
+    </div>
+    <div class="custom-quote">
+      <img src="assets/mascot.png" alt="KADOYA 像素店長">
+      <div>
+        <div class="pixel-bubble">舉凡考試考了 100 分、夫妻離婚、外套右邊口袋翻出 200 塊、漂亮離職、研究所論文改了 50 次終於完成……只要你想，都可以找 KADOYA 客訂你的專屬禮盒！（小量可）</div>
+        <small>＊這段文案原封不動取自官網現有橫幅 —— 品牌的幽默感本來就在，只是被鎖在圖片裡。</small>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ K 配送須知 ============ -->
+<section class="ship" id="s-ship">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="eyebrow"><span class="kana">配送について</span></div>
+      <h2>下單前，請先看這一段</h2>
+    </div>
+    <div class="ship-grid">
+      <div class="s-card">
+        <h3><svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12h24v20H4zM28 19h9l7 7v6H28z"/><circle cx="13" cy="35" r="4"/><circle cx="36" cy="35" r="4"/></svg>宅配</h3>
+        <dl>
+          <dt>物流</dt><dd>黑貓宅急便／新竹物流</dd>
+          <dt>出貨日</dt><dd>週一～四訂購 → 週一寄出<br>週五～日訂購 → 週四寄出</dd>
+          <dt>溫層</dt><dd>常溫、低溫<b>分開出貨、分開計運費</b></dd>
+          <dt>範圍</dt><dd>台灣本島，不含外島與海外</dd>
+          <dt>到貨時段</dt><dd>無法指定，物流週日不送貨</dd>
+        </dl>
+      </div>
+      <div class="s-card">
+        <h3><svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M6 20l4-12h28l4 12"/><path d="M6 20c0 3 2.5 5 5.5 5s5.5-2 5.5-5c0 3 2.5 5 5.5 5h2c3 0 5.5-2 5.5-5 0 3 2.5 5 5.5 5S42 23 42 20"/><path d="M9 25v16h30V25M20 41V31h8v10"/></svg>台南門市自取</h3>
+        <dl>
+          <dt>地址</dt><dd>台南市東區樹林街一段 36 號</dd>
+          <dt>可取日</dt><dd>下單日起<b>第 4 天</b>之後</dd>
+          <dt>營業</dt><dd>09:00–18:30・<b>週二店休</b></dd>
+          <dt>取貨時</dt><dd>請報訂單號碼、訂購人、手機</dd>
+          <dt>尖峰</dt><dd>現場可能需要排隊，請多包涵</dd>
+        </dl>
+      </div>
+    </div>
+    <div class="risk">
+      <h3>宅配風險與改期規則</h3>
+      <p>運送途中可能造成位移、變形或盒內毀損，這部分恕不提供退貨退款；無法承受運送風險的話，建議改選自取。已付款的訂單會開始製作，無法取消，僅接受下單後一個月內延期，並請於原取貨日前 4 天告訴我們。</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============ L FAQ ============ -->
+<section class="faq" id="s-faq">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="eyebrow"><svg><use href="#yotsuba"/></svg><span class="kana">よくある質問</span><svg><use href="#yotsuba"/></svg></div>
+      <h2>還有問題？</h2>
+    </div>
+    <div class="faq-in">
+      <div>
+        <details open><summary>常溫和低溫一起買，運費怎麼算？</summary><p>兩個溫層是分開寄出的，所以運費也會分開計算。</p></details>
+        <details><summary>可以指定到貨日期跟時段嗎？</summary><p>物流排程由各站所安排，我們沒辦法保證指定時段；物流週日也不送貨。有重要行程的話，建議提前 1–2 天收貨。</p></details>
+        <details><summary>已經付款，想改期或取消怎麼辦？</summary><p>付款後就會開始備料製作，取消會造成食材報廢，所以只接受下單後一個月內延期，請在原取貨日前 4 天聯絡我們。</p></details>
+        <details><summary>要寄到好幾個不同地址，可以一起下單嗎？</summary><p>請分開下單，我們目前沒有拆單、併單或追加的服務。企業多點配送請走下方洽詢表單。</p></details>
+        <details><summary>蛋糕為什麼不能宅配？</summary><p>蛋糕上的裝飾跟蛋糕體都很怕碰撞，低溫運送的溫控也很難保證，所以蛋糕目前只提供門市自取。中秋禮盒都是常溫品，可以宅配。</p></details>
+        <details><summary>有寄外島或海外嗎？</summary><p>考量新鮮度與賞味期限，目前只配送台灣本島。</p></details>
+      </div>
+      <aside class="contact">
+        <h3>直接問我們</h3>
+        <dl>
+          <dt>LINE</dt><dd><a href="https://lin.ee/8pBtN7d" target="_blank" rel="noopener">加入官方帳號</a>・最快</dd>
+          <dt>客服</dt><dd><a href="tel:+88662435031">06-2435031</a></dd>
+          <dt>門市</dt><dd><a href="tel:+88662003434">06-2003434</a></dd>
+          <dt>時間</dt><dd>09:00–18:30（週二店休）</dd>
+        </dl>
+        <a class="btn btn-red" href="https://lin.ee/8pBtN7d" target="_blank" rel="noopener">用 LINE 問</a>
+        <div class="mascot-mini">
+          <img src="assets/mascot.png" alt="">
+          <div class="pixel-bubble">有問題找我！週二除外，那天店休<span class="nw">我在睡覺。</span></div>
+        </div>
+      </aside>
+    </div>
+  </div>
+</section>
+
+<!-- ============ M 企業洽詢 ============ -->
+<section class="biz" id="s-biz">
+  <div class="wrap">
+    <div class="biz-box">
+      <div class="sec-head" style="margin-bottom:34px">
+        <div class="eyebrow"><span class="kana">法人のお客様</span></div>
+        <h2>10 盒以上，我們另外談</h2>
+        <p>要報價單、要統編、要分點寄送，都寫在這裡，不用經過購物車。</p>
+      </div>
+      <form class="form" onsubmit="event.preventDefault();this.querySelector('.form-foot small').textContent='這是色稿，表單不會真的送出 🙂';">
+        <label>公司名稱<input type="text" placeholder="例：角屋股份有限公司"></label>
+        <label>聯絡人<input type="text" placeholder="怎麼稱呼你"></label>
+        <label>電話<input type="tel" placeholder="06-"></label>
+        <label>Email<input type="email" placeholder="name@company.com"></label>
+        <label>預估數量<select><option>10–30 盒</option><option>31–50 盒</option><option>51–100 盒</option><option>100 盒以上</option></select></label>
+        <label>希望到貨日<input type="date" value="2026-09-23"></label>
+        <label class="full">需求說明<textarea placeholder="配送點數、客製包裝、統編……想到什麼都寫。"></textarea></label>
+        <div class="form-foot full"><button class="btn btn-red" type="submit">送出洽詢</button><small>1–2 個工作天內回覆報價。</small></div>
+      </form>
+    </div>
+  </div>
+</section>
+
+<!-- ============ N 尾端 ============ -->
+<section class="finale">
+  <div class="wrap finale-in">
+    <div>
+      <div class="kana">お月見、いっしょに。</div>
+      <h2 class="kanban kanban--cream">月亮等你，<br>禮盒也是。</h2>
+      <p>錯過這一檔，下次見面就是明年了。加 LINE，開賣先通知你。</p>
+      <div class="cta">
+        <a class="btn btn-red" href="#s-list">立即預購</a>
+        <a class="btn btn-ghost" href="https://lin.ee/8pBtN7d" target="_blank" rel="noopener">加 LINE 好友</a>
+      </div>
+    </div>
+    <div class="moon"><img src="assets/moon-rabbit.webp" alt="昭和印刷風格的滿月與玉兔插畫" loading="lazy"><span class="ai-tag">AI 示意圖</span></div>
+  </div>
+</section>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="foot-in">
+      <div>
+        <img src="assets/logo-ink.png" alt="喫茶 カドヤ">
+        <p style="margin:0">台南市東區樹林街一段 36 號<br>門市 06-2003434／客服 06-2435031<br>09:00–18:30・週二店休</p>
+      </div>
+      <div><h4>選購</h4><ul><li><a href="#s-list">中秋禮盒</a></li><li><a href="#s-guide">選購指南</a></li><li><a href="#s-biz">企業團購</a></li></ul></div>
+      <div><h4>須知</h4><ul><li><a href="#s-ship">配送與自取</a></li><li><a href="#s-faq">常見問題</a></li><li><a href="#s-promo">優惠說明</a></li></ul></div>
+      <div><h4>關注我們</h4><ul><li><a href="https://www.facebook.com/Kadoyasweets" target="_blank" rel="noopener">Facebook</a></li><li><a href="https://www.instagram.com/kadoya.tw/" target="_blank" rel="noopener">Instagram</a></li><li><a href="https://lin.ee/8pBtN7d" target="_blank" rel="noopener">LINE 官方帳號</a></li></ul></div>
+    </div>
+    <div class="foot-bottom"><span>© KADOYA 喫茶店</span><span>本頁為官網改版色稿，非正式販售頁面</span></div>
+  </div>
+</footer>
+
+<!-- ============ O 底部固定列 ============ -->
+<div class="dock" id="dock" aria-hidden="true">
+  <div class="wrap dock-in">
+    <img src="assets/logo-cream.png" alt="">
+    <div class="txt"><b>2026 中秋禮盒預購中</b><span id="dock-cd">宅配截止倒數 3 天・預購 95 折</span></div>
+    <a class="btn top btn-ghost" href="#top" aria-label="回到頂端">↑</a>
+    <a class="btn btn-red" href="#s-list">立即預購</a>
+  </div>
+</div>
+
+<a class="demoweb-home-fab" href="../index.html" title="回 demoweb 首頁" aria-label="回 demoweb 首頁" style="position:fixed;right:24px;width:56px;height:56px;border-radius:50%;background:rgba(20,20,20,.92);color:#fff;display:flex;align-items:center;justify-content:center;text-decoration:none;box-shadow:0 4px 16px rgba(0,0,0,.35),0 0 0 1px rgba(255,255,255,.08);z-index:2147483647;"><svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9.5L12 3l9 6.5V20a1 1 0 0 1-1 1h-5v-6h-6v6H4a1 1 0 0 1-1-1V9.5z"/></svg></a>
+
+<script>
+(function(){
+  /* 倒數：宅配截止 2026/9/17 23:59（台北時間）；示意日期 */
+  var DEADLINE = new Date('2026-09-17T23:59:59+08:00');
+  var PICKUP   = new Date('2026-09-20T23:59:59+08:00');
+  function tick(){
+    var now = new Date(), ms = DEADLINE - now;
+    var d = document.getElementById('cd-days'), u = document.getElementById('cd-unit'),
+        t = document.getElementById('cd-title'), p = document.getElementById('cd-desc'),
+        dk = document.getElementById('dock-cd');
+    if (ms > 0){
+      var days = Math.floor(ms / 864e5), hrs = Math.floor(ms % 864e5 / 36e5);
+      if (days >= 1){ d.textContent = days; u.textContent = '天 ' + hrs + ' 時'; }
+      else { d.textContent = hrs; u.textContent = '小時'; }
+      dk.textContent = '宅配截止倒數 ' + (days >= 1 ? days + ' 天' : hrs + ' 小時') + '・預購 95 折';
+    } else if (PICKUP - now > 0){
+      d.textContent = '自取'; d.style.fontSize = '30px'; u.textContent = '收單中';
+      t.textContent = '宅配已截止，門市自取收單到 9/20（日）';
+      p.textContent = '最晚 9/24（四）到台南門市取貨。9/22（二）店休。';
+      dk.textContent = '宅配已截止・門市自取收單到 9/20';
+    } else {
+      d.textContent = '完'; d.style.fontSize = '34px'; u.textContent = '本檔結束';
+      t.textContent = '2026 中秋檔已結束';
+      p.textContent = '謝謝捧場！加 LINE，明年開賣先通知你。';
+      dk.textContent = '本檔已結束・明年見';
+    }
+    /* 時間軸：已過的變淡、下一個截點加外框 */
+    var marked = false;
+    document.querySelectorAll('.tl-step').forEach(function(el){
+      var until = new Date(el.dataset.until + 'T23:59:59+08:00');
+      el.classList.toggle('past', until < now);
+      el.classList.remove('now');
+      if (!marked && until >= now){ el.classList.add('now'); marked = true; }
+    });
+  }
+  tick(); setInterval(tick, 60000);
+
+  /* 錨點列 scroll-spy */
+  var links = [].slice.call(document.querySelectorAll('.anchor nav a'));
+  var map = {}; links.forEach(function(a){ map[a.getAttribute('href').slice(1)] = a; });
+  var io = new IntersectionObserver(function(entries){
+    entries.forEach(function(e){
+      if (e.isIntersecting){
+        links.forEach(function(a){ a.classList.remove('on'); });
+        var a = map[e.target.id]; if (a){ a.classList.add('on'); a.scrollIntoView({block:'nearest',inline:'center'}); }
+      }
+    });
+  }, {rootMargin:'-45% 0px -50% 0px'});
+  Object.keys(map).forEach(function(id){ var s = document.getElementById(id); if (s) io.observe(s); });
+
+  /* 底部固定列：捲過 Hero 才出現 */
+  var dock = document.getElementById('dock'), hero = document.querySelector('.hero');
+  new IntersectionObserver(function(es){
+    var show = !es[0].isIntersecting; dock.classList.toggle('show', show); dock.setAttribute('aria-hidden', !show);
+  }).observe(hero);
+
+  /* 選購指南：依預算即時篩出真實禮盒（價格取自官網原價） */
+  var BOXES = [
+    {name:'繁花織女禮盒', price:435},
+    {name:'綜合迷你蛋黃酥禮盒', price:420, sold:true},
+    {name:'深情牛郎禮盒', price:545},
+    {name:'玉兔團圓禮盒', price:980}
+  ];
+  function update(){
+    var b = document.querySelector('[data-group="budget"] .chip.on');
+    var min = +(b.dataset.min || 0), max = +(b.dataset.max || 1e9);
+    var hit = BOXES.filter(function(x){ return !x.sold && x.price >= min && x.price < max; });
+    document.getElementById('g-count').textContent = hit.length;
+    document.getElementById('g-names').textContent = hit.length ? hit.map(function(x){return x.name;}).join('、') : '這個預算今年剛好沒有，看看順手帶的單品？';
+  }
+  document.querySelectorAll('.chips').forEach(function(group){
+    group.addEventListener('click', function(e){
+      var c = e.target.closest('.chip'); if (!c) return;
+      group.querySelectorAll('.chip').forEach(function(x){ x.classList.remove('on'); });
+      c.classList.add('on'); update();
+    });
+  });
+  update();
+})();
+</script>
+</body>
+</html>

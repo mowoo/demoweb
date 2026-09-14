@@ -87,6 +87,9 @@
   .screen .arrow{color:var(--accent);font-size:13px;}
   .screen .size{font-size:11px;color:var(--dim);font-family:"Space Mono",monospace;}
   .screen .nm{display:flex;align-items:baseline;gap:10px;}
+  .screen-hot{border-color:var(--mark);background:rgba(196,85,46,.1);}
+  .screen-hot .arrow{color:var(--mark);}
+  .adopted{margin-left:auto;align-self:center;font-size:10px;letter-spacing:.12em;color:#141210;background:var(--mark);padding:4px 9px;}
 
   footer{border-top:1px solid var(--border);margin-top:56px;padding:36px 0 64px;}
   footer p{margin:0 0 10px;font-size:12px;color:var(--dim);line-height:1.8;max-width:780px;}
@@ -108,10 +111,10 @@
   <div class="container">
     <p class="eyebrow mono">WIREFRAME · 討論用</p>
     <h1>KADOYA 喫茶店<span class="sub">官網改版線框　三個版本</span></h1>
-    <p class="lede">低保真線框，只談<strong style="color:var(--text);font-weight:500">區塊順序與資訊架構</strong>。視覺風格（昭和復古感、幽默語氣、配色與字體）刻意還沒上——那是方向拍板之後的事。</p>
+    <p class="lede">三個版本的線框只談<strong style="color:var(--text);font-weight:500">區塊順序與資訊架構</strong>。<strong style="color:var(--text);font-weight:500">版本 C 已採用</strong>，色稿 v1 依原站的昭和喫茶風格上色：配色與字樣取樣自 kadoya.tw 現有主視覺，商品照與價格取自官網。</p>
     <div class="meta">
       <span class="chip mono">2026.09</span>
-      <span class="chip mono">3 VERSIONS · 5 SCREENS</span>
+      <span class="chip mono">3 VERSIONS · 5 SCREENS · 1 COLOR COMP</span>
       <span class="chip mono">現況站：kadoya.tw</span>
     </div>
   </div>
@@ -187,6 +190,7 @@
         <div class="vhead">
           <div class="vno">C</div>
           <div class="vlabel">VERSION C</div>
+          <span class="adopted mono">已採用 · 色稿進行中</span>
         </div>
         <div class="vbody">
           <h3>情境一頁式</h3>
@@ -196,7 +200,8 @@
             <p>季節檔期現在只能靠開新分類硬撐，檔期一過就變殭屍分類。這一版把檔期時間軸、優惠條件、配送須知、客服窗口收在同一頁，售罄改成「登記候補」而不是死路。</p>
           </div>
           <div class="screens">
-            <a class="screen" href="onepage.html"><span class="nm">中秋禮盒活動頁 <span class="size">15 區</span></span><span class="arrow">看 →</span></a>
+            <a class="screen screen-hot" href="onepage-color.html"><span class="nm">色稿 v1 <span class="size">昭和風 · 可互動</span></span><span class="arrow">看 →</span></a>
+            <a class="screen" href="onepage.html"><span class="nm">線框 <span class="size">15 區</span></span><span class="arrow">看 →</span></a>
           </div>
         </div>
       </article>
