@@ -1,0 +1,534 @@
+/* 客家選情 3D 地圖 — 第二階段技術原型
+ * Three.js r186 + camera-controls（運鏡／鎖定）+ GSAP（時間軸／升降）
+ * 場景階層：地圖 → 縣市群組（整縣升降）→ 鄉鎮 Mesh（縣內起伏，界線為子物件跟著動）
+ */
+import * as THREE from 'three';
+import CameraControls from 'camera-controls';
+
+CameraControls.install({ THREE });
+const gsap = window.gsap;
+
+// ---------- 參數 ----------
+const REDUCED = matchMedia('(prefers-reduced-motion: reduce)').matches;
+const dur = s => (REDUCED ? Math.min(s, 0.15) : s);
+const ISLAND_H = 4;          // 島嶼厚度
+const COUNTY_RISE = 6;       // 選取縣市整體升高
+const TOWN_RISE = [0.4, 5.5];// 縣內鄉鎮依數據再升高（最小, 最大）
+const FOV = 38;
+const TEST_COUNTIES = ['新竹縣', '花蓮縣', '金門縣'];
+// 招牌視角（azimuth 0 = 從南往北看；polar 為與垂直軸夾角）。未列者用預設
+const PRESETS = {
+  '花蓮縣': { az: 0.75, polar: 0.92 },   // 從東南海上看向中央山脈
+  '臺東縣': { az: 0.6, polar: 0.92 },
+  '宜蘭縣': { az: 0.5, polar: 0.88 },
+  '金門縣': { az: -0.35, polar: 0.8 },
+  '連江縣': { az: -0.2, polar: 0.8 },
+  '澎湖縣': { az: -0.4, polar: 0.82 },
+};
+const DEFAULT_POSE = { az: 0.12, polar: 0.82 };
+
+const THEME = {
+  bg: 0xf6f1e7, sea: 0xece3d0, island: 0xfffdf8,
+  townEdge: 0xc7b394, countyLine: 0x8a6f4d,
+};
+const STOPS = ['#14b8a6', '#eab308', '#f97316', '#dc2626'].map(c => new THREE.Color(c));
+function ramp(t) {
+  t = Math.min(1, Math.max(0, t)) * (STOPS.length - 1);
+  const i = Math.min(STOPS.length - 2, Math.floor(t));
+  return new THREE.Color().lerpColors(STOPS[i], STOPS[i + 1], t - i);
+}
+const C_ISLAND = new THREE.Color(THEME.island);
+const C_DIM = new THREE.Color(0xeee6d4);
+const C_HOVER = new THREE.Color(0xf2b632);
+
+// ---------- 渲染器 / 場景 ----------
+const canvas = document.getElementById('scene');
+const isSmall = () => window.innerWidth <= 760;
+const renderer = new THREE.WebGLRenderer({ canvas, antialias: true });
+renderer.setPixelRatio(Math.min(window.devicePixelRatio, isSmall() ? 1.5 : 2));
+renderer.shadowMap.enabled = true;
+renderer.shadowMap.type = THREE.PCFShadowMap; // r182 起即為柔和陰影
+
+const scene = new THREE.Scene();
+scene.background = new THREE.Color(THEME.bg);
+scene.fog = new THREE.Fog(THEME.bg, 520, 1100);
+
+const camera = new THREE.PerspectiveCamera(FOV, 1, 0.5, 3000);
+const controls = new CameraControls(camera, canvas);
+controls.smoothTime = 0.3;
+controls.draggingSmoothTime = 0.12;
+controls.maxPolarAngle = Math.PI * 0.46;
+controls.minDistance = 25;
+controls.maxDistance = 900;
+controls.dollyToCursor = true;
+
+scene.add(new THREE.HemisphereLight(0xffffff, 0xd9ccb0, 1.9));
+const sun = new THREE.DirectionalLight(0xfff6e8, 2.2);
+sun.position.set(80, 160, 70);
+sun.castShadow = true;
+sun.shadow.mapSize.set(2048, 2048);
+Object.assign(sun.shadow.camera, { left: -180, right: 180, top: 180, bottom: -180, far: 600 });
+sun.shadow.bias = -0.0004;
+scene.add(sun);
+
+const sea = new THREE.Mesh(new THREE.PlaneGeometry(4000, 4000), new THREE.MeshStandardMaterial({ color: THEME.sea, roughness: 1 }));
+sea.rotation.x = -Math.PI / 2;
+sea.position.y = -0.05;
+sea.receiveShadow = true;
+scene.add(sea);
+
+// ---------- 狀態（需在任何呼叫 paintCounty 之前宣告，避免 TDZ）----------
+let focused = null, selTown = null, hoverTown = null, hoverCounty = null;
+let metric = 'pct';
+
+// ---------- 資料 ----------
+const norm = s => (s || '').replace(/臺/g, '台');
+const show = s => s.replace(/台/g, '臺');                         // 顯示一律用「臺」
+const COUNTY_LEVEL = new Set(Object.keys(HAKKA_COUNTY_LEVEL)); // 澎湖/金門/連江以縣為單位
+const TOWNS = {};    // key -> { key, county, town, total, hakka, pct, meshes[], pos }
+const COUNTIES = {}; // 縣名(台) -> { name, group, towns[], outline, total, hakka, pct, center }
+Object.entries(HAKKA_DATA).forEach(([key, v]) => {
+  const [county, town] = key.split('|');
+  TOWNS[key] = { key, county, town, ...v, meshes: [] };
+});
+Object.entries(HAKKA_COUNTY_LEVEL).forEach(([county, v]) => {
+  TOWNS[county] = { key: county, county, town: null, ...v, meshes: [] };
+});
+
+const topo = await fetch('data/towns.topo.json').then(r => r.json());
+const townsGeo = topojson.feature(topo, topo.objects.towns);
+const countiesGeo = topojson.feature(topo, topo.objects.counties);
+const projection = d3.geoMercator().fitSize([220, 270], townsGeo);
+const geoPath = d3.geoPath(projection);
+const [cx0, cy0] = projection([120.95, 23.75]);  // 視覺中心固定在本島
+const P = c => { const p = projection(c); return [p[0] - cx0, p[1] - cy0]; };
+
+const mapGroup = new THREE.Group();
+scene.add(mapGroup);
+const edgeMat = new THREE.LineBasicMaterial({ color: THEME.townEdge, transparent: true, opacity: 0.6 });
+
+function getCounty(name) {
+  if (!COUNTIES[name]) {
+    const group = new THREE.Group();
+    group.userData.county = name;
+    mapGroup.add(group);
+    COUNTIES[name] = { name, group, towns: [], total: 0, hakka: 0, pct: 0, center: [0, 0], mix: { focus: 0, dim: 0, hover: 0 } };
+  }
+  return COUNTIES[name];
+}
+const toShapes = geom => {
+  const polys = geom.type === 'Polygon' ? [geom.coordinates] : geom.coordinates;
+  const shapes = [];
+  polys.forEach(rings => {
+    const pts = r => r.map(c => { const [x, z] = P(c); return new THREE.Vector2(x, -z); });
+    const outer = pts(rings[0] || []);
+    if (outer.length < 3) return;
+    const s = new THREE.Shape(outer);
+    rings.slice(1).forEach(h => { const hp = pts(h); if (hp.length >= 3) s.holes.push(new THREE.Path(hp)); });
+    shapes.push(s);
+  });
+  return shapes;
+};
+
+townsGeo.features.forEach(f => {
+  const county = norm(f.properties.COUNTYNAME);
+  const key = COUNTY_LEVEL.has(county) ? county : county + '|' + norm(f.properties.TOWNNAME);
+  const unit = TOWNS[key];
+  if (!unit) return;
+  const shapes = toShapes(f.geometry);
+  if (!shapes.length) return;
+  const geom = new THREE.ExtrudeGeometry(shapes, { depth: ISLAND_H, bevelEnabled: false });
+  const mesh = new THREE.Mesh(geom, new THREE.MeshStandardMaterial({ color: THEME.island, roughness: 0.8, metalness: 0.02 }));
+  mesh.rotation.x = -Math.PI / 2;
+  mesh.castShadow = mesh.receiveShadow = true;
+  mesh.userData.key = key;
+  // 頂面輪廓線（不畫側牆轉角），為 Mesh 子物件 → 跟著鄉鎮升降
+  shapes.forEach(sh => [sh, ...sh.holes].forEach(path => {
+    const pts = path.getPoints().map(p => new THREE.Vector3(p.x, p.y, ISLAND_H + 0.03));
+    mesh.add(new THREE.LineLoop(new THREE.BufferGeometry().setFromPoints(pts), edgeMat));
+  }));
+  unit.meshes.push(mesh);
+  if (!unit.pos) { const c = geoPath.centroid(f); unit.pos = [c[0] - cx0, c[1] - cy0]; }
+  const c = getCounty(county);
+  c.group.add(mesh);
+  if (!c.towns.includes(unit)) c.towns.push(unit);
+});
+
+const _fb = new THREE.Vector3();
+// 縣界亮線（縣市群組的子物件）＋縣中心
+countiesGeo.features.forEach(f => {
+  const name = norm(f.properties.COUNTYNAME);
+  const c = COUNTIES[name];
+  if (!c) return;
+  const mat = new THREE.LineBasicMaterial({ color: THEME.countyLine, transparent: true, opacity: 0.85 });
+  const polys = f.geometry.type === 'Polygon' ? [f.geometry.coordinates] : f.geometry.coordinates;
+  c.outline = [];
+  polys.forEach(rings => rings.forEach(ring => {
+    const pts = ring.map(p => { const [x, z] = P(p); return new THREE.Vector3(x, ISLAND_H + 0.06, z); });
+    const line = new THREE.Line(new THREE.BufferGeometry().setFromPoints(pts), mat);
+    c.group.add(line);
+    c.outline.push(line);
+  }));
+  c.outlineMat = mat;
+  // 標籤位置用最大塊多邊形的質心（避免離島把中心拉偏）
+  let best = null, area = -1;
+  polys.forEach(rings => {
+    const g = { type: 'Polygon', coordinates: rings };
+    const a = geoPath.area(g);
+    if (a > area) { area = a; best = g; }
+  });
+  const ct = geoPath.centroid(best);
+  c.center = [ct[0] - cx0, ct[1] - cy0];
+  // 構圖範圍：只納入主島周邊的多邊形（排除烏坵、東沙這類遠離本體的離島）
+  c.frameBox = new THREE.Box3();
+  polys.forEach(rings => {
+    const pc = geoPath.centroid({ type: 'Polygon', coordinates: rings });
+    if (Math.hypot(pc[0] - ct[0], pc[1] - ct[1]) > 55) return;
+    rings[0].forEach(p => { const [x, z] = P(p); c.frameBox.expandByPoint(_fb.set(x, 0, z)); });
+  });
+  c.frameBox.max.y = ISLAND_H;
+});
+
+// ---------- 上色（overview 底色 ⇄ 聚焦色階 ⇄ 淡化 ⇄ hover）----------
+const _c = new THREE.Color();
+function paintCounty(c) {
+  const { focus, dim, hover } = c.mix;
+  c.towns.forEach(t => t.meshes.forEach(m => {
+    _c.copy(m.userData.cBase).lerp(m.userData.cFocus, focus).lerp(C_DIM, dim * 0.85);
+    if (t.key === hoverTown || t.key === selTown) _c.lerp(C_HOVER, t.key === selTown ? 0.75 : 0.45);
+    else if (hover) _c.lerp(C_HOVER, hover * 0.35);
+    m.material.color.copy(_c);
+  }));
+  if (c.outlineMat) c.outlineMat.opacity = 0.85 * (1 - focus) * (1 - dim * 0.6);
+}
+
+// 縣市彙總
+Object.values(COUNTIES).forEach(c => {
+  c.total = c.towns.reduce((s, t) => s + t.total, 0);
+  c.hakka = c.towns.reduce((s, t) => s + t.hakka, 0);
+  c.pct = c.total ? (c.hakka / c.total) * 100 : 0;
+  c.box = new THREE.Box3().setFromObject(c.group);
+  c.area = (c.box.max.x - c.box.min.x) * (c.box.max.z - c.box.min.z);
+  c.towns.forEach(t => t.meshes.forEach(m => {
+    m.userData.cBase = new THREE.Color().lerpColors(C_ISLAND, ramp(c.pct / 70), 0.42);
+    m.userData.cFocus = ramp(t.pct / 75);
+  }));
+  paintCounty(c);
+});
+
+// ---------- 標籤 ----------
+const labelLayer = document.getElementById('labels');
+const mkLabel = (text, cls) => { const d = document.createElement('div'); d.className = 'lb ' + cls; d.textContent = text; labelLayer.appendChild(d); return d; };
+Object.values(COUNTIES).forEach(c => { c.label = mkLabel(show(c.name), 'county'); });
+Object.values(TOWNS).forEach(t => { if (t.town && t.pos) { t.label = mkLabel(show(t.town), 'town hide'); } });
+
+const _v = new THREE.Vector3();
+function placeLabel(el, x, y, z) {
+  _v.set(x, y, z).project(camera);
+  if (_v.z > 1) { el.style.visibility = 'hidden'; return false; }
+  el.style.visibility = '';
+  const [w, h] = canvasSize();
+  const px = (_v.x + 1) / 2 * w, py = (1 - _v.y) / 2 * h;
+  el.style.transform = `translate(-50%,-50%) translate(${px}px,${py}px)`;
+  if (!el._wh) el._wh = [el.offsetWidth || el.textContent.length * 14, el.offsetHeight || 18];
+  el._xy = { x: px, y: py, w: el._wh[0], h: el._wh[1] };
+  return true;
+}
+const labelRects = [];
+function updateLabels() {
+  const cand = [];
+  Object.values(COUNTIES).forEach(c => {
+    const on = !focused;
+    c.label.classList.toggle('hide', !on);
+    if (on && placeLabel(c.label, c.center[0], c.group.position.y + ISLAND_H + 3, c.center[1]))
+      cand.push({ el: c.label, pri: c.area * (1 + c.pct / 12), ...c.label._xy });
+  });
+  if (focused) COUNTIES[focused].towns.forEach(t => {
+    if (!t.label || t.label.classList.contains('hide')) return;
+    const m = t.meshes[0];
+    if (placeLabel(t.label, t.pos[0], COUNTIES[focused].group.position.y + m.position.y + ISLAND_H + 1.2, t.pos[1]))
+      cand.push({ el: t.label, pri: t.key === selTown ? Infinity : t[metric], ...t.label._xy });
+  });
+  // 依重要度貪婪擺放，與已擺放者重疊就淡出
+  cand.sort((a, b) => b.pri - a.pri);
+  labelRects.length = 0;
+  cand.forEach(l => {
+    const r = { x0: l.x - l.w / 2 - 2, x1: l.x + l.w / 2 + 2, y0: l.y - l.h / 2 - 1, y1: l.y + l.h / 2 + 1 };
+    const clash = labelRects.some(o => r.x0 < o.x1 && r.x1 > o.x0 && r.y0 < o.y1 && r.y1 > o.y0);
+    l.el.classList.toggle('clash', clash);
+    if (!clash) labelRects.push(r);
+  });
+}
+
+// ---------- 鏡頭：構圖計算 + 弧線飛行 ----------
+const panelState = { x: 0, y: 0 };  // 面板避讓：以 view offset 平移畫面中心
+const canvasSize = () => [canvas.clientWidth || innerWidth || 1, canvas.clientHeight || innerHeight || 1];
+function viewport() {
+  const [w, h] = canvasSize();
+  const open = document.body.classList.contains('panel-open');
+  if (!open) return { w, h, ox: 0, oy: 0, vw: w, vh: h };
+  if (isSmall()) { const sh = h * 0.46, top = 64; return { w, h, ox: 0, oy: (sh - top) / 2, vw: w, vh: h - sh - top }; }
+  const pw = 380 + 32; return { w, h, ox: pw / 2, oy: 0, vw: w - pw, vh: h };
+}
+function applyOffset() {
+  const { w, h } = viewport();
+  if (panelState.x || panelState.y) camera.setViewOffset(w, h, panelState.x, panelState.y, w, h);
+  else camera.clearViewOffset();
+  camera.updateProjectionMatrix();
+}
+function tweenOffset() {
+  const { ox, oy } = viewport();
+  gsap.to(panelState, { x: ox, y: oy, duration: dur(0.9), ease: 'power3.inOut', onUpdate: applyOffset });
+}
+
+// 依「可見區域」算出能完整框住 box 的距離
+function poseFor(box, { az, polar }, pad = 1.18) {
+  const { h, vw, vh } = viewport();
+  const sphere = box.getBoundingSphere(new THREE.Sphere());
+  const t = Math.tan(THREE.MathUtils.degToRad(FOV) / 2);
+  const vf = Math.atan(t * (vh / h));   // 可見區域的半視角（扣掉面板／標題）
+  const hf = Math.atan(t * (vw / h));
+  const r = (sphere.radius * pad) / Math.sin(Math.min(vf, hf));
+  return { target: sphere.center.clone(), r, az, polar };
+}
+
+const _p = new THREE.Vector3(), _t = new THREE.Vector3();
+let flight = null;
+function flyTo(pose, seconds = 2.0) {
+  flight?.kill();
+  const t0 = controls.getTarget(new THREE.Vector3());
+  const s0 = new THREE.Spherical().setFromVector3(controls.getPosition(new THREE.Vector3()).sub(t0));
+  let dAz = pose.az - s0.theta;
+  dAz = Math.atan2(Math.sin(dAz), Math.cos(dAz));                 // 最短方位
+  const travel = t0.distanceTo(pose.target);
+  const lift = Math.min(220, travel * 0.55 + Math.abs(dAz) * 40);  // 中段拉高的量
+  unlock();
+  controls.enabled = false;
+  const k = { v: 0 };
+  return new Promise(resolve => {
+    flight = gsap.to(k, {
+      v: 1, duration: dur(seconds), ease: 'power2.inOut',
+      onUpdate() {
+        const e = k.v, arc = Math.sin(Math.PI * e);
+        _t.lerpVectors(t0, pose.target, e);
+        const r = THREE.MathUtils.lerp(s0.radius, pose.r, e) + arc * lift;
+        const ph = THREE.MathUtils.lerp(s0.phi, pose.polar, e) - arc * 0.12; // 中段略往俯視
+        const th = s0.theta + dAz * e;
+        _p.setFromSphericalCoords(r, ph, th).add(_t);
+        controls.setLookAt(_p.x, _p.y, _p.z, _t.x, _t.y, _t.z, false);
+      },
+      onComplete() { controls.enabled = true; flight = null; resolve(); },
+    });
+  });
+}
+
+// 到位後鎖定構圖：只留小幅度旋轉與縮放
+function lockAround(pose) {
+  controls.minAzimuthAngle = pose.az - 0.35;
+  controls.maxAzimuthAngle = pose.az + 0.35;
+  controls.minPolarAngle = Math.max(0.2, pose.polar - 0.25);
+  controls.maxPolarAngle = Math.min(Math.PI * 0.46, pose.polar + 0.15);
+  controls.minDistance = pose.r * 0.65;
+  controls.maxDistance = pose.r * 1.35;
+  controls.mouseButtons.right = CameraControls.ACTION.NONE;
+  controls.touches.three = CameraControls.ACTION.NONE;
+}
+function unlock() {
+  controls.minAzimuthAngle = -Infinity; controls.maxAzimuthAngle = Infinity;
+  controls.minPolarAngle = 0; controls.maxPolarAngle = Math.PI * 0.46;
+  controls.minDistance = 25; controls.maxDistance = 900;
+  controls.mouseButtons.right = CameraControls.ACTION.TRUCK;
+  controls.touches.three = CameraControls.ACTION.TOUCH_TRUCK;
+}
+
+// ---------- 縣市聚焦 ----------
+function townLift(c, t) {
+  const vals = c.towns.map(x => x[metric]);
+  const lo = Math.min(...vals), hi = Math.max(...vals);
+  const n = hi > lo ? (t[metric] - lo) / (hi - lo) : 0.5;
+  return THREE.MathUtils.lerp(TOWN_RISE[0], TOWN_RISE[1], n);
+}
+function riseTowns(c, delay = 0) {
+  const [cx, cz] = c.center;
+  const order = [...c.towns].sort((a, b) => Math.hypot(a.pos[0] - cx, a.pos[1] - cz) - Math.hypot(b.pos[0] - cx, b.pos[1] - cz));
+  order.forEach((t, i) => t.meshes.forEach(m => gsap.to(m.position, {
+    y: c.towns.length > 1 ? townLift(c, t) : 0, duration: dur(0.9), ease: 'back.out(1.7)', delay: dur(delay + i * 0.025), overwrite: true,
+  })));
+}
+function settle(c) {
+  gsap.to(c.group.position, { y: 0, duration: dur(0.8), ease: 'power3.inOut', overwrite: true });
+  c.towns.forEach(t => t.meshes.forEach(m => gsap.to(m.position, { y: 0, duration: dur(0.6), ease: 'power2.inOut', overwrite: true })));
+  c.towns.forEach(t => t.label?.classList.add('hide'));
+}
+function tweenMix(c, to) {
+  gsap.to(c.mix, { ...to, duration: dur(0.8), ease: 'power2.inOut', overwrite: 'auto', onUpdate: () => paintCounty(c) });
+}
+
+async function focusCounty(name) {
+  if (!COUNTIES[name] || focused === name) return;
+  const prev = focused;
+  focused = name; selTown = null;
+  const c = COUNTIES[name];
+  if (prev) settle(COUNTIES[prev]);
+  Object.values(COUNTIES).forEach(o => tweenMix(o, o === c ? { focus: 1, dim: 0 } : { focus: 0, dim: 1 }));
+  document.body.classList.add('panel-open');
+  renderPanel();
+  syncChips();
+  document.getElementById('back').classList.add('on');
+  tweenOffset();
+
+  // 依「升起後」的範圍構圖
+  const box = c.frameBox.clone(); box.max.y += COUNTY_RISE + TOWN_RISE[1];
+  const pose = poseFor(box, PRESETS[show(name)] || DEFAULT_POSE, c.towns.length > 1 ? 1.32 : 1.6);
+  gsap.to(c.group.position, { y: COUNTY_RISE, duration: dur(1.1), ease: 'power3.out', delay: dur(0.5), overwrite: true });
+  riseTowns(c, 0.9);
+  await flyTo(pose, prev ? 1.7 : 2.1);
+  if (focused !== name) return;
+  c.towns.forEach(t => t.label?.classList.remove('hide'));
+  lockAround(pose);
+}
+
+async function overview(seconds = 2.0) {
+  const prev = focused;
+  focused = null; selTown = null;
+  if (prev) settle(COUNTIES[prev]);
+  Object.values(COUNTIES).forEach(o => tweenMix(o, { focus: 0, dim: 0 }));
+  document.body.classList.remove('panel-open');
+  document.getElementById('back').classList.remove('on');
+  syncChips();
+  tweenOffset();
+  const box = new THREE.Box3(new THREE.Vector3(-75, 0, -125), new THREE.Vector3(75, 20, 125)); // 本島範圍
+  await flyTo(poseFor(box, { az: 0, polar: 0.78 }, 1.0), seconds);
+}
+
+// ---------- 面板 ----------
+const fmt = n => Math.round(n).toLocaleString('zh-Hant');
+const wan = n => (n >= 10000 ? (n / 10000).toFixed(1).replace(/\.0$/, '') + ' 萬' : fmt(n));
+function renderPanel() {
+  const c = COUNTIES[focused];
+  if (!c) return;
+  document.getElementById('p-name').textContent = show(c.name);
+  document.getElementById('p-total').textContent = wan(c.total);
+  document.getElementById('p-hakka').textContent = wan(c.hakka);
+  document.getElementById('p-pct').textContent = c.pct.toFixed(1) + '%';
+  document.getElementById('p-count').textContent = c.towns.length > 1 ? c.towns.length : '以縣為單位';
+  const list = [...c.towns].sort((a, b) => b[metric] - a[metric]);
+  const max = Math.max(...list.map(t => t[metric]));
+  const ol = document.getElementById('p-towns');
+  ol.innerHTML = list.map(t => `<li><button data-k="${t.key}" class="${t.key === selTown ? 'on' : ''}">
+      <span>${show(t.town || t.county)}</span>
+      <span class="bar"><i style="width:${(t[metric] / max) * 100}%;background:#${ramp(t.pct / 75).getHexString()}"></i></span>
+      <b>${metric === 'pct' ? t.pct.toFixed(1) + '%' : wan(t.hakka)}</b></button></li>`).join('');
+  ol.querySelectorAll('button').forEach(b => {
+    b.onclick = () => selectTown(b.dataset.k);
+    b.onmouseenter = () => { hoverTown = b.dataset.k; paintCounty(c); };
+    b.onmouseleave = () => { hoverTown = null; paintCounty(c); };
+  });
+}
+function selectTown(key) {
+  const t = TOWNS[key];
+  if (!t || norm(t.county) !== focused) return;
+  selTown = selTown === key ? null : key;
+  const c = COUNTIES[focused];
+  paintCounty(c);
+  c.towns.forEach(x => x.label?.classList.toggle('sel', x.key === selTown));
+  // 選到的鄉鎮再多升一點
+  c.towns.forEach(x => x.meshes.forEach(m => gsap.to(m.position, {
+    y: (c.towns.length > 1 ? townLift(c, x) : 0) + (x.key === selTown ? 2.5 : 0), duration: dur(0.5), ease: 'back.out(2)', overwrite: true,
+  })));
+  renderPanel();
+}
+document.querySelectorAll('#metric-seg button').forEach(b => b.onclick = () => {
+  metric = b.dataset.m;
+  document.querySelectorAll('#metric-seg button').forEach(x => x.classList.toggle('on', x === b));
+  if (focused) { riseTowns(COUNTIES[focused]); renderPanel(); }
+});
+document.getElementById('p-close').onclick = () => overview(1.6);
+document.getElementById('back').onclick = () => overview(1.6);
+addEventListener('keydown', e => { if (e.key === 'Escape' && focused) overview(1.6); });
+
+// ---------- 縣市快速切換 ----------
+const ORDER = ['基隆市', '臺北市', '新北市', '桃園市', '新竹市', '新竹縣', '苗栗縣', '臺中市', '彰化縣', '南投縣', '雲林縣', '嘉義市', '嘉義縣',
+  '臺南市', '高雄市', '屏東縣', '宜蘭縣', '花蓮縣', '臺東縣', '澎湖縣', '金門縣', '連江縣'];
+const chips = document.getElementById('chips');
+chips.innerHTML = ORDER.filter(n => COUNTIES[norm(n)]).map(n =>
+  `<button data-c="${norm(n)}" class="${TEST_COUNTIES.includes(n) ? 'test' : ''}">${n.replace(/[縣市]$/, '')}</button>`).join('');
+chips.querySelectorAll('button').forEach(b => b.onclick = () => focusCounty(b.dataset.c));
+function syncChips() { chips.querySelectorAll('button').forEach(b => b.classList.toggle('on', b.dataset.c === focused)); }
+
+// ---------- 指標互動（hover / click）----------
+const raycaster = new THREE.Raycaster();
+const pointer = new THREE.Vector2();
+const pickables = Object.values(TOWNS).flatMap(t => t.meshes);
+const tip = document.getElementById('tip');
+function pick(e) {
+  const r = canvas.getBoundingClientRect();
+  pointer.set(((e.clientX - r.left) / r.width) * 2 - 1, -((e.clientY - r.top) / r.height) * 2 + 1);
+  raycaster.setFromCamera(pointer, camera);
+  const hit = raycaster.intersectObjects(pickables, false)[0];
+  return hit ? TOWNS[hit.object.userData.key] : null;
+}
+canvas.addEventListener('pointermove', e => {
+  if (e.pointerType === 'touch' || flight) return;
+  const t = pick(e);
+  const cName = t ? norm(t.county) : null;
+  if (cName !== hoverCounty) {
+    if (hoverCounty) tweenMix(COUNTIES[hoverCounty], { hover: 0 });
+    if (cName && cName !== focused) tweenMix(COUNTIES[cName], { hover: 1 });
+    hoverCounty = cName;
+  }
+  const newTown = t && cName === focused ? t.key : null;
+  if (newTown !== hoverTown) { hoverTown = newTown; if (focused) paintCounty(COUNTIES[focused]); }
+  canvas.style.cursor = t ? 'pointer' : '';
+  if (t) {
+    const inFocus = cName === focused;
+    tip.innerHTML = inFocus && t.town
+      ? `<b>${show(t.town)}</b><br>客家 ${fmt(t.hakka)} 人（${t.pct.toFixed(1)}%）`
+      : `<b>${show(cName)}</b>　客家 ${COUNTIES[cName].pct.toFixed(1)}%`;
+    tip.style.left = e.clientX + 'px'; tip.style.top = e.clientY + 'px';
+    tip.classList.add('on');
+  } else tip.classList.remove('on');
+});
+canvas.addEventListener('pointerleave', () => tip.classList.remove('on'));
+let down = null;
+canvas.addEventListener('pointerdown', e => { down = [e.clientX, e.clientY]; });
+canvas.addEventListener('pointerup', e => {
+  if (!down) return;
+  const moved = Math.hypot(e.clientX - down[0], e.clientY - down[1]);
+  down = null;
+  if (moved > 6 || flight) return;
+  const t = pick(e);
+  if (!t) return;
+  const cName = norm(t.county);
+  if (cName === focused) { if (t.town) selectTown(t.key); }
+  else focusCounty(cName);
+});
+
+// ---------- 尺寸 / 迴圈 ----------
+function resize() {
+  const [w, h] = canvasSize();
+  renderer.setSize(w, h, false);
+  camera.aspect = w / h;
+  const { ox, oy } = viewport();
+  panelState.x = ox; panelState.y = oy;
+  applyOffset();
+}
+new ResizeObserver(resize).observe(canvas);
+addEventListener('resize', resize);
+resize();
+
+let last = performance.now();
+renderer.setAnimationLoop(now => {
+  const dt = Math.min(0.1, (now - last) / 1000);
+  last = now;
+  controls.update(dt);
+  updateLabels();
+  renderer.render(scene, camera);
+});
+
+// 開場：從高空俯視拉到斜視全臺
+controls.setLookAt(0, 900, 60, 0, 0, 0, false);
+document.getElementById('veil').classList.add('off');
+// 除錯／整合用（開場運鏡之前就掛上，不被動畫阻塞）
+window.__HAKKA3D__ = { focusCounty, overview, COUNTIES, TOWNS, camera, controls, renderer, scene, updateLabels };
+overview(REDUCED ? 0.1 : 2.6);

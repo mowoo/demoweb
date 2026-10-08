@@ -1,0 +1,152 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>客家選情 3D 地圖</title>
+<style>
+  :root{
+    --bg:#f6f1e7; --paper:#fffdf8; --ink:#14243f; --indigo:#1d3b6e; --vermilion:#d8412f; --gold:#f2b632;
+    --muted:#7a7262; --line:#e3dac6; --panel-w:380px;
+    --sans:"Noto Sans TC","PingFang TC","Microsoft JhengHei",sans-serif;
+    --serif:"Noto Serif TC","Songti TC","PMingLiU",serif;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;height:100%;overflow:hidden;background:var(--bg);color:var(--ink);font:15px/1.6 var(--sans);-webkit-font-smoothing:antialiased}
+  button{font:inherit;color:inherit;cursor:pointer}
+  #scene{position:fixed;inset:0;width:100%;height:100%;display:block;touch-action:none}
+
+  /* 載入遮罩 */
+  #veil{position:fixed;inset:0;z-index:30;display:grid;place-items:center;background:var(--bg);transition:opacity .8s}
+  #veil.off{opacity:0;pointer-events:none}
+  #veil b{font:900 22px var(--serif);letter-spacing:.2em;color:var(--indigo)}
+
+  /* 左上標題 */
+  #hud{position:fixed;top:18px;left:20px;z-index:10;pointer-events:none;max-width:min(440px,calc(100vw - 40px))}
+  #hud .kicker{font-size:12px;font-weight:700;letter-spacing:.22em;color:var(--vermilion)}
+  #hud h1{margin:2px 0 4px;font:900 clamp(24px,3.4vw,34px)/1.2 var(--serif);color:var(--ink)}
+  #hud p{margin:0;font-size:13px;color:var(--muted)}
+
+  /* 縣市快速切換 */
+  #chips{position:fixed;left:20px;bottom:18px;z-index:10;display:flex;flex-wrap:wrap;gap:6px;max-width:min(560px,calc(100vw - 40px));transition:opacity .3s}
+  #chips button{border:1px solid var(--line);background:rgba(255,253,248,.88);backdrop-filter:blur(6px);border-radius:999px;padding:4px 12px;font-size:13px;font-weight:600}
+  #chips button:hover{border-color:var(--indigo)}
+  #chips button.on{background:var(--indigo);border-color:var(--indigo);color:#fff}
+  #chips button.test::after{content:"●";color:var(--gold);font-size:9px;margin-left:4px;vertical-align:2px}
+
+  /* 返回總覽 */
+  #back{position:fixed;top:18px;right:20px;z-index:12;border:0;border-radius:999px;padding:8px 16px;background:var(--ink);color:#fff;font-weight:700;
+    box-shadow:0 6px 18px rgba(20,36,63,.25);opacity:0;transform:translateY(-8px);pointer-events:none;transition:.3s}
+  #back.on{opacity:1;transform:none;pointer-events:auto}
+  body.panel-open #back{right:calc(var(--panel-w) + 36px)}
+
+  /* 標籤層 */
+  #labels{position:fixed;inset:0;z-index:5;pointer-events:none}
+  .lb{position:absolute;left:0;top:0;white-space:nowrap;transform:translate(-50%,-50%);will-change:transform;transition:opacity .35s}
+  .lb.county{font:900 14px var(--serif);color:var(--ink);text-shadow:0 0 4px var(--paper),0 0 4px var(--paper),0 0 8px var(--paper)}
+  .lb.town{font:700 11px var(--sans);color:var(--ink);background:rgba(255,253,248,.82);padding:0 6px;border-radius:6px;line-height:18px}
+  .lb.town.sel{background:var(--vermilion);color:#fff}
+  .lb.hide,.lb.clash{opacity:0}
+
+  /* 縣市面板 */
+  #panel{position:fixed;z-index:20;top:16px;right:16px;bottom:16px;width:var(--panel-w);display:flex;flex-direction:column;
+    background:var(--paper);border:1px solid var(--line);border-radius:18px;box-shadow:0 18px 50px rgba(20,36,63,.18);overflow:hidden;
+    transform:translateX(calc(100% + 30px));transition:transform .55s cubic-bezier(.2,.9,.25,1)}
+  body.panel-open #panel{transform:none}
+  .p-head{padding:16px 18px 14px;background:linear-gradient(135deg,var(--ink),var(--indigo));color:#fff;display:flex;align-items:center;gap:12px}
+  .p-head .stamp{flex:none;width:40px;height:40px;border-radius:50%;border:3px solid var(--gold);color:var(--gold);display:grid;place-items:center;font:900 19px var(--serif);transform:rotate(-10deg)}
+  .p-head h2{margin:0;font:900 26px/1.1 var(--serif)}
+  .p-head small{display:block;color:#b9c6e0;font-size:12px;letter-spacing:.1em;margin-top:3px}
+  .p-close{margin-left:auto;width:34px;height:34px;border-radius:50%;border:0;background:rgba(255,255,255,.14);color:#fff;font-size:17px}
+  .p-stats{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--line);border-bottom:1px solid var(--line)}
+  .p-stats div{background:var(--paper);padding:10px 18px}
+  .p-stats span{font-size:12px;color:var(--muted)}
+  .p-stats b{display:block;font:900 22px/1.25 var(--serif);font-variant-numeric:tabular-nums}
+  .p-stats .hl b{color:var(--vermilion)}
+  .p-body{flex:1;overflow:auto;padding:14px 18px 18px}
+  .p-sub{display:flex;align-items:center;justify-content:space-between;font-weight:800;margin:0 0 8px}
+  .seg{display:inline-flex;background:#efe7d4;border-radius:999px;padding:2px}
+  .seg button{border:0;background:none;border-radius:999px;padding:2px 10px;font-size:12px;font-weight:700;color:var(--muted)}
+  .seg button.on{background:var(--indigo);color:#fff}
+  .towns{list-style:none;margin:0;padding:0}
+  .towns li button{all:unset;box-sizing:border-box;cursor:pointer;display:grid;grid-template-columns:76px 1fr 58px;gap:10px;align-items:center;width:100%;padding:5px 6px;border-radius:8px;font-size:13px}
+  .towns li button:hover,.towns li button.on{background:#f1ead9}
+  .towns li button.on{box-shadow:inset 3px 0 0 var(--vermilion)}
+  .towns .bar{height:9px;border-radius:5px;background:#ebe3cf;overflow:hidden}
+  .towns .bar i{display:block;height:100%;border-radius:5px}
+  .towns b{text-align:right;font-variant-numeric:tabular-nums}
+  .p-note{margin-top:14px;font-size:12px;color:var(--muted)}
+  .p-note em{font-style:normal;background:#fff3cf;color:#7a5b00;padding:1px 8px;border-radius:999px;margin-right:6px}
+
+  /* hover 提示 */
+  #tip{position:fixed;z-index:25;pointer-events:none;background:var(--ink);color:#fff;font-size:12.5px;line-height:1.5;padding:6px 10px;border-radius:8px;
+    transform:translate(14px,14px);opacity:0;transition:opacity .12s}
+  #tip.on{opacity:1}
+
+  @media (max-width:760px){
+    :root{--panel-w:100vw}
+    #panel{top:auto;left:0;right:0;bottom:0;width:auto;height:46vh;border-radius:20px 20px 0 0;transform:translateY(105%)}
+    body.panel-open #back{right:20px}
+    body.panel-open #chips{opacity:0;pointer-events:none}
+    body.panel-open #hud p,body.panel-open #hud .kicker{display:none}
+    body.panel-open #hud h1{font-size:20px}
+    #chips{flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none;bottom:12px}
+    #chips button{flex:none}
+    .p-stats div{padding:6px 14px}
+    .p-stats b{font-size:18px}
+  }
+</style>
+<script type="importmap">
+{ "imports": {
+  "three": "./lib/three.module.js",
+  "camera-controls": "./lib/camera-controls.module.js"
+} }
+</script>
+</head>
+<body>
+<canvas id="scene"></canvas>
+<div id="veil"><b>載入地圖中…</b></div>
+<div id="labels"></div>
+
+<header id="hud">
+  <div class="kicker">2026 地方選舉 · 客家選情</div>
+  <h1>客家選情 3D 地圖</h1>
+  <p>點選縣市：鏡頭飛入、縣市升起、鄉鎮依數據起伏。拖曳旋轉、滾輪縮放。</p>
+</header>
+
+<nav id="chips" aria-label="縣市快速切換"></nav>
+<button id="back" type="button">← 回到全臺</button>
+
+<aside id="panel" aria-live="polite">
+  <div class="p-head">
+    <div class="stamp">選</div>
+    <div><h2 id="p-name">—</h2><small id="p-sub">客家人口檔案</small></div>
+    <button class="p-close" id="p-close" aria-label="關閉面板">✕</button>
+  </div>
+  <div class="p-stats">
+    <div><span>設籍人口</span><b id="p-total">—</b></div>
+    <div><span>客家人口</span><b id="p-hakka">—</b></div>
+    <div class="hl"><span>客家比例</span><b id="p-pct">—</b></div>
+    <div><span>鄉鎮市區</span><b id="p-count">—</b></div>
+  </div>
+  <div class="p-body">
+    <div class="p-sub">鄉鎮起伏依據
+      <span class="seg" id="metric-seg">
+        <button data-m="pct" class="on">客家比例</button><button data-m="hakka">客家人口</button>
+      </span>
+    </div>
+    <ol class="towns" id="p-towns"></ol>
+    <div class="p-note"><em>原型</em>人口資料：全國客家人口暨語言基礎資料調查。候選人與選票數之後接入。</div>
+  </div>
+</aside>
+<div id="tip"></div>
+
+<!-- d3-geo 依賴 d3-array，順序不可對調 -->
+<script src="lib/d3-array.min.js"></script>
+<script src="lib/d3-geo.min.js"></script>
+<script src="lib/topojson-client.min.js"></script>
+<script src="lib/gsap.min.js"></script>
+<script src="data/hakka.js"></script>
+<script type="module" src="app.js"></script>
+</body>
+</html>
