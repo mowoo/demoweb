@@ -367,7 +367,7 @@ function tweenMix(c, to) {
 async function focusCounty(name) {
   if (!COUNTIES[name] || focused === name) return;
   const prev = focused;
-  focused = name; selTown = null;
+  focused = name; selTown = null; pickedCand = 0;
   const c = COUNTIES[name];
   if (prev) settle(COUNTIES[prev]);
   Object.values(COUNTIES).forEach(o => tweenMix(o, o === c ? { focus: 1, dim: 0 } : { focus: 0, dim: 1 }));
@@ -401,6 +401,44 @@ async function overview(seconds = 2.0) {
   await flyTo(poseFor(box, { az: 0, polar: 0.78 }, 1.0), seconds);
 }
 
+// ---------- 候選人與政策（佔位；資料在 data/election.js）----------
+let pickedCand = 0;
+// 預設插畫人像：election.js 填 photo 路徑即取代
+function avatar(cd, i) {
+  const hair = i === 0
+    ? '<path d="M38 52c0-20 10-30 22-30s22 10 22 30c-6-10-14-14-22-14s-16 4-22 14z" fill="#2a2a33"/>'
+    : '<path d="M34 60c-4-28 8-40 26-40s30 12 26 40c-2-12-6-22-12-26-8 4-20 4-28 0-6 4-10 14-12 26z" fill="#3b2a24"/>';
+  return `<svg viewBox="0 0 120 130" role="img" aria-label="${cd.name}插畫（佔位）">
+    <path d="M8 130c2-26 20-38 52-38s50 12 52 38z" fill="${cd.color}"/>
+    <path d="M44 92l16 22 16-22" fill="#fffdf8"/>
+    <path d="M30 130l30-36 30 36" fill="none" stroke="#f2b632" stroke-width="6" opacity=".9"/>
+    <rect x="53" y="76" width="14" height="18" rx="6" fill="#e8b48f"/>
+    <ellipse cx="60" cy="56" rx="22" ry="26" fill="#f2c7a5"/>${hair}
+    <circle cx="51" cy="58" r="2.2" fill="#2a2a33"/><circle cx="69" cy="58" r="2.2" fill="#2a2a33"/>
+    <path d="M52 70q8 7 16 0" fill="none" stroke="#a5532f" stroke-width="2.2" stroke-linecap="round"/></svg>`;
+}
+function renderCandidates(el) {
+  const cs = el.candidates || [];
+  const box = document.getElementById('p-cands'), seg = document.getElementById('p-cseg'), pol = document.getElementById('p-policies');
+  if (!cs.length) { box.innerHTML = '<div class="p-note">（候選人資料待補）</div>'; seg.innerHTML = pol.innerHTML = ''; return; }
+  if (pickedCand >= cs.length) pickedCand = 0;
+  const cur = cs[pickedCand];
+  box.innerHTML = cs.map((cd, i) => `
+    <div class="cand ${i === pickedCand ? 'on' : ''}" style="--cc:${cd.color}">
+      <button class="pick" data-i="${i}" aria-pressed="${i === pickedCand}">
+        <div class="art">${cd.photo ? `<img src="${cd.photo}" alt="${cd.name}插畫">` : avatar(cd, i) + '<span class="ph">插畫待補</span>'}</div>
+        <div class="nm">${cd.name}</div>
+        <span class="party">${cd.party}</span>
+        <div class="age">${cd.age == null ? '年紀待補' : cd.age + ' 歲'} · ${cd.role}</div>
+      </button>
+      <ul>${(cd.bio || []).map(b => `<li>${b}</li>`).join('')}</ul>
+    </div>`).join('');
+  seg.innerHTML = cs.map((cd, i) => `<button role="tab" class="${i === pickedCand ? 'on' : ''}" style="--cc:${cd.color}" data-i="${i}">${cd.name}</button>`).join('');
+  document.getElementById('p-pol-title').textContent = `${cur.name} 的四大客家政策`;
+  pol.innerHTML = (cur.policies || []).map((p, i) => `<li class="policy" style="--cc:${cur.color}"><i>${i + 1}</i><div><b>${p.t}</b><span>${p.d}</span></div></li>`).join('');
+  [...box.querySelectorAll('.pick'), ...seg.querySelectorAll('button')].forEach(b => b.onclick = () => { pickedCand = +b.dataset.i; renderCandidates(el); });
+}
+
 // ---------- 面板 ----------
 const fmt = n => Math.round(n).toLocaleString('zh-Hant');
 const wan = n => (n >= 10000 ? (n / 10000).toFixed(1).replace(/\.0$/, '') + ' 萬' : fmt(n));
@@ -411,7 +449,12 @@ function renderPanel() {
   document.getElementById('p-total').textContent = wan(c.total);
   document.getElementById('p-hakka').textContent = wan(c.hakka);
   document.getElementById('p-pct').textContent = c.pct.toFixed(1) + '%';
-  document.getElementById('p-count').textContent = c.towns.length > 1 ? c.towns.length : '以縣為單位';
+  document.getElementById('p-count').textContent = c.towns.length > 1 ? `（${c.towns.length} 鄉鎮市區）` : '（以縣為單位）';
+  const el = ELECTION[c.name] || { votes: null, candidates: [] };
+  const vc = document.getElementById('p-votes-cell');
+  vc.classList.toggle('stat-ph', el.votes == null);
+  document.getElementById('p-votes').textContent = el.votes == null ? '待補' : wan(el.votes);
+  renderCandidates(el);
   const list = [...c.towns].sort((a, b) => b[metric] - a[metric]);
   const max = Math.max(...list.map(t => t[metric]));
   const ol = document.getElementById('p-towns');
