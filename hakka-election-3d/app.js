@@ -267,8 +267,9 @@ function viewport() {
   const [w, h] = canvasSize();
   const open = document.body.classList.contains('panel-open');
   if (!open) return { w, h, ox: 0, oy: 0, vw: w, vh: h };
-  if (isSmall()) { const sh = h * 0.46, top = 64; return { w, h, ox: 0, oy: (sh - top) / 2, vw: w, vh: h - sh - top }; }
-  const pw = 380 + 32; return { w, h, ox: pw / 2, oy: 0, vw: w - pw, vh: h };
+  // 畫布被隱藏（尺寸 0）或極小時，可見區不能變成負值，否則算出負距離、鏡頭翻到地底
+  if (isSmall()) { const sh = h * 0.46, top = 64; return { w, h, ox: 0, oy: (sh - top) / 2, vw: w, vh: Math.max(h * 0.3, h - sh - top) }; }
+  const pw = 380 + 32; return { w, h, ox: pw / 2, oy: 0, vw: Math.max(w * 0.3, w - pw), vh: h };
 }
 function applyOffset() {
   const { w, h } = viewport();
