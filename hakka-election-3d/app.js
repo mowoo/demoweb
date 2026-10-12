@@ -99,7 +99,7 @@ const townsGeo = topojson.feature(topo, topo.objects.towns);
 const countiesGeo = topojson.feature(topo, topo.objects.counties);
 const projection = d3.geoMercator().fitSize([220, 270], townsGeo);
 // 離島示意位移（經度, 緯度）：投影範圍算好後再平移，方便讀者點擊；位置不照實際比例
-const ISLAND_SHIFT = { '金門縣': [1.15, -0.35], '連江縣': [0.15, -0.85], '澎湖縣': [0.25, 0.05] };
+const ISLAND_SHIFT = { '金門縣': [1.1, -0.15], '連江縣': [0.15, -0.85], '澎湖縣': [0.05, -0.05] };
 const shiftCoords = (coords, [dx, dy]) => typeof coords[0] === 'number' ? [coords[0] + dx, coords[1] + dy] : coords.map(c => shiftCoords(c, [dx, dy]));
 [townsGeo, countiesGeo].forEach(fc => fc.features.forEach(f => {
   const sh = ISLAND_SHIFT[norm(f.properties.COUNTYNAME)];
@@ -564,6 +564,35 @@ function syncChips() { chips.querySelectorAll('button').forEach(b => b.classList
 const raycaster = new THREE.Raycaster();
 const pointer = new THREE.Vector2();
 const pickables = Object.values(TOWNS).flatMap(t => t.meshes);
+// 離島加大感應區：以縣市主體範圍放大 20% 的透明圓盤接收點擊（不渲染，只做 raycast）
+// 半徑會被夾住：離本島至少留 3 單位、離島之間不重疊
+const HIT_PAD = 1.2, HIT_GAP = 3;
+const mainBoxes = Object.values(COUNTIES).filter(c => !ISLAND_SHIFT[c.name]).map(c => c.frameBox);
+const hits = Object.keys(ISLAND_SHIFT).map(name => {
+  const c = COUNTIES[name]; if (!c) return null;
+  const sph = c.frameBox.getBoundingSphere(new THREE.Sphere());
+  let r = Math.max(8, sph.radius * HIT_PAD);
+  mainBoxes.forEach(b => {
+    const dx = Math.max(b.min.x - sph.center.x, 0, sph.center.x - b.max.x);
+    const dz = Math.max(b.min.z - sph.center.z, 0, sph.center.z - b.max.z);
+    r = Math.min(r, Math.hypot(dx, dz) - HIT_GAP);
+  });
+  return { c, x: sph.center.x, z: sph.center.z, r };
+}).filter(Boolean);
+hits.forEach(a => hits.forEach(b => {            // 離島彼此不重疊
+  if (a === b) return;
+  const d = Math.hypot(a.x - b.x, a.z - b.z);
+  if (a.r + b.r > d - 1) { const k = (d - 1) / (a.r + b.r); a.r *= k; b.r *= k; }
+}));
+hits.forEach(({ c, x, z, r }) => {
+  const hit = new THREE.Mesh(new THREE.CircleGeometry(r, 32), new THREE.MeshBasicMaterial({ visible: false }));
+  hit.rotation.x = -Math.PI / 2;
+  hit.position.set(x, ISLAND_H + 0.5, z);
+  hit.userData.key = c.towns[0].key;
+  c.group.add(hit);           // 跟著縣市升降
+  c.hit = hit;
+  pickables.push(hit);
+});
 const tip = document.getElementById('tip');
 function pick(e) {
   const r = canvas.getBoundingClientRect();
