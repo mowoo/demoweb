@@ -15,7 +15,6 @@ const ISLAND_H = 4;          // 島嶼厚度
 const COUNTY_RISE = 6;       // 選取縣市整體升高
 const TOWN_RISE = [0.4, 5.5];// 縣內鄉鎮依數據再升高（最小, 最大）
 const FOV = 38;
-const TEST_COUNTIES = ['新竹縣', '花蓮縣', '金門縣'];
 // 招牌視角（azimuth 0 = 從南往北看；polar 為與垂直軸夾角）。未列者用預設
 const PRESETS = {
   '花蓮縣': { az: 0.75, polar: 0.92 },   // 從東南海上看向中央山脈
@@ -99,6 +98,13 @@ const topo = await fetch('data/towns.topo.json').then(r => r.json());
 const townsGeo = topojson.feature(topo, topo.objects.towns);
 const countiesGeo = topojson.feature(topo, topo.objects.counties);
 const projection = d3.geoMercator().fitSize([220, 270], townsGeo);
+// 離島示意位移（經度, 緯度）：投影範圍算好後再平移，方便讀者點擊；位置不照實際比例
+const ISLAND_SHIFT = { '金門縣': [1.15, -0.35], '連江縣': [0.15, -0.85], '澎湖縣': [0.25, 0.05] };
+const shiftCoords = (coords, [dx, dy]) => typeof coords[0] === 'number' ? [coords[0] + dx, coords[1] + dy] : coords.map(c => shiftCoords(c, [dx, dy]));
+[townsGeo, countiesGeo].forEach(fc => fc.features.forEach(f => {
+  const sh = ISLAND_SHIFT[norm(f.properties.COUNTYNAME)];
+  if (sh) f.geometry.coordinates = shiftCoords(f.geometry.coordinates, sh);
+}));
 const geoPath = d3.geoPath(projection);
 const [cx0, cy0] = projection([120.95, 23.75]);  // 視覺中心固定在本島
 const P = c => { const p = projection(c); return [p[0] - cx0, p[1] - cy0]; };
@@ -268,7 +274,7 @@ function viewport() {
   const open = document.body.classList.contains('panel-open');
   if (!open) return { w, h, ox: 0, oy: 0, vw: w, vh: h };
   // 畫布被隱藏（尺寸 0）或極小時，可見區不能變成負值，否則算出負距離、鏡頭翻到地底
-  if (isSmall()) { const sh = h * 0.46, top = 64; return { w, h, ox: 0, oy: (sh - top) / 2, vw: w, vh: Math.max(h * 0.3, h - sh - top) }; }
+  if (isSmall()) { const sh = h * 0.6, top = 56; return { w, h, ox: 0, oy: (sh - top) / 2, vw: w, vh: Math.max(h * 0.3, h - sh - top) }; }
   const pw = 380 + 32; return { w, h, ox: pw / 2, oy: 0, vw: Math.max(w * 0.3, w - pw), vh: h };
 }
 function applyOffset() {
@@ -459,12 +465,19 @@ function renderPanel() {
   document.getElementById('p-votes').textContent = el.votes == null ? '待補' : wan(el.votes);
   renderCandidates(el);
   const list = [...c.towns].sort((a, b) => b[metric] - a[metric]);
-  const max = Math.max(...list.map(t => t[metric]));
+  const sumHakka = c.towns.reduce((a, t) => a + t.hakka, 0) || 1;
   const ol = document.getElementById('p-towns');
-  ol.innerHTML = list.map(t => `<li><button data-k="${t.key}" class="${t.key === selTown ? 'on' : ''}">
+  ol.innerHTML = list.map(t => {
+    const few = t.hakka < 1000;                                   // 客家人口少於 1,000 人
+    const share = t.hakka / sumHakka * 100;                       // 佔全縣客家人口
+    const width = metric === 'pct' ? t.pct : share;               // 比例＝絕對值（滿條 100%）；人口＝佔比（全縣加總 100%）
+    const label = few ? '<small>少於 1,000 人</small>'
+      : metric === 'pct' ? t.pct.toFixed(1) + '%' : `${wan(t.hakka)}<small>${share.toFixed(0)}%</small>`;
+    return `<li class="${few ? 'few' : ''}"><button data-k="${t.key}" class="${t.key === selTown ? 'on' : ''}">
       <span>${show(t.town || t.county)}</span>
-      <span class="bar"><i style="width:${(t[metric] / max) * 100}%;background:#${ramp(t.pct / 75).getHexString()}"></i></span>
-      <b>${metric === 'pct' ? t.pct.toFixed(1) + '%' : wan(t.hakka)}</b></button></li>`).join('');
+      <span class="bar"><i style="width:${Math.max(few ? 0 : 1.5, width)}%;background:#${ramp(t.pct / 75).getHexString()}"></i></span>
+      <b>${label}</b></button></li>`;
+  }).join('');
   ol.querySelectorAll('button').forEach(b => {
     b.onclick = () => selectTown(b.dataset.k);
     b.onmouseenter = () => { hoverTown = b.dataset.k; paintCounty(c); };
@@ -493,7 +506,7 @@ document.querySelectorAll('#metric-seg button').forEach(b => b.onclick = () => {
 const panelEl = document.getElementById('panel');
 const sheet = { full: false, drag: null };
 const vh = () => innerHeight;
-const sheetY = full => full ? 0 : vh() * (0.92 - 0.46);   // 與 CSS --sheet-full / --sheet-half 對應
+const sheetY = full => full ? 0 : vh() * (0.92 - 0.6);    // 與 CSS --sheet-full / --sheet-half 對應
 function setSheet(full) {
   sheet.full = full;
   panelEl.classList.toggle('full', full);
@@ -543,7 +556,7 @@ const ORDER = ['基隆市', '臺北市', '新北市', '桃園市', '新竹市', 
   '臺南市', '高雄市', '屏東縣', '宜蘭縣', '花蓮縣', '臺東縣', '澎湖縣', '金門縣', '連江縣'];
 const chips = document.getElementById('chips');
 chips.innerHTML = ORDER.filter(n => COUNTIES[norm(n)]).map(n =>
-  `<button data-c="${norm(n)}" class="${TEST_COUNTIES.includes(n) ? 'test' : ''}">${n.replace(/[縣市]$/, '')}</button>`).join('');
+  `<button data-c="${norm(n)}">${n.replace(/[縣市]$/, '')}</button>`).join('');
 chips.querySelectorAll('button').forEach(b => b.onclick = () => focusCounty(b.dataset.c));
 function syncChips() { chips.querySelectorAll('button').forEach(b => b.classList.toggle('on', b.dataset.c === focused)); }
 

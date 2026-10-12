@@ -32,7 +32,6 @@
   #chips button{border:1px solid var(--line);background:rgba(255,253,248,.88);backdrop-filter:blur(6px);border-radius:999px;padding:4px 12px;font-size:13px;font-weight:600}
   #chips button:hover{border-color:var(--indigo)}
   #chips button.on{background:var(--indigo);border-color:var(--indigo);color:#fff}
-  #chips button.test::after{content:"●";color:var(--gold);font-size:9px;margin-left:4px;vertical-align:2px}
 
   /* 返回總覽 */
   #back{position:fixed;top:18px;right:20px;z-index:12;border:0;border-radius:999px;padding:8px 16px;background:var(--ink);color:#fff;font-weight:700;
@@ -69,12 +68,15 @@
   .seg button{border:0;background:none;border-radius:999px;padding:2px 10px;font-size:12px;font-weight:700;color:var(--muted)}
   .seg button.on{background:var(--indigo);color:#fff}
   .towns{list-style:none;margin:0;padding:0}
-  .towns li button{all:unset;box-sizing:border-box;cursor:pointer;display:grid;grid-template-columns:76px 1fr 58px;gap:10px;align-items:center;width:100%;padding:5px 6px;border-radius:8px;font-size:13px}
+  .towns li button{all:unset;box-sizing:border-box;cursor:pointer;display:grid;grid-template-columns:76px 1fr 66px;gap:10px;align-items:center;width:100%;padding:5px 6px;border-radius:8px;font-size:13px}
   .towns li button:hover,.towns li button.on{background:#f1ead9}
   .towns li button.on{box-shadow:inset 3px 0 0 var(--vermilion)}
   .towns .bar{height:9px;border-radius:5px;background:#ebe3cf;overflow:hidden}
   .towns .bar i{display:block;height:100%;border-radius:5px}
-  .towns b{text-align:right;font-variant-numeric:tabular-nums}
+  .towns b{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
+  .towns b small{display:block;font-weight:500;font-size:10.5px;color:var(--muted);line-height:1.1}
+  .towns li.few button{opacity:.6}
+  .towns li.few b small{font-size:11px}
   .p-note{margin-top:14px;font-size:12px;color:var(--muted)}
   .p-note em{font-style:normal;background:#fff3cf;color:#7a5b00;padding:1px 8px;border-radius:999px;margin-right:6px}
 
@@ -115,7 +117,7 @@
   @media (max-width:760px){
     :root{--panel-w:100vw}
     /* 底部抽屜：半屏（預設）⇄ 全屏，拖曳把手或標題列切換 */
-    :root{--sheet-half:46vh;--sheet-full:92vh}
+    :root{--sheet-half:60vh;--sheet-full:92vh}
     #panel{top:auto;left:0;right:0;bottom:0;width:auto;height:var(--sheet-full);border-radius:20px 20px 0 0;
       transform:translateY(105%);transition:transform .45s cubic-bezier(.2,.9,.25,1)}
     body.panel-open #panel{transform:translateY(calc(var(--sheet-full) - var(--sheet-half)))}
@@ -126,13 +128,18 @@
     #panel.full .p-head{border-radius:0}
     .p-body{overscroll-behavior:contain}
     body.panel-open #back{right:20px}
-    body.panel-open #chips{opacity:0;pointer-events:none}
+    #chips{display:none}
     body.panel-open #hud p,body.panel-open #hud .kicker{display:none}
     body.panel-open #hud h1{font-size:20px}
-    #chips{flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none;bottom:12px}
-    #chips button{flex:none}
-    .p-stats div{padding:6px 14px}
-    .p-stats b{font-size:18px}
+    .p-stats{grid-template-columns:repeat(4,1fr)}
+    .p-stats div{padding:6px 8px 6px 10px}
+    .p-stats span{font-size:10.5px}
+    .p-stats b{font-size:15px}
+    .stat-ph b{font-size:13px}
+    .p-head{padding:14px 14px 10px}
+    .p-head h2{font-size:21px}
+    .p-head .stamp{width:32px;height:32px;font-size:15px}
+    .p-body{padding:10px 14px 16px}
   }
 </style>
 <script type="importmap">
