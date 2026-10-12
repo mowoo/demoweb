@@ -323,10 +323,10 @@ function flyTo(pose, seconds = 2.0) {
   });
 }
 
-// 到位後鎖定構圖：只留小幅度旋轉與縮放
+// 到位後的鏡頭限制：水平旋轉不鎖（可 360° 繞著縣市看），只限制俯仰、距離，停用平移
 function lockAround(pose) {
-  controls.minAzimuthAngle = pose.az - 0.35;
-  controls.maxAzimuthAngle = pose.az + 0.35;
+  controls.minAzimuthAngle = -Infinity;
+  controls.maxAzimuthAngle = Infinity;
   controls.minPolarAngle = Math.max(0.2, pose.polar - 0.25);
   controls.maxPolarAngle = Math.min(Math.PI * 0.46, pose.polar + 0.15);
   controls.minDistance = pose.r * 0.65;
