@@ -373,6 +373,7 @@ async function focusCounty(name) {
   if (prev) settle(COUNTIES[prev]);
   Object.values(COUNTIES).forEach(o => tweenMix(o, o === c ? { focus: 1, dim: 0 } : { focus: 0, dim: 1 }));
   document.body.classList.add('panel-open');
+  if (!prev) setSheet(false);
   renderPanel();
   syncChips();
   document.getElementById('back').classList.add('on');
@@ -395,6 +396,7 @@ async function overview(seconds = 2.0) {
   if (prev) settle(COUNTIES[prev]);
   Object.values(COUNTIES).forEach(o => tweenMix(o, { focus: 0, dim: 0 }));
   document.body.classList.remove('panel-open');
+  setSheet(false);
   document.getElementById('back').classList.remove('on');
   syncChips();
   tweenOffset();
@@ -487,6 +489,51 @@ document.querySelectorAll('#metric-seg button').forEach(b => b.onclick = () => {
   document.querySelectorAll('#metric-seg button').forEach(x => x.classList.toggle('on', x === b));
   if (focused) { riseTowns(COUNTIES[focused]); renderPanel(); }
 });
+// ---------- 手機底部抽屜：半屏 ⇄ 全屏（拖曳標題列／把手，或點把手切換）----------
+const panelEl = document.getElementById('panel');
+const sheet = { full: false, drag: null };
+const vh = () => innerHeight;
+const sheetY = full => full ? 0 : vh() * (0.92 - 0.46);   // 與 CSS --sheet-full / --sheet-half 對應
+function setSheet(full) {
+  sheet.full = full;
+  panelEl.classList.toggle('full', full);
+  panelEl.classList.remove('dragging');
+  panelEl.style.transform = '';
+  if (!full) document.querySelector('.p-body').scrollTop = 0;
+}
+const head = panelEl.querySelector('.p-head');
+head.addEventListener('pointerdown', e => {
+  if (!isSmall() || e.target.closest('.p-close')) return;
+  sheet.drag = { y0: e.clientY, base: sheetY(sheet.full), t0: performance.now(), moved: 0 };
+  head.setPointerCapture(e.pointerId);
+  panelEl.classList.add('dragging');
+});
+head.addEventListener('pointermove', e => {
+  const d = sheet.drag; if (!d) return;
+  const dy = e.clientY - d.y0; d.moved = dy;
+  const y = Math.max(0, Math.min(vh() * 0.92 - 80, d.base + dy));
+  panelEl.style.transform = `translateY(${y}px)`;
+});
+const endDrag = e => {
+  const d = sheet.drag; if (!d) return;
+  sheet.drag = null;
+  const dt = performance.now() - d.t0, v = d.moved / Math.max(1, dt); // px/ms
+  const tapped = Math.abs(d.moved) < 6 && dt < 300;
+  if (tapped) { setSheet(!sheet.full); return; }                      // 點把手／標題列＝切換
+  const y = d.base + d.moved;
+  if (Math.abs(v) > 0.45) setSheet(v < 0);                           // 快速甩動依方向
+  else setSheet(y < sheetY(false) / 2);                              // 否則看停在哪半邊
+};
+head.addEventListener('pointerup', endDrag);
+head.addEventListener('pointercancel', endDrag);
+// 全屏時，內容捲到頂再往下拉 → 收回半屏
+const body = document.querySelector('.p-body');
+let bodyTouch = null;
+body.addEventListener('touchstart', e => { bodyTouch = sheet.full && body.scrollTop <= 0 ? e.touches[0].clientY : null; }, { passive: true });
+body.addEventListener('touchmove', e => {
+  if (bodyTouch == null) return;
+  if (e.touches[0].clientY - bodyTouch > 48 && body.scrollTop <= 0) { bodyTouch = null; setSheet(false); }
+}, { passive: true });
 document.getElementById('p-close').onclick = () => overview(1.6);
 document.getElementById('back').onclick = () => overview(1.6);
 addEventListener('keydown', e => { if (e.key === 'Escape' && focused) overview(1.6); });

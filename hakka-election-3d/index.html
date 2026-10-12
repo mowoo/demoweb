@@ -53,7 +53,7 @@
     background:var(--paper);border:1px solid var(--line);border-radius:18px;box-shadow:0 18px 50px rgba(20,36,63,.18);overflow:hidden;
     transform:translateX(calc(100% + 30px));transition:transform .55s cubic-bezier(.2,.9,.25,1)}
   body.panel-open #panel{transform:none}
-  .p-head{padding:16px 18px 14px;background:linear-gradient(135deg,var(--ink),var(--indigo));color:#fff;display:flex;align-items:center;gap:12px}
+  .p-head{position:relative;padding:16px 18px 14px;background:linear-gradient(135deg,var(--ink),var(--indigo));color:#fff;display:flex;align-items:center;gap:12px}
   .p-head .stamp{flex:none;width:40px;height:40px;border-radius:50%;border:3px solid var(--gold);color:var(--gold);display:grid;place-items:center;font:900 19px var(--serif);transform:rotate(-10deg)}
   .p-head h2{margin:0;font:900 26px/1.1 var(--serif)}
   .p-head small{display:block;color:#b9c6e0;font-size:12px;letter-spacing:.1em;margin-top:3px}
@@ -106,6 +106,7 @@
   .policy span{font-size:12.5px;color:var(--muted);line-height:1.5}
   .stat-ph b{color:var(--muted);font-weight:500;font-size:15px;font-family:var(--sans);padding-top:4px}
 
+  .grab{display:none}
   /* hover 提示 */
   #tip{position:fixed;z-index:25;pointer-events:none;background:var(--ink);color:#fff;font-size:12.5px;line-height:1.5;padding:6px 10px;border-radius:8px;
     transform:translate(14px,14px);opacity:0;transition:opacity .12s}
@@ -113,7 +114,17 @@
 
   @media (max-width:760px){
     :root{--panel-w:100vw}
-    #panel{top:auto;left:0;right:0;bottom:0;width:auto;height:46vh;border-radius:20px 20px 0 0;transform:translateY(105%)}
+    /* 底部抽屜：半屏（預設）⇄ 全屏，拖曳把手或標題列切換 */
+    :root{--sheet-half:46vh;--sheet-full:92vh}
+    #panel{top:auto;left:0;right:0;bottom:0;width:auto;height:var(--sheet-full);border-radius:20px 20px 0 0;
+      transform:translateY(105%);transition:transform .45s cubic-bezier(.2,.9,.25,1)}
+    body.panel-open #panel{transform:translateY(calc(var(--sheet-full) - var(--sheet-half)))}
+    body.panel-open #panel.full{transform:translateY(0)}
+    #panel.dragging{transition:none}
+    .grab{display:block;position:absolute;left:50%;top:6px;width:44px;height:5px;margin-left:-22px;border-radius:3px;background:rgba(255,255,255,.55)}
+    .p-head{padding-top:18px;cursor:grab;touch-action:none;user-select:none;-webkit-user-select:none}
+    #panel.full .p-head{border-radius:0}
+    .p-body{overscroll-behavior:contain}
     body.panel-open #back{right:20px}
     body.panel-open #chips{opacity:0;pointer-events:none}
     body.panel-open #hud p,body.panel-open #hud .kicker{display:none}
@@ -146,7 +157,7 @@
 <button id="back" type="button">← 回到全臺</button>
 
 <aside id="panel" aria-live="polite">
-  <div class="p-head">
+  <div class="p-head"><span class="grab" aria-hidden="true"></span>
     <div class="stamp">選</div>
     <div><h2 id="p-name">—</h2><small id="p-sub">客家人口檔案</small></div>
     <button class="p-close" id="p-close" aria-label="關閉面板">✕</button>
