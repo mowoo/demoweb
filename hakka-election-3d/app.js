@@ -505,7 +505,7 @@ const head = panelEl.querySelector('.p-head');
 head.addEventListener('pointerdown', e => {
   if (!isSmall() || e.target.closest('.p-close')) return;
   sheet.drag = { y0: e.clientY, base: sheetY(sheet.full), t0: performance.now(), moved: 0 };
-  head.setPointerCapture(e.pointerId);
+  try { head.setPointerCapture(e.pointerId); } catch (_) {}
   panelEl.classList.add('dragging');
 });
 head.addEventListener('pointermove', e => {
