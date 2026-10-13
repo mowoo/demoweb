@@ -504,36 +504,36 @@ document.querySelectorAll('#metric-seg button').forEach(b => b.onclick = () => {
 const panelEl = document.getElementById('panel');
 const sheet = { full: false, drag: null };
 const vh = () => innerHeight;
-const sheetY = full => full ? 0 : vh() * (0.92 - 0.6);    // 與 CSS --sheet-full / --sheet-half 對應
+const sheetH = full => vh() * (full ? 0.92 : 0.6);          // 與 CSS --sheet-full / --sheet-half 對應
 function setSheet(full) {
   sheet.full = full;
   panelEl.classList.toggle('full', full);
   panelEl.classList.remove('dragging');
-  panelEl.style.transform = '';
+  panelEl.style.height = '';
   if (!full) document.querySelector('.p-body').scrollTop = 0;
 }
 const head = panelEl.querySelector('.p-head');
 head.addEventListener('pointerdown', e => {
   if (!isSmall() || e.target.closest('.p-close')) return;
-  sheet.drag = { y0: e.clientY, base: sheetY(sheet.full), t0: performance.now(), moved: 0 };
+  sheet.drag = { y0: e.clientY, base: sheetH(sheet.full), t0: performance.now(), moved: 0 };
   try { head.setPointerCapture(e.pointerId); } catch (_) {}
   panelEl.classList.add('dragging');
 });
 head.addEventListener('pointermove', e => {
   const d = sheet.drag; if (!d) return;
   const dy = e.clientY - d.y0; d.moved = dy;
-  const y = Math.max(0, Math.min(vh() * 0.92 - 80, d.base + dy));
-  panelEl.style.transform = `translateY(${y}px)`;
+  const h = Math.max(80, Math.min(sheetH(true), d.base - dy));   // 往上拖＝變高
+  panelEl.style.height = h + 'px';
 });
 const endDrag = e => {
   const d = sheet.drag; if (!d) return;
   sheet.drag = null;
-  const dt = performance.now() - d.t0, v = d.moved / Math.max(1, dt); // px/ms
+  const dt = performance.now() - d.t0, v = d.moved / Math.max(1, dt); // px/ms（往下為正）
   const tapped = Math.abs(d.moved) < 6 && dt < 300;
   if (tapped) { setSheet(!sheet.full); return; }                      // 點把手／標題列＝切換
-  const y = d.base + d.moved;
+  const h = d.base - d.moved;
   if (Math.abs(v) > 0.45) setSheet(v < 0);                           // 快速甩動依方向
-  else setSheet(y < sheetY(false) / 2);                              // 否則看停在哪半邊
+  else setSheet(h > (sheetH(false) + sheetH(true)) / 2);             // 否則看停在哪半邊
 };
 head.addEventListener('pointerup', endDrag);
 head.addEventListener('pointercancel', endDrag);
