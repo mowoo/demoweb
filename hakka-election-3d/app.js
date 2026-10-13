@@ -433,15 +433,13 @@ function renderCandidates(el) {
   if (pickedCand >= cs.length) pickedCand = 0;
   const cur = cs[pickedCand];
   box.innerHTML = cs.map((cd, i) => `
-    <div class="cand ${i === pickedCand ? 'on' : ''}" style="--cc:${cd.color}">
-      <button class="pick" data-i="${i}" aria-pressed="${i === pickedCand}">
-        <div class="art">${cd.photo ? `<img src="${cd.photo}" alt="${cd.name}插畫">` : avatar(cd, i) + '<span class="ph">插畫待補</span>'}</div>
-        <div class="nm">${cd.name}</div>
-        <span class="party">${cd.party}</span>
-        <div class="age">${cd.age == null ? '年紀待補' : cd.age + ' 歲'} · ${cd.role}</div>
-      </button>
+    <button class="cand pick ${i === pickedCand ? 'on' : ''}" style="--cc:${cd.color}" data-i="${i}" aria-pressed="${i === pickedCand}">
+      <div class="art">${cd.photo ? `<img src="${cd.photo}" alt="${cd.name}插畫">` : avatar(cd, i) + '<span class="ph">插畫待補</span>'}</div>
+      <div class="nm">${cd.name}</div>
+      <span class="party">${cd.party}</span>
+      <div class="age">${cd.age == null ? '年紀待補' : cd.age + ' 歲'} · ${cd.role}</div>
       <ul>${(cd.bio || []).map(b => `<li>${b}</li>`).join('')}</ul>
-    </div>`).join('');
+    </button>`).join('');
   seg.innerHTML = cs.map((cd, i) => `<button role="tab" class="${i === pickedCand ? 'on' : ''}" style="--cc:${cd.color}" data-i="${i}">${cd.name}</button>`).join('');
   document.getElementById('p-pol-title').textContent = `${cur.name} 的四大客家政策`;
   pol.innerHTML = (cur.policies || []).map((p, i) => `<li class="policy" style="--cc:${cur.color}"><i>${i + 1}</i><div><b>${p.t}</b><span>${p.d}</span></div></li>`).join('');
