@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 360" width="480" height="360">
+<rect width="480" height="360" rx="18" fill="#fffdf8"/>
+<rect x="60" y="70" width="360" height="220" rx="12" fill="#f3ead6" stroke="#c7b394" stroke-width="2"/>
+<path d="M150 110 l40 -18 l60 12 l50 -6 l40 30 l-20 60 l-50 40 l-60 -10 l-40 -40 z" fill="#e9dcc0" stroke="#c7b394" stroke-width="2" opacity=".9"/>
+<circle cx="190" cy="200" r="16" fill="#14243f" opacity=".9"/><circle cx="190" cy="200" r="26" fill="none" stroke="#14243f" stroke-width="3" opacity=".35"/><circle cx="290" cy="140" r="16" fill="#14243f" opacity=".9"/><circle cx="290" cy="140" r="26" fill="none" stroke="#14243f" stroke-width="3" opacity=".35"/><defs><marker id="m5717" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto"><path d="M0 0L8 4L0 8z" fill="#d8412f"/></marker></defs><line x1="165" y1="215" x2="120" y2="245" stroke="#d8412f" stroke-width="5" stroke-linecap="round" marker-end="url(#m5717)"/><defs><marker id="m9376" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto"><path d="M0 0L8 4L0 8z" fill="#d8412f"/></marker></defs><line x1="315" y1="125" x2="360" y2="95" stroke="#d8412f" stroke-width="5" stroke-linecap="round" marker-end="url(#m9376)"/>
+<text x="240" y="330" text-anchor="middle" font-family="Noto Sans TC,sans-serif" font-size="15" fill="#7a7262">雙指開合：縮放（佔位圖）</text>
+</svg>

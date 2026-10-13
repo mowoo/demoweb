@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 360" width="480" height="360">
+<rect width="480" height="360" rx="18" fill="#fffdf8"/>
+<rect x="60" y="70" width="360" height="220" rx="12" fill="#f3ead6" stroke="#c7b394" stroke-width="2"/>
+<path d="M150 110 l40 -18 l60 12 l50 -6 l40 30 l-20 60 l-50 40 l-60 -10 l-40 -40 z" fill="#e9dcc0" stroke="#c7b394" stroke-width="2" opacity=".9"/>
+<circle cx="255" cy="170" r="16" fill="#d8412f" opacity=".9"/><circle cx="255" cy="170" r="26" fill="none" stroke="#d8412f" stroke-width="3" opacity=".35"/><circle cx="255" cy="170" r="40" fill="none" stroke="#d8412f" stroke-width="3" stroke-dasharray="6 6"/>
+<text x="240" y="330" text-anchor="middle" font-family="Noto Sans TC,sans-serif" font-size="15" fill="#7a7262">點一下縣市（佔位圖）</text>
+</svg>

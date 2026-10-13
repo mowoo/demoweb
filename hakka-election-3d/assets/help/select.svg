@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 360" width="480" height="360">
+<rect width="480" height="360" rx="18" fill="#fffdf8"/>
+<rect x="60" y="70" width="360" height="220" rx="12" fill="#f3ead6" stroke="#c7b394" stroke-width="2"/>
+<path d="M150 110 l40 -18 l60 12 l50 -6 l40 30 l-20 60 l-50 40 l-60 -10 l-40 -40 z" fill="#e9dcc0" stroke="#c7b394" stroke-width="2" opacity=".9"/>
+<rect x="120" y="140" width="240" height="56" rx="12" fill="#14243f"/><text x="140" y="178" font-family="Noto Serif TC,serif" font-weight="900" font-size="26" fill="#fff">新竹縣</text><circle cx="330" cy="168" r="14" fill="none" stroke="#f2b632" stroke-width="3"/><text x="330" y="175" text-anchor="middle" font-size="16" fill="#f2b632">▾</text><circle cx="330" cy="215" r="16" fill="#d8412f" opacity=".9"/><circle cx="330" cy="215" r="26" fill="none" stroke="#d8412f" stroke-width="3" opacity=".35"/>
+<text x="240" y="330" text-anchor="middle" font-family="Noto Sans TC,sans-serif" font-size="15" fill="#7a7262">點抽屜標題：換縣市（佔位圖）</text>
+</svg>

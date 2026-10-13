@@ -131,6 +131,32 @@
   .stat-ph b{color:var(--muted);font-weight:500;font-size:15px;font-family:var(--sans);padding-top:4px}
 
   .grab{display:none}
+  /* ── 操作說明按鈕與 lightbox ── */
+  #help-btn{position:fixed;top:18px;right:20px;z-index:12;width:38px;height:38px;border-radius:50%;border:0;background:var(--ink);color:var(--gold);
+    font:900 20px/1 var(--serif);box-shadow:0 6px 18px rgba(20,36,63,.25);transition:right .3s}
+  #help-btn:hover{background:var(--indigo)}
+  #back{right:68px}
+  body.panel-open #help-btn{right:calc(var(--panel-w) + 36px)}
+  body.panel-open #back{right:calc(var(--panel-w) + 84px)}
+  #help{position:fixed;inset:0;z-index:40;display:none;align-items:center;justify-content:center;padding:20px;background:rgba(10,18,34,.62);backdrop-filter:blur(4px)}
+  #help.on{display:flex}
+  .help-box{width:min(920px,100%);max-height:calc(100vh - 40px);overflow:auto;background:var(--paper);border-radius:18px;box-shadow:0 30px 80px rgba(0,0,0,.4);animation:rise .3s cubic-bezier(.2,.9,.3,1.2)}
+  @keyframes rise{from{opacity:0;transform:translateY(14px) scale(.98)}}
+  .help-head{position:sticky;top:0;display:flex;align-items:center;gap:12px;padding:14px 18px;background:linear-gradient(135deg,var(--ink),var(--indigo));color:#fff;border-radius:18px 18px 0 0}
+  .help-head h2{margin:0;font:900 22px/1.1 var(--serif)}
+  .help-tabs{display:inline-flex;background:rgba(255,255,255,.14);border-radius:999px;padding:3px;margin-left:8px}
+  .help-tabs button{border:0;background:none;color:#dbe3f2;border-radius:999px;padding:5px 14px;font-weight:700}
+  .help-tabs button.on{background:var(--gold);color:var(--ink)}
+  .help-close{margin-left:auto;width:34px;height:34px;border-radius:50%;border:0;background:rgba(255,255,255,.14);color:#fff;font-size:17px}
+  .help-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:14px;padding:18px}
+  .help-item{background:#f7f2e5;border-radius:14px;overflow:hidden;border:1px solid var(--line)}
+  .help-item img{display:block;width:100%;aspect-ratio:4/3;object-fit:cover;background:#fff}
+  .help-item b{display:block;padding:10px 12px 2px;font-size:15px}
+  .help-item span{display:block;padding:0 12px 12px;font-size:12.5px;color:var(--muted);line-height:1.5}
+  .help-foot{padding:0 18px 16px;font-size:12px;color:var(--muted)}
+  .help-foot em{font-style:normal;background:#fff3cf;color:#7a5b00;padding:1px 8px;border-radius:999px;margin-right:6px}
+  .help-pane[hidden]{display:none}
+
   /* hover 提示 */
   #tip{position:fixed;z-index:25;pointer-events:none;background:var(--ink);color:#fff;font-size:12.5px;line-height:1.5;padding:6px 10px;border-radius:8px;
     transform:translate(14px,14px);opacity:0;transition:opacity .12s}
@@ -150,7 +176,10 @@
     .p-head{padding-top:18px;cursor:grab;touch-action:none;user-select:none;-webkit-user-select:none}
     #panel.full .p-head{border-radius:0}
     .p-body{overscroll-behavior:contain}
-    body.panel-open #back{right:20px}
+    body.panel-open #back{right:68px}
+    body.panel-open #help-btn{right:20px}
+    .help-grid{grid-template-columns:1fr 1fr;gap:10px;padding:12px}
+    .help-head h2{font-size:18px}
     body.sheet-full #float-metric{opacity:0;pointer-events:none}   /* 抽屜拉到全屏時地圖被蓋住，浮動按鈕一起藏 */
     #chips{display:none}
     body.panel-open #hud p,body.panel-open #hud .kicker{display:none}
@@ -188,6 +217,38 @@
 
 <nav id="chips" aria-label="縣市快速切換"></nav>
 <button id="back" type="button">← 回到全臺</button>
+<button id="help-btn" type="button" aria-label="操作說明" title="操作說明">?</button>
+
+<div id="help" role="dialog" aria-modal="true" aria-label="操作說明">
+  <div class="help-box">
+    <div class="help-head">
+      <h2>操作說明</h2>
+      <div class="help-tabs" role="tablist">
+        <button data-pane="touch" role="tab">手機</button><button data-pane="desktop" role="tab">電腦</button>
+      </div>
+      <button class="help-close" aria-label="關閉">✕</button>
+    </div>
+    <div class="help-pane" data-pane="touch">
+      <div class="help-grid">
+        <div class="help-item"><img src="assets/help/tap.svg" alt=""><b>點一下縣市</b><span>鏡頭飛入，縣市升起、鄉鎮依客家數據起伏，下方抽屜顯示該縣檔案。</span></div>
+        <div class="help-item"><img src="assets/help/one-drag.svg" alt=""><b>單指拖曳：移動</b><span>像一般地圖一樣滑動，看其他地區。</span></div>
+        <div class="help-item"><img src="assets/help/pinch.svg" alt=""><b>雙指開合：縮放</b><span>拉近看鄉鎮，拉遠看全臺。</span></div>
+        <div class="help-item"><img src="assets/help/two-drag.svg" alt=""><b>雙指一起拖曳：旋轉</b><span>左右轉方向、上下改俯仰角度。</span></div>
+        <div class="help-item"><img src="assets/help/select.svg" alt=""><b>點抽屜標題：換縣市</b><span>縣市名稱就是下拉選單，不用回到全臺。</span></div>
+        <div class="help-item"><img src="assets/help/sheet.svg" alt=""><b>拖把手：展開抽屜</b><span>往上拖看完整資料，往下拖或點把手收回。</span></div>
+      </div>
+    </div>
+    <div class="help-pane" data-pane="desktop" hidden>
+      <div class="help-grid">
+        <div class="help-item"><img src="assets/help/tap.svg" alt=""><b>點一下縣市</b><span>鏡頭飛入，縣市升起、鄉鎮依客家數據起伏，右側顯示該縣檔案。也可用下方縣市按鈕。</span></div>
+        <div class="help-item"><img src="assets/help/mouse-left.svg" alt=""><b>左鍵拖曳：旋轉</b><span>左右轉方向、上下改俯仰角度。</span></div>
+        <div class="help-item"><img src="assets/help/mouse-right.svg" alt=""><b>右鍵拖曳：平移</b><span>滑到其他地區。</span></div>
+        <div class="help-item"><img src="assets/help/wheel.svg" alt=""><b>滾輪：縮放</b><span>往游標位置拉近或拉遠。</span></div>
+      </div>
+    </div>
+    <div class="help-foot"><em>佔位</em>圖解為示意線稿，正式插圖以 Higgsfield 生成後替換（480×360）。按 Esc 或點背景關閉。</div>
+  </div>
+</div>
 <div id="float-metric" aria-label="鄉鎮起伏與顏色依據"><span class="fl">鄉鎮依據</span>
   <span class="seg"><button data-m="pct" class="on">客家比例</button><button data-m="hakka">客家人口</button></span></div>
 

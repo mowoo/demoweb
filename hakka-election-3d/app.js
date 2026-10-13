@@ -691,7 +691,32 @@ body.addEventListener('touchmove', e => {
 }, { passive: true });
 document.getElementById('p-close').onclick = () => overview(1.6);
 document.getElementById('back').onclick = () => overview(1.6);
-addEventListener('keydown', e => { if (e.key === 'Escape' && focused) overview(1.6); });
+// ---------- 操作說明 lightbox ----------
+const helpEl = document.getElementById('help');
+const AUTO_SHOW_HELP_ONCE = true;                     // 第一次進站自動跳一次（記在 localStorage）
+const isTouch = matchMedia('(hover: none) and (pointer: coarse)').matches;
+function showHelp(pane) {
+  pane = pane || (isTouch ? 'touch' : 'desktop');
+  helpEl.querySelectorAll('.help-tabs button').forEach(b => b.classList.toggle('on', b.dataset.pane === pane));
+  helpEl.querySelectorAll('.help-pane').forEach(p => p.hidden = p.dataset.pane !== pane);
+  helpEl.classList.add('on');
+}
+function hideHelp() { helpEl.classList.remove('on'); }
+document.getElementById('help-btn').onclick = () => showHelp();
+helpEl.querySelector('.help-close').onclick = hideHelp;
+helpEl.addEventListener('click', e => { if (e.target === helpEl) hideHelp(); });
+helpEl.querySelectorAll('.help-tabs button').forEach(b => b.onclick = () => showHelp(b.dataset.pane));
+addEventListener('keydown', e => {
+  if (e.key !== 'Escape') return;
+  if (helpEl.classList.contains('on')) hideHelp();
+  else if (focused) overview(1.6);
+});
+try {
+  if (AUTO_SHOW_HELP_ONCE && !localStorage.getItem('hakka3d-help-seen')) {
+    localStorage.setItem('hakka3d-help-seen', '1');
+    setTimeout(() => showHelp(), REDUCED ? 300 : 3200);   // 等開場運鏡結束
+  }
+} catch (_) {}
 
 // ---------- 縣市快速切換 ----------
 const ORDER = ['基隆市', '臺北市', '新北市', '桃園市', '新竹市', '新竹縣', '苗栗縣', '臺中市', '彰化縣', '南投縣', '雲林縣', '嘉義市', '嘉義縣',
