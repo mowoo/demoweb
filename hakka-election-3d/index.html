@@ -133,7 +133,7 @@
   @media (max-width:760px){
     :root{--panel-w:100vw}
     /* 底部抽屜：半屏（預設）⇄ 全屏，拖曳把手或標題列切換 */
-    :root{--sheet-half:60vh;--sheet-full:92vh}
+    :root{--sheet-half:45vh;--sheet-full:92vh}
     /* 抽屜用「高度」切換而非位移：半屏時可捲動範圍＝看得到的範圍，內容不會藏在螢幕外 */
     #panel{top:auto;left:0;right:0;bottom:0;width:auto;height:var(--sheet-half);border-radius:20px 20px 0 0;
       transform:translateY(105%);transition:transform .45s cubic-bezier(.2,.9,.25,1),height .35s cubic-bezier(.2,.9,.25,1)}

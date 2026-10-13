@@ -368,7 +368,7 @@ function viewport() {
   const open = document.body.classList.contains('panel-open');
   if (!open) return { w, h, ox: 0, oy: 0, vw: w, vh: h };
   // 畫布被隱藏（尺寸 0）或極小時，可見區不能變成負值，否則算出負距離、鏡頭翻到地底
-  if (isSmall()) { const sh = h * 0.6, top = 56; return { w, h, ox: 0, oy: (sh - top) / 2, vw: w, vh: Math.max(h * 0.3, h - sh - top) }; }
+  if (isSmall()) { const sh = h * 0.45, top = 56; return { w, h, ox: 0, oy: (sh - top) / 2, vw: w, vh: Math.max(h * 0.3, h - sh - top) }; }
   const pw = 380 + 32; return { w, h, ox: pw / 2, oy: 0, vw: Math.max(w * 0.3, w - pw), vh: h };
 }
 function applyOffset() {
@@ -630,7 +630,7 @@ document.querySelectorAll('#metric-seg button, #float-metric button').forEach(b 
 const panelEl = document.getElementById('panel');
 const sheet = { full: false, drag: null };
 const vh = () => innerHeight;
-const sheetH = full => vh() * (full ? 0.92 : 0.6);          // 與 CSS --sheet-full / --sheet-half 對應
+const sheetH = full => vh() * (full ? 0.92 : 0.45);          // 與 CSS --sheet-full / --sheet-half 對應
 function setSheet(full) {
   sheet.full = full;
   panelEl.classList.toggle('full', full);
