@@ -22,12 +22,12 @@
   #veil b{font:900 22px var(--serif);letter-spacing:.2em;color:var(--indigo)}
 
   /* 左上標題 */
-  #hud{position:fixed;top:18px;left:20px;z-index:10;pointer-events:none;max-width:min(440px,calc(100vw - 40px))}
+  #hud{position:fixed;top:18px;left:20px;z-index:10;pointer-events:none;max-width:min(620px,calc(100vw - 40px))}
   #hud .kicker{font-size:12px;font-weight:700;letter-spacing:.22em;color:var(--vermilion)}
   #hud h1{margin:2px 0 4px;font:900 clamp(24px,3.4vw,34px)/1.2 var(--serif);color:var(--ink)}
-  #hud p{margin:0;font-size:13px;color:var(--muted)}
-  .hint-touch{display:none}
-  @media (hover:none) and (pointer:coarse){.hint-desktop{display:none}.hint-touch{display:block}}
+  #hud p{display:inline-block;margin:4px 0 0;padding:7px 16px;border-radius:999px;background:var(--vermilion);color:#fff;font-size:15px;font-weight:700;line-height:1.5;box-shadow:0 4px 12px rgba(216,65,47,.28)}
+  #hud p.hint-touch{display:none}
+  @media (hover:none) and (pointer:coarse){#hud p.hint-desktop{display:none}#hud p.hint-touch{display:inline-block}}
   .legend{display:flex;align-items:center;gap:5px;margin-top:8px;font-size:11.5px;color:var(--muted)}
   .legend i{width:22px;height:9px;border-radius:2px}
   .legend i:nth-child(2){background:#f3e58a}.legend i:nth-child(3){background:#f3a72a}.legend i:nth-child(4){background:#f05a45}
