@@ -30,7 +30,10 @@ const THEME = {
   bg: 0xf6f1e7, sea: 0xece3d0, island: 0xfffdf8,
   townEdge: 0xc7b394, countyLine: 0x8a6f4d,
 };
-const STOPS = ['#14b8a6', '#eab308', '#f97316', '#dc2626'].map(c => new THREE.Color(c));
+// 色階（依客戶要求避開藍綠，取氣象署累積雨量圖例黃色以上區段）：淺黃 → 黃橙 → 紅 → 深紅 → 深紫
+const STOPS = ['#f3e58a', '#f3a72a', '#f05a45', '#9a231f', '#8b2fa6'].map(c => new THREE.Color(c));
+// 各指標的上色上限（鄉鎮／縣市分開）：比例用 %；人口用全國最高值附近
+const COLOR_MAX = { pct: { town: 75, county: 70 }, hakka: { town: 240000, county: 920000 } };
 function ramp(t) {
   t = Math.min(1, Math.max(0, t)) * (STOPS.length - 1);
   const i = Math.min(STOPS.length - 2, Math.floor(t));
@@ -38,7 +41,7 @@ function ramp(t) {
 }
 const C_ISLAND = new THREE.Color(THEME.island);
 const C_DIM = new THREE.Color(0xeee6d4);
-const C_HOVER = new THREE.Color(0xf2b632);
+const C_HOVER = new THREE.Color(0xffffff);   // hover／選取：往白色提亮（避免與色階中的黃橙混淆）
 
 // ---------- 渲染器 / 場景 ----------
 const canvas = document.getElementById('scene');
@@ -201,8 +204,8 @@ function paintCounty(c) {
   const { focus, dim, hover } = c.mix;
   c.towns.forEach(t => t.meshes.forEach(m => {
     _c.copy(m.userData.cBase).lerp(m.userData.cFocus, focus).lerp(C_DIM, dim * 0.85);
-    if (t.key === hoverTown || t.key === selTown) _c.lerp(C_HOVER, t.key === selTown ? 0.75 : 0.45);
-    else if (hover) _c.lerp(C_HOVER, hover * 0.35);
+    if (t.key === hoverTown || t.key === selTown) _c.lerp(C_HOVER, t.key === selTown ? 0.6 : 0.4);
+    else if (hover) _c.lerp(C_HOVER, hover * 0.4);
     m.material.color.copy(_c);
   }));
   if (c.outlineMat) c.outlineMat.opacity = 0.85 * (1 - focus) * (1 - dim * 0.6);
@@ -215,12 +218,19 @@ Object.values(COUNTIES).forEach(c => {
   c.pct = c.total ? (c.hakka / c.total) * 100 : 0;
   c.box = new THREE.Box3().setFromObject(c.group);
   c.area = (c.box.max.x - c.box.min.x) * (c.box.max.z - c.box.min.z);
-  c.towns.forEach(t => t.meshes.forEach(m => {
-    m.userData.cBase = new THREE.Color().lerpColors(C_ISLAND, ramp(c.pct / 70), 0.42);
-    m.userData.cFocus = ramp(t.pct / 75);
-  }));
-  paintCounty(c);
 });
+// 依目前指標重算顏色：總覽縣市底色（縣市值）與聚焦鄉鎮色（鄉鎮值）
+const colorOf = (v, lvl) => ramp(v / COLOR_MAX[metric][lvl]);
+function recolor() {
+  Object.values(COUNTIES).forEach(c => {
+    c.towns.forEach(t => t.meshes.forEach(m => {
+      m.userData.cBase = new THREE.Color().lerpColors(C_ISLAND, colorOf(c[metric], 'county'), 0.42);
+      m.userData.cFocus = colorOf(t[metric], 'town');
+    }));
+    paintCounty(c);
+  });
+}
+recolor();
 
 // ---------- 標籤 ----------
 const labelLayer = document.getElementById('labels');
@@ -477,7 +487,7 @@ function renderPanel() {
       : metric === 'pct' ? t.pct.toFixed(1) + '%' : `${wan(t.hakka)}<small>${share.toFixed(0)}%</small>`;
     return `<li class="${few ? 'few' : ''}"><button data-k="${t.key}" class="${t.key === selTown ? 'on' : ''}">
       <span>${show(t.town || t.county)}</span>
-      <span class="bar"><i style="width:${Math.max(few ? 0 : 1.5, width)}%;background:#${ramp(t.pct / 75).getHexString()}"></i></span>
+      <span class="bar"><i style="width:${Math.max(few ? 0 : 1.5, width)}%;background:#${colorOf(t[metric], 'town').getHexString()}"></i></span>
       <b>${label}</b></button></li>`;
   }).join('');
   ol.querySelectorAll('button').forEach(b => {
@@ -502,6 +512,7 @@ function selectTown(key) {
 document.querySelectorAll('#metric-seg button').forEach(b => b.onclick = () => {
   metric = b.dataset.m;
   document.querySelectorAll('#metric-seg button').forEach(x => x.classList.toggle('on', x === b));
+  recolor();
   if (focused) { riseTowns(COUNTIES[focused]); renderPanel(); }
 });
 // ---------- 手機底部抽屜：半屏 ⇄ 全屏（拖曳標題列／把手，或點把手切換）----------

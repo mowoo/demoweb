@@ -26,6 +26,11 @@
   #hud .kicker{font-size:12px;font-weight:700;letter-spacing:.22em;color:var(--vermilion)}
   #hud h1{margin:2px 0 4px;font:900 clamp(24px,3.4vw,34px)/1.2 var(--serif);color:var(--ink)}
   #hud p{margin:0;font-size:13px;color:var(--muted)}
+  .legend{display:flex;align-items:center;gap:5px;margin-top:8px;font-size:11.5px;color:var(--muted)}
+  .legend i{width:22px;height:9px;border-radius:2px}
+  .legend i:nth-child(2){background:#f3e58a}.legend i:nth-child(3){background:#f3a72a}.legend i:nth-child(4){background:#f05a45}
+  .legend i:nth-child(5){background:#9a231f}.legend i:nth-child(6){background:#8b2fa6}
+  body.panel-open .legend{display:none}
 
   /* 縣市快速切換 */
   #chips{position:fixed;left:20px;bottom:18px;z-index:10;display:flex;flex-wrap:wrap;gap:6px;max-width:min(560px,calc(100vw - 40px));transition:opacity .3s}
@@ -162,6 +167,7 @@
   <div class="kicker">2026 地方選舉 · 客家選情</div>
   <h1>客家選情 3D 地圖</h1>
   <p>點選縣市：鏡頭飛入、縣市升起、鄉鎮依數據起伏。拖曳旋轉、滾輪縮放。</p>
+  <div class="legend" aria-label="客家比例色階"><span>客家比例 低</span><i></i><i></i><i></i><i></i><i></i><span>高</span></div>
 </header>
 
 <nav id="chips" aria-label="縣市快速切換"></nav>
