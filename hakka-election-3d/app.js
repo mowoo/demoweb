@@ -495,6 +495,8 @@ async function overview(seconds = 2.0) {
 }
 
 // ---------- 候選人與政策（佔位；資料在 data/election.js）----------
+// 專訪網址未填時先連到客新聞首頁（另開新頁）
+const PLACEHOLDER_LINK = 'https://hakkanews.tw/';
 // 預設插畫人像：election.js 填 photo 路徑即取代
 function avatar(cd, i) {
   const hair = i === 0
@@ -526,8 +528,7 @@ function renderCandidates(el) {
     <div class="policy" style="--cc:${cd.color}">
       <b>${cd.name}</b>
       <p>${cd.policy || '（政策標題待補）'}</p>
-      ${cd.link ? `<a class="more" href="${cd.link}" target="_blank" rel="noopener">看完整政策 →</a>`
-                : `<span class="more off">看完整政策 →<small>專訪網址待補</small></span>`}
+      <a class="more" href="${cd.link || PLACEHOLDER_LINK}" target="_blank" rel="noopener">看完整政策 →</a>
     </div>`).join('');
 }
 
