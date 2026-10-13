@@ -216,8 +216,9 @@ function paintCounty(c) {
   const { focus, dim, hover } = c.mix;
   c.towns.forEach(t => t.meshes.forEach(m => {
     _c.copy(m.userData.cBase).lerp(m.userData.cFocus, focus).lerp(C_DIM, dim * 0.85);
-    if (t.key === hoverTown || t.key === selTown) _c.lerp(C_HOVER, t.key === selTown ? 0.6 : 0.4);
-    else if (hover) _c.lerp(C_HOVER, hover * 0.4);
+    // 被點選的鄉鎮只升起、不變色（標籤仍以紅底標示）；滑過時才輕微提亮
+    if (t.key === hoverTown && t.key !== selTown) _c.lerp(C_HOVER, 0.4);
+    else if (hover && t.key !== selTown) _c.lerp(C_HOVER, hover * 0.4);
     m.material.color.copy(_c);
   }));
   if (c.outlineMat) c.outlineMat.opacity = 0.85 * (1 - focus) * (1 - dim * 0.6);
