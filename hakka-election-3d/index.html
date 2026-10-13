@@ -58,6 +58,7 @@
   #labels{position:fixed;inset:0;z-index:5;pointer-events:none}
   .lb{position:absolute;left:0;top:0;white-space:nowrap;transform:translate(-50%,-50%);will-change:transform;transition:opacity .35s}
   .lb.county{font:900 14px var(--serif);color:var(--ink);text-shadow:0 0 4px var(--paper),0 0 4px var(--paper),0 0 8px var(--paper)}
+  .lb.county.dim:not(.hide):not(.clash){opacity:.55;font-size:13px}   /* 聚焦某縣時其他縣市名淡化 */
   .lb.town{font:700 11px var(--sans);color:var(--ink);background:rgba(255,253,248,.82);padding:0 6px;border-radius:6px;line-height:18px}
   .lb.town.sel{background:var(--vermilion);color:#fff}
   .lb.hide,.lb.clash{opacity:0}

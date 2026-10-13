@@ -303,9 +303,9 @@ function placeFloat() {
   const c = COUNTIES[focused];
   const b = (c.worldBox || c.frameBox);
   const [w, h] = canvasSize();
-  const yTop = c.group.position.y + ISLAND_H + TOWN_RISE[1];
+  const yBase = c.group.position.y, yTop = yBase + ISLAND_H + TOWN_RISE[1];
   let minX = Infinity, maxX = -Infinity, maxY = -Infinity, cnt = 0;
-  for (const x of [b.min.x, b.max.x]) for (const z of [b.min.z, b.max.z]) for (const y of [0, yTop]) {
+  for (const x of [b.min.x, b.max.x]) for (const z of [b.min.z, b.max.z]) for (const y of [yBase, yTop]) {
     _corner.set(x, y, z).project(camera);
     if (_corner.z > 1) continue;
     const px = (_corner.x + 1) / 2 * w, py = (1 - _corner.y) / 2 * h;
@@ -325,8 +325,9 @@ function updateLabels() {
   placeFloat();
   const cand = [];
   Object.values(COUNTIES).forEach(c => {
-    const on = !focused;
+    const on = focused !== c.name;
     c.label.classList.toggle('hide', !on);
+    c.label.classList.toggle('dim', !!focused);
     if (on && placeLabel(c.label, c.center[0], c.group.position.y + ISLAND_H + (ISLANDS.has(c.name) ? 6 : 3), c.center[1]))
       cand.push({ el: c.label, pri: c.area * (1 + c.pct / 12), ...c.label._xy });
   });
