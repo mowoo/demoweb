@@ -236,13 +236,28 @@ Object.values(COUNTIES).forEach(c => {
 // world = local * s + pos；y 不縮放（保留擠出厚度）
 const plateMat = new THREE.MeshStandardMaterial({ color: 0xf1e9d6, roughness: 0.95 });
 const plateEdgeMat = new THREE.LineBasicMaterial({ color: THEME.countyLine, transparent: true, opacity: 0.9 });
+// 本島西岸在各方框高度範圍內的最西點：方框與本島的距離 = 原距離 × ISLAND_BOX.gapKeep
+const mainWestPts = [];
+townsGeo.features.forEach(f => {
+  if (ISLANDS.has(norm(f.properties.COUNTYNAME))) return;
+  const polys = f.geometry.type === 'Polygon' ? [f.geometry.coordinates] : f.geometry.coordinates;
+  polys.forEach(rings => rings[0].forEach(pt => { const [x, z] = P(pt); if (x < 0) mainWestPts.push([x, z]); }));
+});
+ISLAND_BOX.gapKeep = 0.3;
+ISLAND_BOX.xs = ISLAND_BOX.z.map(bz => {
+  let coast = Infinity;
+  mainWestPts.forEach(([x, z]) => { if (Math.abs(z - bz) <= ISLAND_BOX.side / 2 && x < coast) coast = x; });
+  const edge0 = ISLAND_BOX.x + ISLAND_BOX.side / 2;                 // 原本的方框右緣
+  const edge1 = coast - (coast - edge0) * ISLAND_BOX.gapKeep;        // 距離縮減 70%
+  return edge1 - ISLAND_BOX.side / 2;
+});
 ISLAND_BOX.names.forEach((name, i) => {
   const c = COUNTIES[name]; if (!c) return;
   const fb = c.frameBox, side = ISLAND_BOX.side;
   const w = fb.max.x - fb.min.x, d = fb.max.z - fb.min.z;
   const sc = (side * 0.74) / Math.max(w, d);                       // 留 13% 邊距
   const ctr = [(fb.min.x + fb.max.x) / 2, (fb.min.z + fb.max.z) / 2];
-  const bx = ISLAND_BOX.x, bz = ISLAND_BOX.z[i];
+  const bx = ISLAND_BOX.xs[i], bz = ISLAND_BOX.z[i];
   // 離主體太遠、沒被納入 frameBox 的鄉鎮（金門的烏坵）不放進方框，隱藏
   c.towns.forEach(t => t.meshes.forEach(m => {
     const [mx, mz] = m.userData.ctr;
