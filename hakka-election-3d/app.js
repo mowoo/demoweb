@@ -478,6 +478,37 @@ async function focusCounty(name) {
   lockAround(pose);
 }
 
+// 總覽構圖：接近俯視（polar 0.42），用「實際投影後的範圍」反覆修正距離，讓本島＋離島方框貼滿可見區
+const OVERVIEW = { az: 0, polar: 0.42, fillY: 0.94, fillX: 0.92 };
+const _tmpCam = new THREE.PerspectiveCamera();
+function overviewPose() {
+  // 內容範圍＝本島各縣實際範圍 ∪ 離島方框（不用投影時的估計值，本島實際只有約 -52..58 × -93..110）
+  const boxes = Object.values(COUNTIES).map(c => c.worldBox || c.frameBox);
+  const content = new THREE.Box3(); boxes.forEach(b => content.union(b));
+  content.min.y = 0; content.max.y = ISLAND_H;
+  const target = content.getCenter(new THREE.Vector3());
+  const { w, h, vw, vh } = viewport();
+  _tmpCam.copy(camera); _tmpCam.aspect = w / h; _tmpCam.updateProjectionMatrix();
+  let r = 400;
+  for (let i = 0; i < 6; i++) {
+    _tmpCam.position.setFromSphericalCoords(r, OVERVIEW.polar, OVERVIEW.az).add(target);
+    _tmpCam.lookAt(target); _tmpCam.updateMatrixWorld();
+    let x0 = 1e9, x1 = -1e9, y0 = 1e9, y1 = -1e9;
+    // 用各縣各自的範圍投影（聯集方框的空角落會把範圍撐大）
+    boxes.forEach(b => { for (const x of [b.min.x, b.max.x]) for (const z of [b.min.z, b.max.z]) for (const y of [0, ISLAND_H]) {
+      _corner.set(x, y, z).project(_tmpCam);
+      x0 = Math.min(x0, _corner.x); x1 = Math.max(x1, _corner.x); y0 = Math.min(y0, _corner.y); y1 = Math.max(y1, _corner.y);
+    } });
+    const spanX = (x1 - x0) / 2 * (w / vw), spanY = (y1 - y0) / 2 * (h / vh);   // 佔可見區的比例
+    r *= Math.max(spanX / OVERVIEW.fillX, spanY / OVERVIEW.fillY);
+    // 透視下近端（南）投影較大，內容不會以 target 為中心：把 target 沿地面移動，讓投影中心回到畫面中央
+    const unitY = r * Math.tan(THREE.MathUtils.degToRad(FOV) / 2);           // 1 個 NDC 對應的世界長度（約略）
+    const midX = (x0 + x1) / 2, midY = (y0 + y1) / 2;
+    target.x += midX * unitY * (w / h) * 0.8;
+    target.z -= midY * unitY / Math.cos(OVERVIEW.polar) * 0.8;
+  }
+  return { target, r, az: OVERVIEW.az, polar: OVERVIEW.polar };
+}
 async function overview(seconds = 2.0) {
   const prev = focused;
   focused = null; selTown = null;
@@ -490,8 +521,7 @@ async function overview(seconds = 2.0) {
   syncChips();
   tweenOffset();
   // 本島範圍：以實際半寬／半長算距離，目標是本島盡量填滿畫面、屏東與基隆都在框內（桌機／手機實測調整 pad）
-  const box = new THREE.Box3(new THREE.Vector3(-118, 0, -125), new THREE.Vector3(75, 20, 125));
-  await flyTo(poseFor(box, { az: 0, polar: 0.78 }, isSmall() ? 0.9 : 0.62, [100, 128]), seconds);
+  await flyTo(overviewPose(), seconds);
 }
 
 // ---------- 候選人與政策（佔位；資料在 data/election.js）----------
