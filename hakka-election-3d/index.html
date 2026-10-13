@@ -39,6 +39,16 @@
   #chips button.on{background:var(--indigo);border-color:var(--indigo);color:#fff}
 
   /* 返回總覽 */
+  /* 地圖上的浮動指標切換（聚焦縣市時出現） */
+  #float-metric{position:fixed;z-index:12;left:50%;bottom:104px;transform:translate(-50%,12px);display:flex;align-items:center;gap:8px;
+    padding:6px 8px 6px 14px;border-radius:999px;background:rgba(20,36,63,.92);color:#fff;box-shadow:0 10px 26px rgba(20,36,63,.3);backdrop-filter:blur(6px);
+    opacity:0;pointer-events:none;transition:opacity .3s,transform .3s}
+  #float-metric.on{opacity:1;transform:translate(-50%,0);pointer-events:auto}
+  #float-metric .fl{font-size:13px;font-weight:700;color:#c9d3e6;white-space:nowrap}
+  #float-metric .seg{background:rgba(255,255,255,.14)}
+  #float-metric .seg button{color:#dbe3f2;padding:5px 14px;font-size:13.5px}
+  #float-metric .seg button.on{background:var(--gold);color:var(--ink)}
+  body.panel-open #float-metric{left:calc((100vw - var(--panel-w) - 32px) / 2)}
   #back{position:fixed;top:18px;right:20px;z-index:12;border:0;border-radius:999px;padding:8px 16px;background:var(--ink);color:#fff;font-weight:700;
     box-shadow:0 6px 18px rgba(20,36,63,.25);opacity:0;transform:translateY(-8px);pointer-events:none;transition:.3s}
   #back.on{opacity:1;transform:none;pointer-events:auto}
@@ -90,12 +100,7 @@
   .p-sec small{font-weight:500;font-size:12px;color:var(--muted)}
   .ph{display:inline-block;font-size:11px;font-weight:700;color:#7a5b00;background:#fff3cf;padding:0 7px;border-radius:999px;vertical-align:1px}
   .cands{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-  .cand{--cc:#1f7a8c;display:block;width:100%;margin:0;padding:0 0 10px;font:inherit;color:inherit;cursor:pointer;
-    border:2px solid transparent;border-radius:12px;background:#f7f2e5;text-align:center;overflow:hidden;transition:border-color .2s,transform .15s;-webkit-tap-highlight-color:transparent}
-  .cand:hover{border-color:color-mix(in srgb,var(--cc) 45%,transparent)}
-  .cand:active{transform:scale(.985)}
-  .cand.on{border-color:var(--cc)}
-  .cand:focus-visible{outline:3px solid var(--gold);outline-offset:2px}
+  .cand{--cc:#1f7a8c;border:2px solid color-mix(in srgb,var(--cc) 55%,transparent);border-radius:12px;background:#f7f2e5;padding-bottom:10px;text-align:center;overflow:hidden}
   .cand .art{background:color-mix(in srgb,var(--cc) 16%,var(--paper));aspect-ratio:1/0.9;display:grid;place-items:end center;position:relative}
   .cand .art svg,.cand .art img{width:76%;height:auto;display:block}
   .cand .art img{object-fit:cover}
@@ -103,17 +108,14 @@
   .cand .nm{font:900 17px/1.2 var(--serif);margin-top:8px}
   .cand .party{display:inline-block;margin:4px 0;font-size:11.5px;font-weight:700;color:#fff;background:var(--cc);padding:1px 10px;border-radius:999px}
   .cand .age{font-size:12.5px;color:var(--muted)}
-  .cand ul{list-style:none;margin:6px 10px 0;padding:6px 0 0;pointer-events:none;border-top:1px dashed #d7ccae;text-align:left;font-size:12.5px;line-height:1.5}
+  .cand ul{list-style:none;margin:6px 10px 0;padding:6px 0 0;border-top:1px dashed #d7ccae;text-align:left;font-size:12.5px;line-height:1.5}
   .cand li{padding-left:11px;position:relative}
   .cand li::before{content:"";position:absolute;left:0;top:.6em;width:5px;height:5px;border-radius:50%;background:var(--cc)}
-  .cseg{display:grid;grid-template-columns:1fr 1fr;background:#ece4cf;border-radius:999px;padding:3px;margin:14px 0 10px}
-  .cseg button{--cc:#1f7a8c;border:0;background:none;border-radius:999px;padding:5px;font-weight:700;color:var(--muted)}
-  .cseg button.on{background:var(--cc);color:#fff;box-shadow:0 3px 8px rgba(0,0,0,.18)}
-  .policies{display:grid;gap:8px;margin:0;padding:0;list-style:none}
-  .policy{--cc:#1f7a8c;display:grid;grid-template-columns:30px 1fr;gap:10px;background:#f7f2e5;border-radius:10px;padding:9px 12px}
-  .policy i{font:900 19px/1 var(--serif);color:var(--cc);font-style:normal;align-self:center;text-align:center}
-  .policy b{display:block;font-size:14px}
-  .policy span{font-size:12.5px;color:var(--muted);line-height:1.5}
+  .policies{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+  .policy{--cc:#1f7a8c;background:#f7f2e5;border-radius:12px;padding:10px 12px 12px;border-top:4px solid var(--cc);display:flex;flex-direction:column;gap:6px}
+  .policy b{font-size:14px;color:var(--cc)}
+  .policy p{margin:0;font-size:13px;line-height:1.6;color:var(--text)}
+  .policy .more{margin-top:auto;align-self:flex-start;font-size:12.5px;font-weight:700;color:#fff;background:var(--cc);padding:4px 12px;border-radius:999px}
   .stat-ph b{color:var(--muted);font-weight:500;font-size:15px;font-family:var(--sans);padding-top:4px}
 
   .grab{display:none}
@@ -137,6 +139,8 @@
     #panel.full .p-head{border-radius:0}
     .p-body{overscroll-behavior:contain}
     body.panel-open #back{right:20px}
+    body.panel-open #float-metric{left:50%;bottom:calc(var(--sheet-half) + 12px)}
+    body.sheet-full #float-metric{opacity:0;pointer-events:none}   /* 抽屜拉到全屏時地圖被蓋住，浮動按鈕一起藏 */
     #chips{display:none}
     body.panel-open #hud p,body.panel-open #hud .kicker{display:none}
     body.panel-open #hud h1{font-size:20px}
@@ -172,6 +176,8 @@
 
 <nav id="chips" aria-label="縣市快速切換"></nav>
 <button id="back" type="button">← 回到全臺</button>
+<div id="float-metric" aria-label="鄉鎮起伏與顏色依據"><span class="fl">鄉鎮依據</span>
+  <span class="seg"><button data-m="pct" class="on">客家比例</button><button data-m="hakka">客家人口</button></span></div>
 
 <aside id="panel" aria-live="polite">
   <div class="p-head"><span class="grab" aria-hidden="true"></span>
@@ -186,11 +192,10 @@
     <div id="p-votes-cell"><span>選票數</span><b id="p-votes">—</b></div>
   </div>
   <div class="p-body">
-    <div class="p-sec" style="border:0;padding-top:0;margin-top:2px">兩黨主要候選人 <small>點人像切換政策 <span class="ph">佔位</span></small></div>
+    <div class="p-sec" style="border:0;padding-top:0;margin-top:2px">兩黨主要候選人 <small><span class="ph">佔位</span></small></div>
     <div class="cands" id="p-cands"></div>
-    <div class="cseg" id="p-cseg" role="tablist"></div>
-    <div class="p-sec" style="border:0;padding-top:0;margin-top:4px"><span id="p-pol-title">四大客家政策</span></div>
-    <ol class="policies" id="p-policies"></ol>
+    <div class="p-sec" style="border:0;padding-top:0;margin-top:12px">客家政見</div>
+    <div class="policies" id="p-policies"></div>
 
     <div class="p-sec"><span>鄉鎮起伏依據 <small id="p-count" style="font-weight:500;color:var(--muted)"></small></span>
       <span class="seg" id="metric-seg">

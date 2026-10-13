@@ -14,6 +14,7 @@ const dur = s => (REDUCED ? Math.min(s, 0.15) : s);
 const ISLAND_H = 4;          // 島嶼厚度
 const COUNTY_RISE = 6;       // 選取縣市整體升高
 const TOWN_RISE = [0.4, 5.5];// 縣內鄉鎮依數據再升高（最小, 最大）
+const SKIRT = 14;            // 側牆向下延伸量（≥ COUNTY_RISE + TOWN_RISE 最大值 + 鄉鎮加選升高）
 const FOV = 38;
 // 招牌視角（azimuth 0 = 從南往北看；polar 為與垂直軸夾角）。未列者用預設
 const PRESETS = {
@@ -45,7 +46,8 @@ const C_HOVER = new THREE.Color(0xffffff);   // hover／選取：往白色提亮
 
 // ---------- 渲染器 / 場景 ----------
 const canvas = document.getElementById('scene');
-const isSmall = () => window.innerWidth <= 760;
+let lastGood = [1280, 720];
+const isSmall = () => (innerWidth || lastGood[0]) <= 760;
 const renderer = new THREE.WebGLRenderer({ canvas, antialias: true });
 renderer.setPixelRatio(Math.min(window.devicePixelRatio, isSmall() ? 1.5 : 2));
 renderer.shadowMap.enabled = true;
@@ -146,7 +148,9 @@ townsGeo.features.forEach(f => {
   if (!unit) return;
   const shapes = toShapes(f.geometry);
   if (!shapes.length) return;
-  const geom = new THREE.ExtrudeGeometry(shapes, { depth: ISLAND_H, bevelEnabled: false });
+  // 擠出深度多加 SKIRT，再往下平移：頂面仍在 ISLAND_H，側牆延伸到海面下；縣市升起時裙邊補住與鄰縣之間的縫
+  const geom = new THREE.ExtrudeGeometry(shapes, { depth: ISLAND_H + SKIRT, bevelEnabled: false });
+  geom.translate(0, 0, -SKIRT);
   const mesh = new THREE.Mesh(geom, new THREE.MeshStandardMaterial({ color: THEME.island, roughness: 0.8, metalness: 0.02 }));
   mesh.rotation.x = -Math.PI / 2;
   mesh.castShadow = mesh.receiveShadow = true;
@@ -318,7 +322,12 @@ function updateLabels() {
 
 // ---------- 鏡頭：構圖計算 + 弧線飛行 ----------
 const panelState = { x: 0, y: 0 };  // 面板避讓：以 view offset 平移畫面中心
-const canvasSize = () => [canvas.clientWidth || innerWidth || 1, canvas.clientHeight || innerHeight || 1];
+// 畫布被隱藏（display:none、未展開的分頁）時尺寸會是 0，沿用最後一次有效尺寸，避免構圖退化
+const canvasSize = () => {
+  const w = canvas.clientWidth || innerWidth, h = canvas.clientHeight || innerHeight;
+  if (w > 0 && h > 0) lastGood = [w, h];
+  return lastGood;
+};
 function viewport() {
   const [w, h] = canvasSize();
   const open = document.body.classList.contains('panel-open');
@@ -418,7 +427,7 @@ function tweenMix(c, to) {
 async function focusCounty(name) {
   if (!COUNTIES[name] || focused === name) return;
   const prev = focused;
-  focused = name; selTown = null; pickedCand = 0;
+  focused = name; selTown = null;
   const c = COUNTIES[name];
   if (prev) settle(COUNTIES[prev]);
   Object.values(COUNTIES).forEach(o => tweenMix(o, o === c ? { focus: 1, dim: 0 } : { focus: 0, dim: 1 }));
@@ -427,6 +436,7 @@ async function focusCounty(name) {
   renderPanel();
   syncChips();
   document.getElementById('back').classList.add('on');
+  document.getElementById('float-metric').classList.add('on');
   tweenOffset();
 
   // 依「升起後」的範圍構圖
@@ -448,6 +458,7 @@ async function overview(seconds = 2.0) {
   document.body.classList.remove('panel-open');
   setSheet(false);
   document.getElementById('back').classList.remove('on');
+  document.getElementById('float-metric').classList.remove('on');
   syncChips();
   tweenOffset();
   // 本島範圍：以實際半寬／半長算距離，目標是本島盡量填滿畫面、屏東與基隆都在框內（桌機／手機實測調整 pad）
@@ -456,7 +467,6 @@ async function overview(seconds = 2.0) {
 }
 
 // ---------- 候選人與政策（佔位；資料在 data/election.js）----------
-let pickedCand = 0;
 // 預設插畫人像：election.js 填 photo 路徑即取代
 function avatar(cd, i) {
   const hair = i === 0
@@ -473,22 +483,23 @@ function avatar(cd, i) {
 }
 function renderCandidates(el) {
   const cs = el.candidates || [];
-  const box = document.getElementById('p-cands'), seg = document.getElementById('p-cseg'), pol = document.getElementById('p-policies');
-  if (!cs.length) { box.innerHTML = '<div class="p-note">（候選人資料待補）</div>'; seg.innerHTML = pol.innerHTML = ''; return; }
-  if (pickedCand >= cs.length) pickedCand = 0;
-  const cur = cs[pickedCand];
+  const box = document.getElementById('p-cands'), pol = document.getElementById('p-policies');
+  if (!cs.length) { box.innerHTML = '<div class="p-note">（候選人資料待補）</div>'; pol.innerHTML = ''; return; }
   box.innerHTML = cs.map((cd, i) => `
-    <button class="cand pick ${i === pickedCand ? 'on' : ''}" style="--cc:${cd.color}" data-i="${i}" aria-pressed="${i === pickedCand}">
+    <div class="cand" style="--cc:${cd.color}">
       <div class="art">${cd.photo ? `<img src="${cd.photo}" alt="${cd.name}插畫">` : avatar(cd, i) + '<span class="ph">插畫待補</span>'}</div>
       <div class="nm">${cd.name}</div>
       <span class="party">${cd.party}</span>
       <div class="age">${cd.age == null ? '年紀待補' : cd.age + ' 歲'} · ${cd.role}</div>
       <ul>${(cd.bio || []).map(b => `<li>${b}</li>`).join('')}</ul>
-    </button>`).join('');
-  seg.innerHTML = cs.map((cd, i) => `<button role="tab" class="${i === pickedCand ? 'on' : ''}" style="--cc:${cd.color}" data-i="${i}">${cd.name}</button>`).join('');
-  document.getElementById('p-pol-title').textContent = `${cur.name} 的四大客家政策`;
-  pol.innerHTML = (cur.policies || []).map((p, i) => `<li class="policy" style="--cc:${cur.color}"><i>${i + 1}</i><div><b>${p.t}</b><span>${p.d}</span></div></li>`).join('');
-  [...box.querySelectorAll('.pick'), ...seg.querySelectorAll('button')].forEach(b => b.onclick = () => { pickedCand = +b.dataset.i; renderCandidates(el); });
+    </div>`).join('');
+  // 政見：兩欄並列，各一段文字；有專訪連結才顯示「看完整政見」
+  pol.innerHTML = cs.map(cd => `
+    <div class="policy" style="--cc:${cd.color}">
+      <b>${cd.name}</b>
+      <p>${cd.policy || '（客家政見待補）'}</p>
+      ${cd.link ? `<a class="more" href="${cd.link}" target="_blank" rel="noopener">看完整政見 →</a>` : ''}
+    </div>`).join('');
 }
 
 // ---------- 面板 ----------
@@ -540,12 +551,14 @@ function selectTown(key) {
   })));
   renderPanel();
 }
-document.querySelectorAll('#metric-seg button').forEach(b => b.onclick = () => {
-  metric = b.dataset.m;
-  document.querySelectorAll('#metric-seg button').forEach(x => x.classList.toggle('on', x === b));
+// 指標切換：面板內的 #metric-seg 與地圖上的浮動按鈕 #float-metric 共用同一個狀態
+function setMetric(m) {
+  metric = m;
+  document.querySelectorAll('#metric-seg button, #float-metric button').forEach(x => x.classList.toggle('on', x.dataset.m === m));
   recolor();
   if (focused) { riseTowns(COUNTIES[focused]); renderPanel(); }
-});
+}
+document.querySelectorAll('#metric-seg button, #float-metric button').forEach(b => b.onclick = () => setMetric(b.dataset.m));
 // ---------- 手機底部抽屜：半屏 ⇄ 全屏（拖曳標題列／把手，或點把手切換）----------
 const panelEl = document.getElementById('panel');
 const sheet = { full: false, drag: null };
@@ -554,6 +567,7 @@ const sheetH = full => vh() * (full ? 0.92 : 0.6);          // 與 CSS --sheet-f
 function setSheet(full) {
   sheet.full = full;
   panelEl.classList.toggle('full', full);
+  document.body.classList.toggle('sheet-full', full);
   panelEl.classList.remove('dragging');
   panelEl.style.height = '';
   if (!full) document.querySelector('.p-body').scrollTop = 0;
@@ -687,5 +701,5 @@ renderer.setAnimationLoop(now => {
 controls.setLookAt(0, 900, 60, 0, 0, 0, false);
 document.getElementById('veil').classList.add('off');
 // 除錯／整合用（開場運鏡之前就掛上，不被動畫阻塞）
-window.__HAKKA3D__ = { focusCounty, overview, COUNTIES, TOWNS, camera, controls, renderer, scene, updateLabels };
+window.__HAKKA3D__ = { focusCounty, overview, COUNTIES, TOWNS, camera, controls, renderer, scene, updateLabels, viewport, poseFor, isSmall: () => isSmall() };
 overview(REDUCED ? 0.1 : 2.6);
