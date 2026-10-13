@@ -295,7 +295,34 @@ function placeLabel(el, x, y, z) {
   return true;
 }
 const labelRects = [];
+// 浮動指標切換：跟著聚焦縣市走，貼在縣市投影範圍的正下方（夾在可見區內）
+const floatEl = document.getElementById('float-metric');
+const _corner = new THREE.Vector3();
+function placeFloat() {
+  if (!focused) return;
+  const c = COUNTIES[focused];
+  const b = (c.worldBox || c.frameBox);
+  const [w, h] = canvasSize();
+  const yTop = c.group.position.y + ISLAND_H + TOWN_RISE[1];
+  let minX = Infinity, maxX = -Infinity, maxY = -Infinity, cnt = 0;
+  for (const x of [b.min.x, b.max.x]) for (const z of [b.min.z, b.max.z]) for (const y of [0, yTop]) {
+    _corner.set(x, y, z).project(camera);
+    if (_corner.z > 1) continue;
+    const px = (_corner.x + 1) / 2 * w, py = (1 - _corner.y) / 2 * h;
+    minX = Math.min(minX, px); maxX = Math.max(maxX, px); maxY = Math.max(maxY, py); cnt++;
+  }
+  if (!cnt) return;
+  const { vw, vh } = viewport();
+  const fw = floatEl.offsetWidth || 240, fh = floatEl.offsetHeight || 40;
+  // 可見區：桌機扣右側面板，手機扣下方抽屜與標題列
+  const left = fw / 2 + 8, right = (isSmall() ? w : vw) - fw / 2 - 8;
+  const top = isSmall() ? 64 : 8, bottom = (isSmall() ? vh + 56 : h) - fh - 8;
+  const x = Math.min(right, Math.max(left, (minX + maxX) / 2));
+  const y = Math.min(bottom, Math.max(top, maxY + 10));
+  floatEl.style.transform = `translate(${x - fw / 2}px, ${y}px)`;
+}
 function updateLabels() {
+  placeFloat();
   const cand = [];
   Object.values(COUNTIES).forEach(c => {
     const on = !focused;
