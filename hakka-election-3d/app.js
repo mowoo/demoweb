@@ -591,6 +591,8 @@ function renderPanel() {
   const c = COUNTIES[focused];
   if (!c) return;
   document.getElementById('p-name').textContent = show(c.name);
+  document.getElementById('p-select-text').textContent = show(c.name);
+  pSelect.value = c.name;
   document.getElementById('p-total').textContent = wan(c.total);
   document.getElementById('p-hakka').textContent = wan(c.hakka);
   document.getElementById('p-pct').textContent = c.pct.toFixed(1) + '%';
@@ -698,6 +700,10 @@ const chips = document.getElementById('chips');
 chips.innerHTML = ORDER.filter(n => COUNTIES[norm(n)]).map(n =>
   `<button data-c="${norm(n)}">${n.replace(/[縣市]$/, '')}</button>`).join('');
 chips.querySelectorAll('button').forEach(b => b.onclick = () => focusCounty(b.dataset.c));
+// 手機抽屜標題的下拉選單（同一份縣市順序）
+const pSelect = document.getElementById('p-select');
+pSelect.innerHTML = ORDER.filter(n => COUNTIES[norm(n)]).map(n => `<option value="${norm(n)}">${n}</option>`).join('');
+pSelect.onchange = () => focusCounty(pSelect.value);
 function syncChips() { chips.querySelectorAll('button').forEach(b => b.classList.toggle('on', b.dataset.c === focused)); }
 
 // ---------- 指標互動（hover / click）----------
