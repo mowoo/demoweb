@@ -289,13 +289,16 @@ function tweenOffset() {
 }
 
 // 依「可見區域」算出能完整框住 box 的距離
-function poseFor(box, { az, polar }, pad = 1.18) {
+function poseFor(box, { az, polar }, pad = 1.18, halfExt = null) {
   const { h, vw, vh } = viewport();
   const sphere = box.getBoundingSphere(new THREE.Sphere());
   const t = Math.tan(THREE.MathUtils.degToRad(FOV) / 2);
   const vf = Math.atan(t * (vh / h));   // 可見區域的半視角（扣掉面板／標題）
   const hf = Math.atan(t * (vw / h));
-  const r = (sphere.radius * pad) / Math.sin(Math.min(vf, hf));
+  // halfExt=[半寬, 半長]：狹長物件（本島）用實際寬高分別算距離，比外接球準確
+  const r = halfExt
+    ? Math.max(halfExt[0] / Math.tan(hf), halfExt[1] / Math.tan(vf)) * pad
+    : (sphere.radius * pad) / Math.sin(Math.min(vf, hf));
   return { target: sphere.center.clone(), r, az, polar };
 }
 
@@ -406,8 +409,9 @@ async function overview(seconds = 2.0) {
   document.getElementById('back').classList.remove('on');
   syncChips();
   tweenOffset();
-  const box = new THREE.Box3(new THREE.Vector3(-75, 0, -125), new THREE.Vector3(75, 20, 125)); // 本島範圍
-  await flyTo(poseFor(box, { az: 0, polar: 0.78 }, 1.0), seconds);
+  // 本島範圍：以實際半寬／半長算距離，目標是本島盡量填滿畫面、屏東與基隆都在框內（桌機／手機實測調整 pad）
+  const box = new THREE.Box3(new THREE.Vector3(-75, 0, -125), new THREE.Vector3(75, 20, 125));
+  await flyTo(poseFor(box, { az: 0, polar: 0.78 }, isSmall() ? 0.9 : 0.9, [80, 128]), seconds);
 }
 
 // ---------- 候選人與政策（佔位；資料在 data/election.js）----------
