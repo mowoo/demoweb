@@ -36,5 +36,5 @@
 - 指標切換（客家比例／客家人口）：面板內與地圖上的浮動按鈕共用同一狀態；浮動按鈕跟著聚焦縣市走，貼在縣市投影範圍正下方（`placeFloat`，每幀更新，夾在可見區內），抽屜全屏時隱藏
 - 側牆向下延伸 `SKIRT`，縣市升起時不露出與鄰縣之間的海面縫隙
 - 畫布或視窗尺寸為 0（被隱藏）時沿用最後一次有效尺寸，構圖不會退化
-- 操作說明：右上「?」按鈕開 lightbox，分手機／電腦兩頁；觸控裝置預設手機頁；第一次進站自動跳一次（`AUTO_SHOW_HELP_ONCE`，記在 localStorage）。圖解在 `assets/help/*.svg`（480×360 佔位線稿），之後以 Higgsfield 生成同名 PNG 替換並改副檔名：tap / one-drag / pinch / two-drag / select / sheet / mouse-left / mouse-right / wheel
+- 操作說明：右上「?」按鈕開 lightbox，分手機／電腦兩頁；觸控裝置預設手機頁；第一次進站自動跳一次（`AUTO_SHOW_HELP_ONCE`，記在 localStorage）。圖解 `assets/help/*.jpg`（960×720，9 張）由 GPT Image 2.5（經 Higgsfield）生成：tap / one-drag / pinch / two-drag / select / sheet / mouse-left / mouse-right / wheel；提示詞統一為「扁平向量資訊圖、米色紙底、藏青線條、金與朱紅點綴」
 - 面板的選票數、兩黨候選人（插畫、黨籍、年紀、現職、經歷）、客家政見為佔位版面，資料在 `data/election.js`，待客戶提供後逐縣市替換

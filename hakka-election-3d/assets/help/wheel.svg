@@ -1,7 +1,0 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 360" width="480" height="360">
-<rect width="480" height="360" rx="18" fill="#fffdf8"/>
-<rect x="60" y="70" width="360" height="220" rx="12" fill="#f3ead6" stroke="#c7b394" stroke-width="2"/>
-<path d="M150 110 l40 -18 l60 12 l50 -6 l40 30 l-20 60 l-50 40 l-60 -10 l-40 -40 z" fill="#e9dcc0" stroke="#c7b394" stroke-width="2" opacity=".9"/>
-<rect x="205" y="110" width="70" height="110" rx="35" fill="#fff" stroke="#14243f" stroke-width="3"/><line x1="240" y1="110" x2="240" y2="155" stroke="#14243f" stroke-width="3"/><line x1="205" y1="155" x2="275" y2="155" stroke="#14243f" stroke-width="3"/><rect x="234" y="124" width="12" height="22" rx="6" fill="#f2b632"/><defs><marker id="m8928" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto"><path d="M0 0L8 4L0 8z" fill="#d8412f"/></marker></defs><line x1="300" y1="200" x2="300" y2="130" stroke="#d8412f" stroke-width="5" stroke-linecap="round" marker-end="url(#m8928)"/><defs><marker id="m9" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto"><path d="M0 0L8 4L0 8z" fill="#d8412f"/></marker></defs><line x1="330" y1="130" x2="330" y2="200" stroke="#d8412f" stroke-width="5" stroke-linecap="round" marker-end="url(#m9)"/>
-<text x="240" y="330" text-anchor="middle" font-family="Noto Sans TC,sans-serif" font-size="15" fill="#7a7262">滾輪：縮放（佔位圖）</text>
-</svg>
