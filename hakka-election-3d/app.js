@@ -658,7 +658,7 @@ function setSheet(full) {
 }
 const head = panelEl.querySelector('.p-head');
 head.addEventListener('pointerdown', e => {
-  if (!isSmall() || e.target.closest('.p-close')) return;
+  if (!isSmall() || e.target.closest('.p-close, .p-pick')) return;   // 關閉鈕、縣市下拉選單不觸發抽屜拖曳／切換
   sheet.drag = { y0: e.clientY, base: sheetH(sheet.full), t0: performance.now(), moved: 0 };
   try { head.setPointerCapture(e.pointerId); } catch (_) {}
   panelEl.classList.add('dragging');
