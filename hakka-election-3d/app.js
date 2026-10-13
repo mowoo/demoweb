@@ -63,6 +63,10 @@ controls.maxPolarAngle = Math.PI * 0.46;
 controls.minDistance = 25;
 controls.maxDistance = 900;
 controls.dollyToCursor = true;
+// 邊界約束：注視點不能離開地圖範圍（本島＋離島方框，外加一圈緩衝），避免讀者滑到一片空白
+const MAP_BOUNDS = new THREE.Box3(new THREE.Vector3(-140, 0, -150), new THREE.Vector3(100, 60, 150));
+controls.setBoundary(MAP_BOUNDS);
+controls.boundaryFriction = 0.25;
 
 scene.add(new THREE.HemisphereLight(0xffffff, 0xd9ccb0, 1.9));
 const sun = new THREE.DirectionalLight(0xfff6e8, 2.2);
@@ -101,13 +105,9 @@ const topo = await fetch('data/towns.topo.json').then(r => r.json());
 const townsGeo = topojson.feature(topo, topo.objects.towns);
 const countiesGeo = topojson.feature(topo, topo.objects.counties);
 const projection = d3.geoMercator().fitSize([220, 270], townsGeo);
-// 離島示意位移（經度, 緯度）：投影範圍算好後再平移，方便讀者點擊；位置不照實際比例
-const ISLAND_SHIFT = { '金門縣': [1.1, -0.15], '連江縣': [0.15, -0.85], '澎湖縣': [0.05, -0.05] };
-const shiftCoords = (coords, [dx, dy]) => typeof coords[0] === 'number' ? [coords[0] + dx, coords[1] + dy] : coords.map(c => shiftCoords(c, [dx, dy]));
-[townsGeo, countiesGeo].forEach(fc => fc.features.forEach(f => {
-  const sh = ISLAND_SHIFT[norm(f.properties.COUNTYNAME)];
-  if (sh) f.geometry.coordinates = shiftCoords(f.geometry.coordinates, sh);
-}));
+// 離島方框：澎湖／金門／連江（馬祖）不照實際位置，各放進一個立體方框，沿本島西側由北到南排列
+const ISLAND_BOX = { side: 40, x: -98, z: [-66, -18, 30], names: ['連江縣', '金門縣', '澎湖縣'] };
+const ISLANDS = new Set(ISLAND_BOX.names);
 const geoPath = d3.geoPath(projection);
 const [cx0, cy0] = projection([120.95, 23.75]);  // 視覺中心固定在本島
 const P = c => { const p = projection(c); return [p[0] - cx0, p[1] - cy0]; };
@@ -151,6 +151,7 @@ townsGeo.features.forEach(f => {
   mesh.rotation.x = -Math.PI / 2;
   mesh.castShadow = mesh.receiveShadow = true;
   mesh.userData.key = key;
+  { const cc = geoPath.centroid(f); mesh.userData.ctr = [cc[0] - cx0, cc[1] - cy0]; }
   // 頂面輪廓線（不畫側牆轉角），為 Mesh 子物件 → 跟著鄉鎮升降
   shapes.forEach(sh => [sh, ...sh.holes].forEach(path => {
     const pts = path.getPoints().map(p => new THREE.Vector3(p.x, p.y, ISLAND_H + 0.03));
@@ -219,6 +220,45 @@ Object.values(COUNTIES).forEach(c => {
   c.box = new THREE.Box3().setFromObject(c.group);
   c.area = (c.box.max.x - c.box.min.x) * (c.box.max.z - c.box.min.z);
 });
+// ---------- 離島方框 ----------
+// group 的子物件座標都是投影後的世界座標，所以用 group 的 scale/position 把整縣搬進方框：
+// world = local * s + pos；y 不縮放（保留擠出厚度）
+const plateMat = new THREE.MeshStandardMaterial({ color: 0xf1e9d6, roughness: 0.95 });
+const plateEdgeMat = new THREE.LineBasicMaterial({ color: THEME.countyLine, transparent: true, opacity: 0.9 });
+ISLAND_BOX.names.forEach((name, i) => {
+  const c = COUNTIES[name]; if (!c) return;
+  const fb = c.frameBox, side = ISLAND_BOX.side;
+  const w = fb.max.x - fb.min.x, d = fb.max.z - fb.min.z;
+  const sc = (side * 0.74) / Math.max(w, d);                       // 留 13% 邊距
+  const ctr = [(fb.min.x + fb.max.x) / 2, (fb.min.z + fb.max.z) / 2];
+  const bx = ISLAND_BOX.x, bz = ISLAND_BOX.z[i];
+  // 離主體太遠、沒被納入 frameBox 的鄉鎮（金門的烏坵）不放進方框，隱藏
+  c.towns.forEach(t => t.meshes.forEach(m => {
+    const [mx, mz] = m.userData.ctr;
+    const inside = mx > fb.min.x - 4 && mx < fb.max.x + 4 && mz > fb.min.z - 4 && mz < fb.max.z + 4;
+    if (!inside) { m.visible = false; m.userData.hidden = true; }
+  }));
+  c.towns.forEach(t => { if (t.meshes.every(m => m.userData.hidden)) t.hidden = true; });
+  c.boxScale = sc;
+  c.boxPos = new THREE.Vector3(bx - ctr[0] * sc, 0, bz - ctr[1] * sc);
+  c.group.scale.set(sc, 1, sc);
+  c.group.position.copy(c.boxPos);
+  // 方框底板：世界座標，不隨縣市升降；本身可點（整個方框都是感應區）
+  const plate = new THREE.Mesh(new THREE.BoxGeometry(side, 1.4, side), plateMat);
+  plate.position.set(bx, 0.7, bz);
+  plate.receiveShadow = true;
+  plate.userData.key = c.towns[0].key;
+  scene.add(plate);
+  const edge = new THREE.LineSegments(new THREE.EdgesGeometry(plate.geometry), plateEdgeMat);
+  edge.position.copy(plate.position);
+  scene.add(edge);
+  c.plate = plate;
+  c.center = [bx, bz];                                              // 標籤：方框上方
+  c.worldBox = new THREE.Box3(new THREE.Vector3(bx - side / 2, 0, bz - side / 2), new THREE.Vector3(bx + side / 2, ISLAND_H, bz + side / 2));
+});
+// 縣市在世界座標的位置（本島＝原座標；離島＝經方框縮放）
+const toWorld = (c, x, z) => ISLANDS.has(c.name) ? [x * c.boxScale + c.boxPos.x, z * c.boxScale + c.boxPos.z] : [x, z];
+
 // 依目前指標重算顏色：總覽縣市底色（縣市值）與聚焦鄉鎮色（鄉鎮值）
 const colorOf = (v, lvl) => ramp(v / COLOR_MAX[metric][lvl]);
 function recolor() {
@@ -256,13 +296,13 @@ function updateLabels() {
   Object.values(COUNTIES).forEach(c => {
     const on = !focused;
     c.label.classList.toggle('hide', !on);
-    if (on && placeLabel(c.label, c.center[0], c.group.position.y + ISLAND_H + 3, c.center[1]))
+    if (on && placeLabel(c.label, c.center[0], c.group.position.y + ISLAND_H + (ISLANDS.has(c.name) ? 6 : 3), c.center[1]))
       cand.push({ el: c.label, pri: c.area * (1 + c.pct / 12), ...c.label._xy });
   });
   if (focused) COUNTIES[focused].towns.forEach(t => {
-    if (!t.label || t.label.classList.contains('hide')) return;
-    const m = t.meshes[0];
-    if (placeLabel(t.label, t.pos[0], COUNTIES[focused].group.position.y + m.position.y + ISLAND_H + 1.2, t.pos[1]))
+    if (!t.label || t.hidden || t.label.classList.contains('hide')) return;
+    const m = t.meshes[0], fc = COUNTIES[focused], [wx, wz] = toWorld(fc, t.pos[0], t.pos[1]);
+    if (placeLabel(t.label, wx, fc.group.position.y + m.position.y + ISLAND_H + 1.2, wz))
       cand.push({ el: t.label, pri: t.key === selTown ? Infinity : t[metric], ...t.label._xy });
   });
   // 依重要度貪婪擺放，與已擺放者重疊就淡出
@@ -342,17 +382,8 @@ function flyTo(pose, seconds = 2.0) {
   });
 }
 
-// 到位後的鏡頭限制：水平旋轉不鎖（可 360° 繞著縣市看），只限制俯仰、距離，停用平移
-function lockAround(pose) {
-  controls.minAzimuthAngle = -Infinity;
-  controls.maxAzimuthAngle = Infinity;
-  controls.minPolarAngle = Math.max(0.2, pose.polar - 0.25);
-  controls.maxPolarAngle = Math.min(Math.PI * 0.46, pose.polar + 0.15);
-  controls.minDistance = pose.r * 0.65;
-  controls.maxDistance = pose.r * 1.35;
-  controls.mouseButtons.right = CameraControls.ACTION.NONE;
-  controls.touches.three = CameraControls.ACTION.NONE;
-}
+// 到位後的鏡頭：全不鎖（依客戶決定），只靠 MAP_BOUNDS 邊界約束，讀者可自由滑到其他地區再點選
+function lockAround(pose) { unlock(); }
 function unlock() {
   controls.minAzimuthAngle = -Infinity; controls.maxAzimuthAngle = Infinity;
   controls.minPolarAngle = 0; controls.maxPolarAngle = Math.PI * 0.46;
@@ -399,8 +430,8 @@ async function focusCounty(name) {
   tweenOffset();
 
   // 依「升起後」的範圍構圖
-  const box = c.frameBox.clone(); box.max.y += COUNTY_RISE + TOWN_RISE[1];
-  const pose = poseFor(box, PRESETS[show(name)] || DEFAULT_POSE, c.towns.length > 1 ? 1.32 : 1.6);
+  const box = (c.worldBox || c.frameBox).clone(); box.max.y += COUNTY_RISE + TOWN_RISE[1];
+  const pose = poseFor(box, PRESETS[show(name)] || DEFAULT_POSE, c.towns.length > 1 ? 1.32 : 1.45);
   gsap.to(c.group.position, { y: COUNTY_RISE, duration: dur(1.1), ease: 'power3.out', delay: dur(0.5), overwrite: true });
   riseTowns(c, 0.9);
   await flyTo(pose, prev ? 1.7 : 2.1);
@@ -420,8 +451,8 @@ async function overview(seconds = 2.0) {
   syncChips();
   tweenOffset();
   // 本島範圍：以實際半寬／半長算距離，目標是本島盡量填滿畫面、屏東與基隆都在框內（桌機／手機實測調整 pad）
-  const box = new THREE.Box3(new THREE.Vector3(-75, 0, -125), new THREE.Vector3(75, 20, 125));
-  await flyTo(poseFor(box, { az: 0, polar: 0.78 }, isSmall() ? 0.9 : 0.9, [80, 128]), seconds);
+  const box = new THREE.Box3(new THREE.Vector3(-118, 0, -125), new THREE.Vector3(75, 20, 125));
+  await flyTo(poseFor(box, { az: 0, polar: 0.78 }, isSmall() ? 0.9 : 0.62, [100, 128]), seconds);
 }
 
 // ---------- 候選人與政策（佔位；資料在 data/election.js）----------
@@ -576,36 +607,9 @@ function syncChips() { chips.querySelectorAll('button').forEach(b => b.classList
 // ---------- 指標互動（hover / click）----------
 const raycaster = new THREE.Raycaster();
 const pointer = new THREE.Vector2();
-const pickables = Object.values(TOWNS).flatMap(t => t.meshes);
-// 離島加大感應區：以縣市主體範圍放大 20% 的透明圓盤接收點擊（不渲染，只做 raycast）
-// 半徑會被夾住：離本島至少留 3 單位、離島之間不重疊
-const HIT_PAD = 1.2, HIT_GAP = 3;
-const mainBoxes = Object.values(COUNTIES).filter(c => !ISLAND_SHIFT[c.name]).map(c => c.frameBox);
-const hits = Object.keys(ISLAND_SHIFT).map(name => {
-  const c = COUNTIES[name]; if (!c) return null;
-  const sph = c.frameBox.getBoundingSphere(new THREE.Sphere());
-  let r = Math.max(8, sph.radius * HIT_PAD);
-  mainBoxes.forEach(b => {
-    const dx = Math.max(b.min.x - sph.center.x, 0, sph.center.x - b.max.x);
-    const dz = Math.max(b.min.z - sph.center.z, 0, sph.center.z - b.max.z);
-    r = Math.min(r, Math.hypot(dx, dz) - HIT_GAP);
-  });
-  return { c, x: sph.center.x, z: sph.center.z, r };
-}).filter(Boolean);
-hits.forEach(a => hits.forEach(b => {            // 離島彼此不重疊
-  if (a === b) return;
-  const d = Math.hypot(a.x - b.x, a.z - b.z);
-  if (a.r + b.r > d - 1) { const k = (d - 1) / (a.r + b.r); a.r *= k; b.r *= k; }
-}));
-hits.forEach(({ c, x, z, r }) => {
-  const hit = new THREE.Mesh(new THREE.CircleGeometry(r, 32), new THREE.MeshBasicMaterial({ visible: false }));
-  hit.rotation.x = -Math.PI / 2;
-  hit.position.set(x, ISLAND_H + 0.5, z);
-  hit.userData.key = c.towns[0].key;
-  c.group.add(hit);           // 跟著縣市升降
-  c.hit = hit;
-  pickables.push(hit);
-});
+const pickables = Object.values(TOWNS).flatMap(t => t.meshes.filter(m => m.visible));
+// 離島：方框底板本身可點（見 ISLAND_BOX 區段）
+ISLAND_BOX.names.forEach(n => { const c = COUNTIES[n]; if (c?.plate) pickables.push(c.plate); });
 const tip = document.getElementById('tip');
 function pick(e) {
   const r = canvas.getBoundingClientRect();
@@ -659,7 +663,14 @@ function resize() {
   panelState.x = ox; panelState.y = oy;
   applyOffset();
 }
-new ResizeObserver(resize).observe(canvas);
+// 版面在手機／桌機之間切換（含手機轉向、嵌入後才展開）時，總覽重新構圖
+let lastSmall = isSmall();
+function refitOnModeChange() {
+  if (lastSmall === isSmall()) return;
+  lastSmall = isSmall();
+  if (!focused && !flight) overview(0.6);
+}
+new ResizeObserver(() => { resize(); refitOnModeChange(); }).observe(canvas);
 addEventListener('resize', resize);
 resize();
 
