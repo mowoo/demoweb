@@ -69,6 +69,13 @@ controls.dollyToCursor = true;
 const MAP_BOUNDS = new THREE.Box3(new THREE.Vector3(-140, 0, -150), new THREE.Vector3(100, 60, 150));
 controls.setBoundary(MAP_BOUNDS);
 controls.boundaryFriction = 0.25;
+// 觸控手勢對標 Google Maps 3D：單指拖曳＝平移、雙指＝開合縮放＋拖曳旋轉（俯仰／方位）
+function setTouchScheme() {
+  controls.touches.one = CameraControls.ACTION.TOUCH_TRUCK;
+  controls.touches.two = CameraControls.ACTION.TOUCH_DOLLY_ROTATE;
+  controls.touches.three = CameraControls.ACTION.TOUCH_DOLLY_ROTATE;
+}
+setTouchScheme();
 
 scene.add(new THREE.HemisphereLight(0xffffff, 0xd9ccb0, 1.9));
 const sun = new THREE.DirectionalLight(0xfff6e8, 2.2);
@@ -426,7 +433,7 @@ function unlock() {
   controls.minPolarAngle = 0; controls.maxPolarAngle = Math.PI * 0.46;
   controls.minDistance = 25; controls.maxDistance = 900;
   controls.mouseButtons.right = CameraControls.ACTION.TRUCK;
-  controls.touches.three = CameraControls.ACTION.TOUCH_TRUCK;
+  setTouchScheme();
 }
 
 // ---------- 縣市聚焦 ----------
