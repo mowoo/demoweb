@@ -110,9 +110,9 @@
   .ph{display:inline-block;font-size:11px;font-weight:700;color:#7a5b00;background:#fff3cf;padding:0 7px;border-radius:999px;vertical-align:1px}
   .cands{display:grid;grid-template-columns:1fr 1fr;gap:10px}
   .cand{--cc:#1f7a8c;border:2px solid color-mix(in srgb,var(--cc) 55%,transparent);border-radius:12px;background:#f7f2e5;padding-bottom:10px;text-align:center;overflow:hidden}
-  .cand .art{background:color-mix(in srgb,var(--cc) 16%,var(--paper));aspect-ratio:1/0.72;display:grid;place-items:end center;position:relative}
-  .cand .art svg,.cand .art img{width:62%;height:auto;display:block}
-  .cand .art img{width:auto;height:96%;max-width:90%;object-fit:contain}
+  .cand .art{background:color-mix(in srgb,var(--cc) 16%,var(--paper));aspect-ratio:1/0.9;display:grid;place-items:end center;position:relative}
+  .cand .art svg{width:62%;height:auto;display:block}
+  .cand .art img{display:block;width:95%;height:95%;object-fit:contain;object-position:center bottom}   /* 插圖滿框 95% */
   .cand .art .ph{position:absolute;top:8px;left:8px}
   .cand .nm{font:900 15.5px/1.2 var(--serif);margin-top:6px}
   .cand .party{display:inline-block;margin:3px 0;font-size:11px;font-weight:700;color:#fff;background:var(--cc);padding:1px 10px;border-radius:999px}
