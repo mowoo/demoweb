@@ -26,7 +26,7 @@
   #hud .kicker{font-size:12px;font-weight:700;letter-spacing:.22em;color:var(--vermilion)}
   #hud h1{margin:2px 0 4px;font:900 clamp(24px,3.4vw,34px)/1.2 var(--serif);color:var(--ink)}
   #hud p{display:inline-block;margin:4px 0 0;padding:7px 16px;border-radius:999px;background:var(--vermilion);color:#fff;font-size:15px;font-weight:700;line-height:1.5;box-shadow:0 4px 12px rgba(216,65,47,.28)}
-  #hud p.hint-touch{display:none}
+  #hud p.hint-touch{display:none;white-space:nowrap;font-size:min(15px,3.9vw);padding:6px 12px}   /* 手機不換行：字級隨寬度縮 */
   @media (hover:none) and (pointer:coarse){#hud p.hint-desktop{display:none}#hud p.hint-touch{display:inline-block}}
   .legend{display:flex;align-items:center;gap:5px;margin-top:8px;font-size:11.5px;color:var(--muted)}
   .legend i{width:22px;height:9px;border-radius:2px}
@@ -216,7 +216,7 @@
   <div class="kicker">2026 地方選舉 · 客家選情</div>
   <h1>選戰。客家 3D地圖</h1>
   <p class="hint-desktop">點選縣市：鏡頭飛入、縣市升起、鄉鎮依數據起伏。拖曳旋轉、滾輪縮放。</p>
-  <p class="hint-touch">點選縣市看選情。單指移動地圖、雙指縮放與旋轉。</p>
+  <p class="hint-touch">點縣市看選情・單指移動、雙指縮放旋轉</p>
   <div class="legend" aria-label="客家比例／人口色階"><span>客家比例／人口 低</span><i></i><i></i><i></i><i></i><i></i><span>高</span></div>
 </header>
 
