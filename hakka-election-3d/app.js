@@ -548,7 +548,7 @@ function overviewPose() {
 }
 async function overview(seconds = 2.0) {
   const prev = focused;
-  focused = null; selTown = null; bubbleEl.classList.remove('on');
+  focused = null; selTown = null; bubbleEl.classList.remove('on'); toggleMenu(false);
   if (prev) settle(COUNTIES[prev]);
   Object.values(COUNTIES).forEach(o => tweenMix(o, { focus: 0, dim: 0 }));
   document.body.classList.remove('panel-open');
@@ -584,7 +584,7 @@ function renderCandidates(el) {
   if (!cs.length) { box.innerHTML = '<div class="p-note">（候選人資料待補）</div>'; pol.innerHTML = ''; return; }
   box.innerHTML = cs.map((cd, i) => `
     <div class="cand" style="--cc:${cd.color}">
-      <div class="art">${cd.photo ? `<img src="${cd.photo}" alt="${cd.name}插畫">` + (cd.photoPlaceholder ? '<span class="ph">示意人像</span>' : '') : avatar(cd, i) + '<span class="ph">插畫待補</span>'}</div>
+      <div class="art">${cd.photo ? `<img src="${cd.photo}" alt="${cd.name}插畫">` : avatar(cd, i) + '<span class="ph">插畫待補</span>'}</div>
       <div class="nm">${cd.name}</div>
       <span class="party">${cd.party}</span>
       <div class="age">${cd.age == null ? '年紀待補' : cd.age + ' 歲'} · ${cd.role}</div>
@@ -607,7 +607,6 @@ function renderPanel() {
   if (!c) return;
   document.getElementById('p-name').textContent = show(c.name);
   document.getElementById('p-select-text').textContent = show(c.name);
-  pSelect.value = c.name;
   document.getElementById('p-total').textContent = wan(c.total);
   document.getElementById('p-hakka').textContent = wan(c.hakka);
   document.getElementById('p-pct').textContent = c.pct.toFixed(1) + '%';
@@ -678,7 +677,7 @@ function setSheet(full) {
 }
 const head = panelEl.querySelector('.p-head');
 head.addEventListener('pointerdown', e => {
-  if (!isSmall() || e.target.closest('.p-close, .p-pick')) return;   // 關閉鈕、縣市下拉選單不觸發抽屜拖曳／切換
+  if (!isSmall() || e.target.closest('.p-close, .p-pick, #p-menu')) return;   // 關閉鈕、縣市下拉選單不觸發抽屜拖曳／切換
   sheet.drag = { y0: e.clientY, base: sheetH(sheet.full), t0: performance.now(), moved: 0 };
   try { head.setPointerCapture(e.pointerId); } catch (_) {}
   panelEl.classList.add('dragging');
@@ -745,10 +744,18 @@ const chips = document.getElementById('chips');
 chips.innerHTML = ORDER.filter(n => COUNTIES[norm(n)]).map(n =>
   `<button data-c="${norm(n)}">${n.replace(/[縣市]$/, '')}</button>`).join('');
 chips.querySelectorAll('button').forEach(b => b.onclick = () => focusCounty(b.dataset.c));
-// 手機抽屜標題的下拉選單（同一份縣市順序）
-const pSelect = document.getElementById('p-select');
-pSelect.innerHTML = ORDER.filter(n => COUNTIES[norm(n)]).map(n => `<option value="${norm(n)}">${n}</option>`).join('');
-pSelect.onchange = () => focusCounty(pSelect.value);
+// 手機抽屜標題的縣市選單：自訂小面板（不用原生 select，避免手機滿版選單）
+const pPick = document.getElementById('p-pick'), pMenu = document.getElementById('p-menu');
+pMenu.innerHTML = ORDER.filter(n => COUNTIES[norm(n)]).map(n => `<button type="button" role="option" data-c="${norm(n)}">${n.replace(/[縣市]$/, '')}</button>`).join('');
+function toggleMenu(open) {
+  const on = open ?? pMenu.hidden;
+  pMenu.hidden = !on;
+  pPick.setAttribute('aria-expanded', on);
+  if (on) pMenu.querySelectorAll('button').forEach(b => b.classList.toggle('on', b.dataset.c === focused));
+}
+pPick.onclick = e => { e.stopPropagation(); toggleMenu(); };
+pMenu.querySelectorAll('button').forEach(b => b.onclick = e => { e.stopPropagation(); toggleMenu(false); focusCounty(b.dataset.c); });
+document.addEventListener('pointerdown', e => { if (!pMenu.hidden && !e.target.closest('#p-menu, #p-pick')) toggleMenu(false); });
 function syncChips() { chips.querySelectorAll('button').forEach(b => b.classList.toggle('on', b.dataset.c === focused)); }
 
 // ---------- 指標互動（hover / click）----------
