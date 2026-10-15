@@ -584,7 +584,7 @@ function renderCandidates(el) {
   if (!cs.length) { box.innerHTML = '<div class="p-note">（候選人資料待補）</div>'; pol.innerHTML = ''; return; }
   box.innerHTML = cs.map((cd, i) => `
     <div class="cand" style="--cc:${cd.color}">
-      <div class="art">${cd.photo ? `<img src="${cd.photo}" alt="${cd.name}插畫">` : avatar(cd, i) + '<span class="ph">插畫待補</span>'}</div>
+      <div class="art">${cd.photo ? `<img src="${cd.photo}" alt="${cd.name}插畫">` + (cd.photoPlaceholder ? '<span class="ph">示意人像</span>' : '') : avatar(cd, i) + '<span class="ph">插畫待補</span>'}</div>
       <div class="nm">${cd.name}</div>
       <span class="party">${cd.party}</span>
       <div class="age">${cd.age == null ? '年紀待補' : cd.age + ' 歲'} · ${cd.role}</div>

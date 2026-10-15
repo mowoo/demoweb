@@ -1,7 +1,8 @@
 /* 選戰資料：選票數、兩黨主要候選人、四大客家政策 — 全部為佔位（placeholder），等客戶提供後逐縣市替換。
    鍵值 = 縣市名（「台」寫法，與 hakka.js 一致）。
    votes   : 選舉人數（整數）；null 顯示「待補」
-   photo   : 插畫圖檔路徑（去背 PNG，約 600×660）；null 顯示預設人像
+   photo   : 插畫圖檔路徑（去背 PNG，約 600×600）；目前為示意人像 assets/cand/placeholder-a/b.png
+   photoPlaceholder: true 時卡片顯示「示意」標記，換成正式插畫後刪掉此欄位
    color   : 候選人代表色（目前中性青／橘，待決定是否依政黨色）
    age     : 整數；null 顯示「待補」
    bio     : 重要經歷，3 條以內
@@ -17,14 +18,15 @@ window.ELECTION = {
     "age": null,
     "role": "（現職待補）",
     "color": "#1f7a8c",
-    "photo": null,
+    "photo": "assets/cand/placeholder-a.png",
     "bio": [
      "重要經歷一（待補）",
      "重要經歷二（待補）",
      "重要經歷三（待補）"
     ],
     "policy": "（客家政策標題待補）",
-    "link": null
+    "link": null,
+    "photoPlaceholder": true
    },
    {
     "name": "候選人乙",
@@ -32,14 +34,15 @@ window.ELECTION = {
     "age": null,
     "role": "（現職待補）",
     "color": "#d9822b",
-    "photo": null,
+    "photo": "assets/cand/placeholder-b.png",
     "bio": [
      "重要經歷一（待補）",
      "重要經歷二（待補）",
      "重要經歷三（待補）"
     ],
     "policy": "（客家政策標題待補）",
-    "link": null
+    "link": null,
+    "photoPlaceholder": true
    }
   ]
  },
@@ -52,14 +55,15 @@ window.ELECTION = {
     "age": null,
     "role": "（現職待補）",
     "color": "#1f7a8c",
-    "photo": null,
+    "photo": "assets/cand/placeholder-a.png",
     "bio": [
      "重要經歷一（待補）",
      "重要經歷二（待補）",
      "重要經歷三（待補）"
     ],
     "policy": "（客家政策標題待補）",
-    "link": null
+    "link": null,
+    "photoPlaceholder": true
    },
    {
     "name": "候選人乙",
@@ -67,14 +71,15 @@ window.ELECTION = {
     "age": null,
     "role": "（現職待補）",
     "color": "#d9822b",
-    "photo": null,
+    "photo": "assets/cand/placeholder-b.png",
     "bio": [
      "重要經歷一（待補）",
      "重要經歷二（待補）",
      "重要經歷三（待補）"
     ],
     "policy": "（客家政策標題待補）",
-    "link": null
+    "link": null,
+    "photoPlaceholder": true
    }
   ]
  },
@@ -87,14 +92,15 @@ window.ELECTION = {
     "age": null,
     "role": "（現職待補）",
     "color": "#1f7a8c",
-    "photo": null,
+    "photo": "assets/cand/placeholder-a.png",
     "bio": [
      "重要經歷一（待補）",
      "重要經歷二（待補）",
      "重要經歷三（待補）"
     ],
     "policy": "（客家政策標題待補）",
-    "link": null
+    "link": null,
+    "photoPlaceholder": true
    },
    {
     "name": "候選人乙",
@@ -102,14 +108,15 @@ window.ELECTION = {
     "age": null,
     "role": "（現職待補）",
     "color": "#d9822b",
-    "photo": null,
+    "photo": "assets/cand/placeholder-b.png",
     "bio": [
      "重要經歷一（待補）",
      "重要經歷二（待補）",
      "重要經歷三（待補）"
     ],
     "policy": "（客家政策標題待補）",
-    "link": null
+    "link": null,
+    "photoPlaceholder": true
    }
   ]
  },
@@ -122,14 +129,15 @@ window.ELECTION = {
     "age": null,
     "role": "（現職待補）",
     "color": "#1f7a8c",
-    "photo": null,
+    "photo": "assets/cand/placeholder-a.png",
     "bio": [
      "重要經歷一（待補）",
      "重要經歷二（待補）",
      "重要經歷三（待補）"
     ],
     "policy": "（客家政策標題待補）",
-    "link": null
+    "link": null,
+    "photoPlaceholder": true
    },
    {
     "name": "候選人乙",
@@ -137,14 +145,15 @@ window.ELECTION = {
     "age": null,
     "role": "（現職待補）",
     "color": "#d9822b",
-    "photo": null,
+    "photo": "assets/cand/placeholder-b.png",
     "bio": [
      "重要經歷一（待補）",
      "重要經歷二（待補）",
      "重要經歷三（待補）"
     ],
     "policy": "（客家政策標題待補）",
-    "link": null
+    "link": null,
+    "photoPlaceholder": true
    }
   ]
  },
@@ -157,14 +166,15 @@ window.ELECTION = {
     "age": null,
     "role": "（現職待補）",
     "color": "#1f7a8c",
-    "photo": null,
+    "photo": "assets/cand/placeholder-a.png",
     "bio": [
      "重要經歷一（待補）",
      "重要經歷二（待補）",
      "重要經歷三（待補）"
     ],
     "policy": "（客家政策標題待補）",
-    "link": null
+    "link": null,
+    "photoPlaceholder": true
    },
    {
     "name": "候選人乙",
@@ -172,14 +182,15 @@ window.ELECTION = {
     "age": null,
     "role": "（現職待補）",
     "color": "#d9822b",
-    "photo": null,
+    "photo": "assets/cand/placeholder-b.png",
     "bio": [
      "重要經歷一（待補）",
      "重要經歷二（待補）",
      "重要經歷三（待補）"
     ],
     "policy": "（客家政策標題待補）",
-    "link": null
+    "link": null,
+    "photoPlaceholder": true
    }
   ]
  },
@@ -192,14 +203,15 @@ window.ELECTION = {
     "age": null,
     "role": "（現職待補）",
     "color": "#1f7a8c",
-    "photo": null,
+    "photo": "assets/cand/placeholder-a.png",
     "bio": [
      "重要經歷一（待補）",
      "重要經歷二（待補）",
      "重要經歷三（待補）"
     ],
     "policy": "（客家政策標題待補）",
-    "link": null
+    "link": null,
+    "photoPlaceholder": true
    },
    {
     "name": "候選人乙",
@@ -207,14 +219,15 @@ window.ELECTION = {
     "age": null,
     "role": "（現職待補）",
     "color": "#d9822b",
-    "photo": null,
+    "photo": "assets/cand/placeholder-b.png",
     "bio": [
      "重要經歷一（待補）",
      "重要經歷二（待補）",
      "重要經歷三（待補）"
     ],
     "policy": "（客家政策標題待補）",
-    "link": null
+    "link": null,
+    "photoPlaceholder": true
    }
   ]
  },
@@ -227,14 +240,15 @@ window.ELECTION = {
     "age": null,
     "role": "（現職待補）",
     "color": "#1f7a8c",
-    "photo": null,
+    "photo": "assets/cand/placeholder-a.png",
     "bio": [
      "重要經歷一（待補）",
      "重要經歷二（待補）",
      "重要經歷三（待補）"
     ],
     "policy": "（客家政策標題待補）",
-    "link": null
+    "link": null,
+    "photoPlaceholder": true
    },
    {
     "name": "候選人乙",
@@ -242,14 +256,15 @@ window.ELECTION = {
     "age": null,
     "role": "（現職待補）",
     "color": "#d9822b",
-    "photo": null,
+    "photo": "assets/cand/placeholder-b.png",
     "bio": [
      "重要經歷一（待補）",
      "重要經歷二（待補）",
      "重要經歷三（待補）"
     ],
     "policy": "（客家政策標題待補）",
-    "link": null
+    "link": null,
+    "photoPlaceholder": true
    }
   ]
  },
@@ -262,14 +277,15 @@ window.ELECTION = {
     "age": null,
     "role": "（現職待補）",
     "color": "#1f7a8c",
-    "photo": null,
+    "photo": "assets/cand/placeholder-a.png",
     "bio": [
      "重要經歷一（待補）",
      "重要經歷二（待補）",
      "重要經歷三（待補）"
     ],
     "policy": "（客家政策標題待補）",
-    "link": null
+    "link": null,
+    "photoPlaceholder": true
    },
    {
     "name": "候選人乙",
@@ -277,14 +293,15 @@ window.ELECTION = {
     "age": null,
     "role": "（現職待補）",
     "color": "#d9822b",
-    "photo": null,
+    "photo": "assets/cand/placeholder-b.png",
     "bio": [
      "重要經歷一（待補）",
      "重要經歷二（待補）",
      "重要經歷三（待補）"
     ],
     "policy": "（客家政策標題待補）",
-    "link": null
+    "link": null,
+    "photoPlaceholder": true
    }
   ]
  },
@@ -297,14 +314,15 @@ window.ELECTION = {
     "age": null,
     "role": "（現職待補）",
     "color": "#1f7a8c",
-    "photo": null,
+    "photo": "assets/cand/placeholder-a.png",
     "bio": [
      "重要經歷一（待補）",
      "重要經歷二（待補）",
      "重要經歷三（待補）"
     ],
     "policy": "（客家政策標題待補）",
-    "link": null
+    "link": null,
+    "photoPlaceholder": true
    },
    {
     "name": "候選人乙",
@@ -312,14 +330,15 @@ window.ELECTION = {
     "age": null,
     "role": "（現職待補）",
     "color": "#d9822b",
-    "photo": null,
+    "photo": "assets/cand/placeholder-b.png",
     "bio": [
      "重要經歷一（待補）",
      "重要經歷二（待補）",
      "重要經歷三（待補）"
     ],
     "policy": "（客家政策標題待補）",
-    "link": null
+    "link": null,
+    "photoPlaceholder": true
    }
   ]
  },
@@ -332,14 +351,15 @@ window.ELECTION = {
     "age": null,
     "role": "（現職待補）",
     "color": "#1f7a8c",
-    "photo": null,
+    "photo": "assets/cand/placeholder-a.png",
     "bio": [
      "重要經歷一（待補）",
      "重要經歷二（待補）",
      "重要經歷三（待補）"
     ],
     "policy": "（客家政策標題待補）",
-    "link": null
+    "link": null,
+    "photoPlaceholder": true
    },
    {
     "name": "候選人乙",
@@ -347,14 +367,15 @@ window.ELECTION = {
     "age": null,
     "role": "（現職待補）",
     "color": "#d9822b",
-    "photo": null,
+    "photo": "assets/cand/placeholder-b.png",
     "bio": [
      "重要經歷一（待補）",
      "重要經歷二（待補）",
      "重要經歷三（待補）"
     ],
     "policy": "（客家政策標題待補）",
-    "link": null
+    "link": null,
+    "photoPlaceholder": true
    }
   ]
  },
@@ -367,14 +388,15 @@ window.ELECTION = {
     "age": null,
     "role": "（現職待補）",
     "color": "#1f7a8c",
-    "photo": null,
+    "photo": "assets/cand/placeholder-a.png",
     "bio": [
      "重要經歷一（待補）",
      "重要經歷二（待補）",
      "重要經歷三（待補）"
     ],
     "policy": "（客家政策標題待補）",
-    "link": null
+    "link": null,
+    "photoPlaceholder": true
    },
    {
     "name": "候選人乙",
@@ -382,14 +404,15 @@ window.ELECTION = {
     "age": null,
     "role": "（現職待補）",
     "color": "#d9822b",
-    "photo": null,
+    "photo": "assets/cand/placeholder-b.png",
     "bio": [
      "重要經歷一（待補）",
      "重要經歷二（待補）",
      "重要經歷三（待補）"
     ],
     "policy": "（客家政策標題待補）",
-    "link": null
+    "link": null,
+    "photoPlaceholder": true
    }
   ]
  },
@@ -402,14 +425,15 @@ window.ELECTION = {
     "age": null,
     "role": "（現職待補）",
     "color": "#1f7a8c",
-    "photo": null,
+    "photo": "assets/cand/placeholder-a.png",
     "bio": [
      "重要經歷一（待補）",
      "重要經歷二（待補）",
      "重要經歷三（待補）"
     ],
     "policy": "（客家政策標題待補）",
-    "link": null
+    "link": null,
+    "photoPlaceholder": true
    },
    {
     "name": "候選人乙",
@@ -417,14 +441,15 @@ window.ELECTION = {
     "age": null,
     "role": "（現職待補）",
     "color": "#d9822b",
-    "photo": null,
+    "photo": "assets/cand/placeholder-b.png",
     "bio": [
      "重要經歷一（待補）",
      "重要經歷二（待補）",
      "重要經歷三（待補）"
     ],
     "policy": "（客家政策標題待補）",
-    "link": null
+    "link": null,
+    "photoPlaceholder": true
    }
   ]
  },
@@ -437,14 +462,15 @@ window.ELECTION = {
     "age": null,
     "role": "（現職待補）",
     "color": "#1f7a8c",
-    "photo": null,
+    "photo": "assets/cand/placeholder-a.png",
     "bio": [
      "重要經歷一（待補）",
      "重要經歷二（待補）",
      "重要經歷三（待補）"
     ],
     "policy": "（客家政策標題待補）",
-    "link": null
+    "link": null,
+    "photoPlaceholder": true
    },
    {
     "name": "候選人乙",
@@ -452,14 +478,15 @@ window.ELECTION = {
     "age": null,
     "role": "（現職待補）",
     "color": "#d9822b",
-    "photo": null,
+    "photo": "assets/cand/placeholder-b.png",
     "bio": [
      "重要經歷一（待補）",
      "重要經歷二（待補）",
      "重要經歷三（待補）"
     ],
     "policy": "（客家政策標題待補）",
-    "link": null
+    "link": null,
+    "photoPlaceholder": true
    }
   ]
  },
@@ -472,14 +499,15 @@ window.ELECTION = {
     "age": null,
     "role": "（現職待補）",
     "color": "#1f7a8c",
-    "photo": null,
+    "photo": "assets/cand/placeholder-a.png",
     "bio": [
      "重要經歷一（待補）",
      "重要經歷二（待補）",
      "重要經歷三（待補）"
     ],
     "policy": "（客家政策標題待補）",
-    "link": null
+    "link": null,
+    "photoPlaceholder": true
    },
    {
     "name": "候選人乙",
@@ -487,14 +515,15 @@ window.ELECTION = {
     "age": null,
     "role": "（現職待補）",
     "color": "#d9822b",
-    "photo": null,
+    "photo": "assets/cand/placeholder-b.png",
     "bio": [
      "重要經歷一（待補）",
      "重要經歷二（待補）",
      "重要經歷三（待補）"
     ],
     "policy": "（客家政策標題待補）",
-    "link": null
+    "link": null,
+    "photoPlaceholder": true
    }
   ]
  },
@@ -507,14 +536,15 @@ window.ELECTION = {
     "age": null,
     "role": "（現職待補）",
     "color": "#1f7a8c",
-    "photo": null,
+    "photo": "assets/cand/placeholder-a.png",
     "bio": [
      "重要經歷一（待補）",
      "重要經歷二（待補）",
      "重要經歷三（待補）"
     ],
     "policy": "（客家政策標題待補）",
-    "link": null
+    "link": null,
+    "photoPlaceholder": true
    },
    {
     "name": "候選人乙",
@@ -522,14 +552,15 @@ window.ELECTION = {
     "age": null,
     "role": "（現職待補）",
     "color": "#d9822b",
-    "photo": null,
+    "photo": "assets/cand/placeholder-b.png",
     "bio": [
      "重要經歷一（待補）",
      "重要經歷二（待補）",
      "重要經歷三（待補）"
     ],
     "policy": "（客家政策標題待補）",
-    "link": null
+    "link": null,
+    "photoPlaceholder": true
    }
   ]
  },
@@ -542,14 +573,15 @@ window.ELECTION = {
     "age": null,
     "role": "（現職待補）",
     "color": "#1f7a8c",
-    "photo": null,
+    "photo": "assets/cand/placeholder-a.png",
     "bio": [
      "重要經歷一（待補）",
      "重要經歷二（待補）",
      "重要經歷三（待補）"
     ],
     "policy": "（客家政策標題待補）",
-    "link": null
+    "link": null,
+    "photoPlaceholder": true
    },
    {
     "name": "候選人乙",
@@ -557,14 +589,15 @@ window.ELECTION = {
     "age": null,
     "role": "（現職待補）",
     "color": "#d9822b",
-    "photo": null,
+    "photo": "assets/cand/placeholder-b.png",
     "bio": [
      "重要經歷一（待補）",
      "重要經歷二（待補）",
      "重要經歷三（待補）"
     ],
     "policy": "（客家政策標題待補）",
-    "link": null
+    "link": null,
+    "photoPlaceholder": true
    }
   ]
  },
@@ -577,14 +610,15 @@ window.ELECTION = {
     "age": null,
     "role": "（現職待補）",
     "color": "#1f7a8c",
-    "photo": null,
+    "photo": "assets/cand/placeholder-a.png",
     "bio": [
      "重要經歷一（待補）",
      "重要經歷二（待補）",
      "重要經歷三（待補）"
     ],
     "policy": "（客家政策標題待補）",
-    "link": null
+    "link": null,
+    "photoPlaceholder": true
    },
    {
     "name": "候選人乙",
@@ -592,14 +626,15 @@ window.ELECTION = {
     "age": null,
     "role": "（現職待補）",
     "color": "#d9822b",
-    "photo": null,
+    "photo": "assets/cand/placeholder-b.png",
     "bio": [
      "重要經歷一（待補）",
      "重要經歷二（待補）",
      "重要經歷三（待補）"
     ],
     "policy": "（客家政策標題待補）",
-    "link": null
+    "link": null,
+    "photoPlaceholder": true
    }
   ]
  },
@@ -612,14 +647,15 @@ window.ELECTION = {
     "age": null,
     "role": "（現職待補）",
     "color": "#1f7a8c",
-    "photo": null,
+    "photo": "assets/cand/placeholder-a.png",
     "bio": [
      "重要經歷一（待補）",
      "重要經歷二（待補）",
      "重要經歷三（待補）"
     ],
     "policy": "（客家政策標題待補）",
-    "link": null
+    "link": null,
+    "photoPlaceholder": true
    },
    {
     "name": "候選人乙",
@@ -627,14 +663,15 @@ window.ELECTION = {
     "age": null,
     "role": "（現職待補）",
     "color": "#d9822b",
-    "photo": null,
+    "photo": "assets/cand/placeholder-b.png",
     "bio": [
      "重要經歷一（待補）",
      "重要經歷二（待補）",
      "重要經歷三（待補）"
     ],
     "policy": "（客家政策標題待補）",
-    "link": null
+    "link": null,
+    "photoPlaceholder": true
    }
   ]
  },
@@ -647,14 +684,15 @@ window.ELECTION = {
     "age": null,
     "role": "（現職待補）",
     "color": "#1f7a8c",
-    "photo": null,
+    "photo": "assets/cand/placeholder-a.png",
     "bio": [
      "重要經歷一（待補）",
      "重要經歷二（待補）",
      "重要經歷三（待補）"
     ],
     "policy": "（客家政策標題待補）",
-    "link": null
+    "link": null,
+    "photoPlaceholder": true
    },
    {
     "name": "候選人乙",
@@ -662,14 +700,15 @@ window.ELECTION = {
     "age": null,
     "role": "（現職待補）",
     "color": "#d9822b",
-    "photo": null,
+    "photo": "assets/cand/placeholder-b.png",
     "bio": [
      "重要經歷一（待補）",
      "重要經歷二（待補）",
      "重要經歷三（待補）"
     ],
     "policy": "（客家政策標題待補）",
-    "link": null
+    "link": null,
+    "photoPlaceholder": true
    }
   ]
  },
@@ -682,14 +721,15 @@ window.ELECTION = {
     "age": null,
     "role": "（現職待補）",
     "color": "#1f7a8c",
-    "photo": null,
+    "photo": "assets/cand/placeholder-a.png",
     "bio": [
      "重要經歷一（待補）",
      "重要經歷二（待補）",
      "重要經歷三（待補）"
     ],
     "policy": "（客家政策標題待補）",
-    "link": null
+    "link": null,
+    "photoPlaceholder": true
    },
    {
     "name": "候選人乙",
@@ -697,14 +737,15 @@ window.ELECTION = {
     "age": null,
     "role": "（現職待補）",
     "color": "#d9822b",
-    "photo": null,
+    "photo": "assets/cand/placeholder-b.png",
     "bio": [
      "重要經歷一（待補）",
      "重要經歷二（待補）",
      "重要經歷三（待補）"
     ],
     "policy": "（客家政策標題待補）",
-    "link": null
+    "link": null,
+    "photoPlaceholder": true
    }
   ]
  },
@@ -717,14 +758,15 @@ window.ELECTION = {
     "age": null,
     "role": "（現職待補）",
     "color": "#1f7a8c",
-    "photo": null,
+    "photo": "assets/cand/placeholder-a.png",
     "bio": [
      "重要經歷一（待補）",
      "重要經歷二（待補）",
      "重要經歷三（待補）"
     ],
     "policy": "（客家政策標題待補）",
-    "link": null
+    "link": null,
+    "photoPlaceholder": true
    },
    {
     "name": "候選人乙",
@@ -732,14 +774,15 @@ window.ELECTION = {
     "age": null,
     "role": "（現職待補）",
     "color": "#d9822b",
-    "photo": null,
+    "photo": "assets/cand/placeholder-b.png",
     "bio": [
      "重要經歷一（待補）",
      "重要經歷二（待補）",
      "重要經歷三（待補）"
     ],
     "policy": "（客家政策標題待補）",
-    "link": null
+    "link": null,
+    "photoPlaceholder": true
    }
   ]
  },
@@ -752,14 +795,15 @@ window.ELECTION = {
     "age": null,
     "role": "（現職待補）",
     "color": "#1f7a8c",
-    "photo": null,
+    "photo": "assets/cand/placeholder-a.png",
     "bio": [
      "重要經歷一（待補）",
      "重要經歷二（待補）",
      "重要經歷三（待補）"
     ],
     "policy": "（客家政策標題待補）",
-    "link": null
+    "link": null,
+    "photoPlaceholder": true
    },
    {
     "name": "候選人乙",
@@ -767,14 +811,15 @@ window.ELECTION = {
     "age": null,
     "role": "（現職待補）",
     "color": "#d9822b",
-    "photo": null,
+    "photo": "assets/cand/placeholder-b.png",
     "bio": [
      "重要經歷一（待補）",
      "重要經歷二（待補）",
      "重要經歷三（待補）"
     ],
     "policy": "（客家政策標題待補）",
-    "link": null
+    "link": null,
+    "photoPlaceholder": true
    }
   ]
  }
