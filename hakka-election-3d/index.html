@@ -158,6 +158,11 @@
   .help-pane[hidden]{display:none}
 
   /* hover 提示 */
+  #bubble{position:fixed;left:0;top:0;z-index:24;pointer-events:none;background:var(--ink);color:#fff;font-size:13px;line-height:1.45;padding:7px 12px;border-radius:10px;
+    box-shadow:0 8px 20px rgba(20,36,63,.3);white-space:nowrap;opacity:0;transition:opacity .2s;will-change:transform}
+  #bubble.on{opacity:1}
+  #bubble b{font:900 15px var(--serif);color:var(--gold);margin-right:6px}
+  #bubble::after{content:"";position:absolute;left:50%;bottom:-6px;margin-left:-6px;border:6px solid transparent;border-bottom:0;border-top-color:var(--ink)}
   #tip{position:fixed;z-index:25;pointer-events:none;background:var(--ink);color:#fff;font-size:12.5px;line-height:1.5;padding:6px 10px;border-radius:8px;
     transform:translate(14px,14px);opacity:0;transition:opacity .12s}
   #tip.on{opacity:1}
@@ -285,6 +290,8 @@
   </div>
 </aside>
 <div id="tip"></div>
+<!-- 點選鄉鎮後的資料氣泡（跟著 3D 位置走；手機沒有 hover，靠這個看數據） -->
+<div id="bubble" aria-live="polite"></div>
 
 <!-- d3-geo 依賴 d3-array，順序不可對調 -->
 <script src="lib/d3-array.min.js"></script>

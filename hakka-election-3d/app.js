@@ -344,8 +344,22 @@ function placeFloat() {
   const y = Math.min(bottom, Math.max(top, maxY + 10));
   floatEl.style.transform = `translate(${x - fw / 2}px, ${y}px)`;
 }
+const bubbleEl = document.getElementById('bubble');
+function placeBubble() {
+  if (!selTown || !focused) { bubbleEl.classList.remove('on'); return; }
+  const t = TOWNS[selTown], c = COUNTIES[focused];
+  if (!t || !t.pos) return;
+  const m = t.meshes[0], [wx, wz] = toWorld(c, t.pos[0], t.pos[1]);
+  _v.set(wx, c.group.position.y + m.position.y + ISLAND_H + 2, wz).project(camera);
+  const [w, h] = canvasSize();
+  const px = (_v.x + 1) / 2 * w, py = (1 - _v.y) / 2 * h;
+  const bw = bubbleEl.offsetWidth || 160, bh = bubbleEl.offsetHeight || 36;
+  const x = Math.min(w - bw / 2 - 8, Math.max(bw / 2 + 8, px));
+  bubbleEl.style.transform = `translate(${x - bw / 2}px, ${py - bh - 26}px)`;   // 鄉鎮名標籤上方
+}
 function updateLabels() {
   placeFloat();
+  placeBubble();
   const cand = [];
   Object.values(COUNTIES).forEach(c => {
     const on = focused !== c.name;
@@ -478,7 +492,7 @@ function tweenMix(c, to) {
 async function focusCounty(name) {
   if (!COUNTIES[name] || focused === name) return;
   const prev = focused;
-  focused = name; selTown = null;
+  focused = name; selTown = null; bubbleEl.classList.remove('on');
   const c = COUNTIES[name];
   if (prev) settle(COUNTIES[prev]);
   Object.values(COUNTIES).forEach(o => tweenMix(o, o === c ? { focus: 1, dim: 0 } : { focus: 0, dim: 1 }));
@@ -534,7 +548,7 @@ function overviewPose() {
 }
 async function overview(seconds = 2.0) {
   const prev = focused;
-  focused = null; selTown = null;
+  focused = null; selTown = null; bubbleEl.classList.remove('on');
   if (prev) settle(COUNTIES[prev]);
   Object.values(COUNTIES).forEach(o => tweenMix(o, { focus: 0, dim: 0 }));
   document.body.classList.remove('panel-open');
@@ -630,6 +644,11 @@ function selectTown(key) {
   const c = COUNTIES[focused];
   paintCounty(c);
   c.towns.forEach(x => x.label?.classList.toggle('sel', x.key === selTown));
+  // 資料氣泡：點選鄉鎮時顯示（手機沒有 hover，靠這個看數據）
+  if (selTown) {
+    bubbleEl.innerHTML = `<b>${show(t.town || t.county)}</b>客家 ${fmt(t.hakka)} 人（${t.pct.toFixed(1)}%）`;
+    bubbleEl.classList.add('on');
+  } else bubbleEl.classList.remove('on');
   // 選到的鄉鎮再多升一點
   c.towns.forEach(x => x.meshes.forEach(m => gsap.to(m.position, {
     y: (c.towns.length > 1 ? townLift(c, x) : 0) + (x.key === selTown ? 2.5 : 0), duration: dur(0.5), ease: 'back.out(2)', overwrite: true,
