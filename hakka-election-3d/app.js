@@ -588,13 +588,18 @@ function renderCandidates(el) {
       <div class="nm">${cd.name}</div>
       <span class="party">${cd.party}</span>
       <div class="age">${cd.age == null ? '年紀待補' : cd.age + ' 歲'} · ${cd.role}</div>
-      <ul>${(cd.bio || []).map(b => `<li>${b}</li>`).join('')}</ul>
+      ${(cd.bio || []).length ? `<ul>${cd.bio.map(b => `<li>${b}</li>`).join('')}</ul>` : ''}
     </div>`).join('');
+  box.classList.toggle('three', cs.length >= 3);
+  pol.classList.toggle('three', cs.length >= 3);
   // 政見：兩欄並列，只放標題一句，下方「看完整政策」連到專訪新聞（link 未填時顯示待補、不可點）
   pol.innerHTML = cs.map(cd => `
     <div class="policy" style="--cc:${cd.color}">
       <b>${cd.name}</b>
-      <p>${cd.policy || '（政策標題待補）'}</p>
+      ${Array.isArray(cd.policy) && cd.policy.length
+        ? `<ul>${cd.policy.map(x => `<li>${x}</li>`).join('')}</ul>`
+        : `<p>${cd.policy || '（客家政策待補）'}</p>`}
+      ${cd.policyNote ? `<small>${cd.policyNote}</small>` : ''}
       <a class="more" href="${cd.link || PLACEHOLDER_LINK}" target="_blank" rel="noopener">看完整政策 →</a>
     </div>`).join('');
 }
