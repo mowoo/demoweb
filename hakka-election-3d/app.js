@@ -587,7 +587,8 @@ function renderCandidates(el) {
       <div class="art">${cd.photo ? `<img src="${cd.photo}" alt="${cd.name}插畫">` : avatar(cd, i) + '<span class="ph">插畫待補</span>'}</div>
       <div class="nm">${cd.name}</div>
       <span class="party">${cd.party}</span>
-      <div class="age">${cd.age == null ? '年紀待補' : cd.age + ' 歲'} · ${cd.role}</div>
+      <div class="age">${cd.age == null ? '年紀待補' : cd.age + ' 歲'}</div>
+      <div class="role">${cd.role}</div>
       ${(cd.bio || []).length ? `<ul>${cd.bio.map(b => `<li>${b}</li>`).join('')}</ul>` : ''}
     </div>`).join('');
   box.classList.toggle('three', cs.length >= 3);
