@@ -591,9 +591,10 @@ function renderCandidates(el) {
   const box = document.getElementById('p-cands'), pol = document.getElementById('p-policies');
   if (!cs.length) { box.innerHTML = '<div class="p-note">（候選人資料待補）</div>'; pol.innerHTML = ''; return; }
   box.innerHTML = cs.map((cd, i) => `
-    <div class="cand" style="--cc:${cd.color}">
+    <div class="cand" style="--cc:${ccOf(cd)}">
       <div class="art">${cd.photo ? `<img src="${cd.photo}" alt="${cd.name}插畫">` : avatar(cd, i) + '<span class="ph">插畫待補</span>'}</div>
       <div class="nm">${cd.name}</div>
+      <div class="got">得票 <b>${fmt(gotOf(cd))}</b> 票</div>
       <span class="party">${cd.party}</span>
       <div class="age">${cd.age == null ? '年紀待補' : cd.age + ' 歲'}</div>
       <div class="role">${cd.role}</div>
@@ -603,7 +604,7 @@ function renderCandidates(el) {
   pol.classList.toggle('three', cs.length >= 3);
   // 政見：兩欄並列，只放標題一句，下方「看完整政策」連到專訪新聞（link 未填時顯示待補、不可點）
   pol.innerHTML = cs.map(cd => `
-    <div class="policy" style="--cc:${cd.color}">
+    <div class="policy" style="--cc:${ccOf(cd)}">
       <b>${cd.name}</b>
       ${Array.isArray(cd.policy) && cd.policy.length
         ? `<ul>${cd.policy.map(x => `<li>${x}</li>`).join('')}</ul>`
@@ -616,6 +617,17 @@ function renderCandidates(el) {
 // ---------- 面板 ----------
 const fmt = n => Math.round(n).toLocaleString('zh-Hant');
 const wan = n => (n >= 10000 ? (n / 10000).toFixed(1).replace(/\.0$/, '') + ' 萬' : fmt(n));
+// 得票數：目前尚無統計，一律以 VOTE_PLACEHOLDER 佔位；正式資料填入 election.js 的 got（縣市）與 results[鄉鎮][序]（鄉鎮）後自動取代
+const VOTE_PLACEHOLDER = 999999;
+// 政黨色系：有黨籍的候選人，卡片外框、底色、文字、黨籍標籤、政見欄與氣泡人名一律用政黨色；無黨籍或未列者退回 election.js 的 color
+const PARTY_COLOR = { '中國國民黨': '#1d4fa3', '民主進步黨': '#1b9431', '台灣民眾黨': '#1fb6b6', '時代力量': '#d9a300', '台灣基進': '#8b1a1a' };
+const ccOf = cd => PARTY_COLOR[cd.party] || cd.color;
+const gotOf = cd => cd.got == null ? VOTE_PLACEHOLDER : cd.got;
+function townVotes(county, town) {
+  const el = ELECTION[county]; if (!el || !(el.candidates || []).length) return '';
+  const r = (el.results || {})[town] || [];
+  return `<span class="v">${el.candidates.map((cd, i) => `<i style="--cc:${ccOf(cd)}">${cd.name}</i>${fmt(r[i] == null ? VOTE_PLACEHOLDER : r[i])} 票`).join('')}</span>`;
+}
 function renderPanel() {
   const c = COUNTIES[focused];
   if (!c) return;
@@ -659,7 +671,7 @@ function selectTown(key) {
   c.towns.forEach(x => x.label?.classList.toggle('sel', x.key === selTown));
   // 資料氣泡：點選鄉鎮時顯示（手機沒有 hover，靠這個看數據）
   if (selTown) {
-    bubbleEl.innerHTML = `<b>${show(t.town || t.county)}</b>客家 ${fmt(t.hakka)} 人（${t.pct.toFixed(1)}%）`;
+    bubbleEl.innerHTML = `<b>${show(t.town || t.county)}</b>${townVotes(norm(t.county), t.town)}客家 ${fmt(t.hakka)} 人（${t.pct.toFixed(1)}%）`;
     bubbleEl.classList.add('on');
   } else bubbleEl.classList.remove('on');
   // 選到的鄉鎮再多升一點
@@ -754,13 +766,16 @@ try {
 // ---------- 縣市快速切換 ----------
 const ORDER = ['基隆市', '臺北市', '新北市', '桃園市', '新竹市', '新竹縣', '苗栗縣', '臺中市', '彰化縣', '南投縣', '雲林縣', '嘉義市', '嘉義縣',
   '臺南市', '高雄市', '屏東縣', '宜蘭縣', '花蓮縣', '臺東縣', '澎湖縣', '金門縣', '連江縣'];
+// 縣市按鈕文字：桌機去掉「縣／市」，但新竹、嘉義同名縣市保留全名以資區別；手機選單一律全名
+const DUP_BASE = new Set(ORDER.map(n => n.replace(/[縣市]$/, '')).filter((b, i, a) => a.indexOf(b) !== i));
+const chipLabel = n => DUP_BASE.has(n.replace(/[縣市]$/, '')) ? n : n.replace(/[縣市]$/, '');
 const chips = document.getElementById('chips');
 chips.innerHTML = ORDER.filter(n => COUNTIES[norm(n)]).map(n =>
-  `<button data-c="${norm(n)}">${n.replace(/[縣市]$/, '')}</button>`).join('');
+  `<button data-c="${norm(n)}">${chipLabel(n)}</button>`).join('');
 chips.querySelectorAll('button').forEach(b => b.onclick = () => focusCounty(b.dataset.c));
 // 手機抽屜標題的縣市選單：自訂小面板（不用原生 select，避免手機滿版選單）
 const pPick = document.getElementById('p-pick'), pMenu = document.getElementById('p-menu');
-pMenu.innerHTML = ORDER.filter(n => COUNTIES[norm(n)]).map(n => `<button type="button" role="option" data-c="${norm(n)}">${n.replace(/[縣市]$/, '')}</button>`).join('');
+pMenu.innerHTML = ORDER.filter(n => COUNTIES[norm(n)]).map(n => `<button type="button" role="option" data-c="${norm(n)}">${n}</button>`).join('');
 function toggleMenu(open) {
   const on = open ?? pMenu.hidden;
   pMenu.hidden = !on;
@@ -801,7 +816,7 @@ canvas.addEventListener('pointermove', e => {
   if (t) {
     const inFocus = cName === focused;
     tip.innerHTML = inFocus && t.town
-      ? `<b>${show(t.town)}</b><br>客家 ${fmt(t.hakka)} 人（${t.pct.toFixed(1)}%）`
+      ? `<b>${show(t.town)}</b>${townVotes(cName, t.town)}客家 ${fmt(t.hakka)} 人（${t.pct.toFixed(1)}%）`
       : `<b>${show(cName)}</b>　客家 ${COUNTIES[cName].pct.toFixed(1)}%`;
     tip.style.left = e.clientX + 'px'; tip.style.top = e.clientY + 'px';
     tip.classList.add('on');
