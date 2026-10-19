@@ -626,7 +626,7 @@ function renderPanel() {
   const sumHakka = c.towns.reduce((a, t) => a + t.hakka, 0) || 1;
   const ol = document.getElementById('p-towns');
   ol.innerHTML = list.map(t => {
-    const few = t.hakka < 1000;                                   // 客家人口少於 1,000 人
+    const few = metric === 'hakka' && t.hakka < 1000;            // 「少於 1,000 人」只用在客家人口模式；比例模式照常顯示比例
     const share = t.hakka / sumHakka * 100;                       // 佔全縣客家人口
     const width = metric === 'pct' ? t.pct : share;               // 比例＝絕對值（滿條 100%）；人口＝佔比（全縣加總 100%）
     const label = few ? '<small>少於 1,000 人</small>'
