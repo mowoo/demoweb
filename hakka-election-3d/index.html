@@ -47,6 +47,7 @@
     opacity:0;pointer-events:none;transition:opacity .3s;will-change:transform}
   #float-metric.on{opacity:1;pointer-events:auto}
   #float-metric::before{content:"";position:absolute;left:50%;top:-7px;margin-left:-7px;border:7px solid transparent;border-top:0;border-bottom-color:rgba(20,36,63,.92)}
+  #float-metric.above::before{top:auto;bottom:-7px;border-top:7px solid rgba(20,36,63,.92);border-bottom:0}   /* 放到縣市上方時箭頭朝下 */
   #float-metric .fl{font-size:13px;font-weight:700;color:#c9d3e6;white-space:nowrap}
   #float-metric .seg{background:rgba(255,255,255,.14)}
   #float-metric .seg button{color:#dbe3f2;padding:5px 14px;font-size:13.5px}

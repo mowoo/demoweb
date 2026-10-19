@@ -327,12 +327,12 @@ function placeFloat() {
   const b = (c.worldBox || c.frameBox);
   const [w, h] = canvasSize();
   const yBase = c.group.position.y, yTop = yBase + ISLAND_H + TOWN_RISE[1];
-  let minX = Infinity, maxX = -Infinity, maxY = -Infinity, cnt = 0;
+  let minX = Infinity, maxX = -Infinity, minY = Infinity, maxY = -Infinity, cnt = 0;
   for (const x of [b.min.x, b.max.x]) for (const z of [b.min.z, b.max.z]) for (const y of [yBase, yTop]) {
     _corner.set(x, y, z).project(camera);
     if (_corner.z > 1) continue;
     const px = (_corner.x + 1) / 2 * w, py = (1 - _corner.y) / 2 * h;
-    minX = Math.min(minX, px); maxX = Math.max(maxX, px); maxY = Math.max(maxY, py); cnt++;
+    minX = Math.min(minX, px); maxX = Math.max(maxX, px); minY = Math.min(minY, py); maxY = Math.max(maxY, py); cnt++;
   }
   if (!cnt) return;
   const { vw, vh } = viewport();
@@ -341,9 +341,17 @@ function placeFloat() {
   const left = fw / 2 + 8, right = (isSmall() ? w : vw) - fw / 2 - 8;
   const top = isSmall() ? 64 : 8, bottom = (isSmall() ? vh + 56 : h) - fh - 8;
   const x = Math.min(right, Math.max(left, (minX + maxX) / 2));
-  const y = Math.min(bottom, Math.max(top, maxY + 10));
+  let y = Math.min(bottom, Math.max(top, maxY + 10)), above = false;
+  // 桌機：若會壓到左下的縣市按鈕列（超寬／矮螢幕），改放到縣市上方
+  if (!isSmall()) {
+    const cr = chipsEl.getBoundingClientRect();
+    const hitX = x + fw / 2 > cr.left - 8 && x - fw / 2 < cr.right + 8;
+    if (hitX && y + fh > cr.top - 8) { y = Math.max(top, minY - fh - 12); above = true; }
+  }
+  floatEl.classList.toggle('above', above);
   floatEl.style.transform = `translate(${x - fw / 2}px, ${y}px)`;
 }
+const chipsEl = document.getElementById('chips');
 const bubbleEl = document.getElementById('bubble');
 function placeBubble() {
   if (!selTown || !focused) { bubbleEl.classList.remove('on'); return; }
