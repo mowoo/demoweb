@@ -2,7 +2,8 @@
    基隆／彰化／嘉義縣／嘉義市／宜蘭／澎湖／金門／連江仍為佔位。
    鍵值 = 縣市名（「台」寫法，與 hakka.js 一致）。
    votes   : 選舉人數（整數）；null 顯示「待補」
-   photo   : 插畫圖檔路徑（去背 PNG，約 600×600）；目前為示意人像 assets/cand/placeholder-a/b.png
+   photo   : 插畫圖檔路徑（去背 PNG，約 600×600）；目前依 gender 使用示意人像（M→placeholder-a 男、F→placeholder-b 女）
+   gender  : M／F，2026-10-19 依公開資料查核
    photoPlaceholder: true 時卡片顯示「示意」標記，換成正式插畫後刪掉此欄位
    color   : 候選人代表色（目前中性青／橘，待決定是否依政黨色）
    age     : 整數；null 顯示「待補」
@@ -24,7 +25,8 @@ window.ELECTION = {
     "policy": [],
     "policyNote": null,
     "link": null,
-    "photoPlaceholder": true
+    "photoPlaceholder": true,
+    "gender": "M"
    },
    {
     "name": "蘇巧慧",
@@ -37,7 +39,8 @@ window.ELECTION = {
     "policy": [],
     "policyNote": null,
     "link": null,
-    "photoPlaceholder": true
+    "photoPlaceholder": true,
+    "gender": "F"
    }
   ]
  },
@@ -55,7 +58,8 @@ window.ELECTION = {
     "policy": [],
     "policyNote": null,
     "link": null,
-    "photoPlaceholder": true
+    "photoPlaceholder": true,
+    "gender": "M"
    },
    {
     "name": "沈伯洋",
@@ -63,12 +67,13 @@ window.ELECTION = {
     "age": 44,
     "role": "立法委員",
     "color": "#d9822b",
-    "photo": "assets/cand/placeholder-b.png",
+    "photo": "assets/cand/placeholder-a.png",
     "bio": [],
     "policy": [],
     "policyNote": null,
     "link": null,
-    "photoPlaceholder": true
+    "photoPlaceholder": true,
+    "gender": "M"
    }
   ]
  },
@@ -91,7 +96,8 @@ window.ELECTION = {
     ],
     "policyNote": "（2022 年所提）",
     "link": null,
-    "photoPlaceholder": true
+    "photoPlaceholder": true,
+    "gender": "M"
    },
    {
     "name": "黃世杰",
@@ -99,7 +105,7 @@ window.ELECTION = {
     "age": 47,
     "role": "民進黨桃園市長候選人",
     "color": "#d9822b",
-    "photo": "assets/cand/placeholder-b.png",
+    "photo": "assets/cand/placeholder-a.png",
     "bio": [],
     "policy": [
      "讓客語重新走進日常",
@@ -109,7 +115,8 @@ window.ELECTION = {
     ],
     "policyNote": null,
     "link": null,
-    "photoPlaceholder": true
+    "photoPlaceholder": true,
+    "gender": "M"
    }
   ]
  },
@@ -132,7 +139,8 @@ window.ELECTION = {
     ],
     "policyNote": null,
     "link": null,
-    "photoPlaceholder": true
+    "photoPlaceholder": true,
+    "gender": "M"
    },
    {
     "name": "何欣純",
@@ -145,7 +153,8 @@ window.ELECTION = {
     "policy": [],
     "policyNote": null,
     "link": null,
-    "photoPlaceholder": true
+    "photoPlaceholder": true,
+    "gender": "F"
    }
   ]
  },
@@ -163,7 +172,8 @@ window.ELECTION = {
     "policy": [],
     "policyNote": null,
     "link": null,
-    "photoPlaceholder": true
+    "photoPlaceholder": true,
+    "gender": "M"
    },
    {
     "name": "陳亭妃",
@@ -176,7 +186,8 @@ window.ELECTION = {
     "policy": [],
     "policyNote": null,
     "link": null,
-    "photoPlaceholder": true
+    "photoPlaceholder": true,
+    "gender": "F"
    }
   ]
  },
@@ -189,12 +200,13 @@ window.ELECTION = {
     "age": 64,
     "role": "立法委員",
     "color": "#1f7a8c",
-    "photo": "assets/cand/placeholder-a.png",
+    "photo": "assets/cand/placeholder-b.png",
     "bio": [],
     "policy": [],
     "policyNote": null,
     "link": null,
-    "photoPlaceholder": true
+    "photoPlaceholder": true,
+    "gender": "F"
    },
    {
     "name": "賴瑞隆",
@@ -202,12 +214,13 @@ window.ELECTION = {
     "age": 52,
     "role": "立法委員",
     "color": "#d9822b",
-    "photo": "assets/cand/placeholder-b.png",
+    "photo": "assets/cand/placeholder-a.png",
     "bio": [],
     "policy": [],
     "policyNote": null,
     "link": null,
-    "photoPlaceholder": true
+    "photoPlaceholder": true,
+    "gender": "M"
    }
   ]
  },
@@ -257,12 +270,13 @@ window.ELECTION = {
     "age": 54,
     "role": "立法委員",
     "color": "#1f7a8c",
-    "photo": "assets/cand/placeholder-a.png",
+    "photo": "assets/cand/placeholder-b.png",
     "bio": [],
     "policy": [],
     "policyNote": null,
     "link": null,
-    "photoPlaceholder": true
+    "photoPlaceholder": true,
+    "gender": "F"
    },
    {
     "name": "鄭朝方",
@@ -270,12 +284,13 @@ window.ELECTION = {
     "age": 46,
     "role": "竹北市長",
     "color": "#d9822b",
-    "photo": "assets/cand/placeholder-b.png",
+    "photo": "assets/cand/placeholder-a.png",
     "bio": [],
     "policy": [],
     "policyNote": null,
     "link": null,
-    "photoPlaceholder": true
+    "photoPlaceholder": true,
+    "gender": "M"
    }
   ]
  },
@@ -293,7 +308,8 @@ window.ELECTION = {
     "policy": [],
     "policyNote": null,
     "link": null,
-    "photoPlaceholder": true
+    "photoPlaceholder": true,
+    "gender": "M"
    },
    {
     "name": "陳品安",
@@ -306,7 +322,8 @@ window.ELECTION = {
     "policy": [],
     "policyNote": null,
     "link": null,
-    "photoPlaceholder": true
+    "photoPlaceholder": true,
+    "gender": "F"
    }
   ]
  },
@@ -356,12 +373,13 @@ window.ELECTION = {
     "age": 50,
     "role": "南投縣長",
     "color": "#1f7a8c",
-    "photo": "assets/cand/placeholder-a.png",
+    "photo": "assets/cand/placeholder-b.png",
     "bio": [],
     "policy": [],
     "policyNote": null,
     "link": null,
-    "photoPlaceholder": true
+    "photoPlaceholder": true,
+    "gender": "F"
    },
    {
     "name": "温世政",
@@ -369,7 +387,7 @@ window.ELECTION = {
     "age": 53,
     "role": "牙醫師",
     "color": "#d9822b",
-    "photo": "assets/cand/placeholder-b.png",
+    "photo": "assets/cand/placeholder-a.png",
     "bio": [],
     "policy": [
      "推動客庄創生計畫",
@@ -381,7 +399,8 @@ window.ELECTION = {
     ],
     "policyNote": null,
     "link": null,
-    "photoPlaceholder": true
+    "photoPlaceholder": true,
+    "gender": "M"
    }
   ]
  },
@@ -394,12 +413,13 @@ window.ELECTION = {
     "age": 45,
     "role": "立法委員",
     "color": "#1f7a8c",
-    "photo": "assets/cand/placeholder-a.png",
+    "photo": "assets/cand/placeholder-b.png",
     "bio": [],
     "policy": [],
     "policyNote": null,
     "link": null,
-    "photoPlaceholder": true
+    "photoPlaceholder": true,
+    "gender": "F"
    },
    {
     "name": "劉建國",
@@ -407,12 +427,13 @@ window.ELECTION = {
     "age": 57,
     "role": "立法委員",
     "color": "#d9822b",
-    "photo": "assets/cand/placeholder-b.png",
+    "photo": "assets/cand/placeholder-a.png",
     "bio": [],
     "policy": [],
     "policyNote": null,
     "link": null,
-    "photoPlaceholder": true
+    "photoPlaceholder": true,
+    "gender": "M"
    }
   ]
  },
@@ -467,7 +488,8 @@ window.ELECTION = {
     "policy": [],
     "policyNote": null,
     "link": null,
-    "photoPlaceholder": true
+    "photoPlaceholder": true,
+    "gender": "M"
    },
    {
     "name": "周春米",
@@ -480,7 +502,8 @@ window.ELECTION = {
     "policy": [],
     "policyNote": null,
     "link": null,
-    "photoPlaceholder": true
+    "photoPlaceholder": true,
+    "gender": "F"
    }
   ]
  },
@@ -493,12 +516,13 @@ window.ELECTION = {
     "age": 53,
     "role": "台東縣會議長",
     "color": "#1f7a8c",
-    "photo": "assets/cand/placeholder-a.png",
+    "photo": "assets/cand/placeholder-b.png",
     "bio": [],
     "policy": [],
     "policyNote": null,
     "link": null,
-    "photoPlaceholder": true
+    "photoPlaceholder": true,
+    "gender": "F"
    },
    {
     "name": "陳瑩",
@@ -511,7 +535,8 @@ window.ELECTION = {
     "policy": [],
     "policyNote": null,
     "link": null,
-    "photoPlaceholder": true
+    "photoPlaceholder": true,
+    "gender": "F"
    }
   ]
  },
@@ -524,7 +549,7 @@ window.ELECTION = {
     "age": 58,
     "role": "吉安鄉長",
     "color": "#1f7a8c",
-    "photo": "assets/cand/placeholder-a.png",
+    "photo": "assets/cand/placeholder-b.png",
     "bio": [],
     "policy": [
      "推動花蓮 13 鄉鎮「一鄉一特色」",
@@ -534,7 +559,8 @@ window.ELECTION = {
     ],
     "policyNote": null,
     "link": null,
-    "photoPlaceholder": true
+    "photoPlaceholder": true,
+    "gender": "F"
    },
    {
     "name": "魏嘉賢",
@@ -542,12 +568,13 @@ window.ELECTION = {
     "age": 48,
     "role": "花蓮縣議員",
     "color": "#6b7385",
-    "photo": "assets/cand/placeholder-b.png",
+    "photo": "assets/cand/placeholder-a.png",
     "bio": [],
     "policy": [],
     "policyNote": null,
     "link": null,
-    "photoPlaceholder": true
+    "photoPlaceholder": true,
+    "gender": "M"
    },
    {
     "name": "張峻",
@@ -560,7 +587,8 @@ window.ELECTION = {
     "policy": [],
     "policyNote": null,
     "link": null,
-    "photoPlaceholder": true
+    "photoPlaceholder": true,
+    "gender": "M"
    }
   ]
  },
@@ -610,12 +638,13 @@ window.ELECTION = {
     "age": 42,
     "role": "新竹市長",
     "color": "#6b7385",
-    "photo": "assets/cand/placeholder-a.png",
+    "photo": "assets/cand/placeholder-b.png",
     "bio": [],
     "policy": [],
     "policyNote": null,
     "link": null,
-    "photoPlaceholder": true
+    "photoPlaceholder": true,
+    "gender": "F"
    },
    {
     "name": "莊競程",
@@ -623,12 +652,13 @@ window.ELECTION = {
     "age": 45,
     "role": "民進黨新竹市長候選人",
     "color": "#d9822b",
-    "photo": "assets/cand/placeholder-b.png",
+    "photo": "assets/cand/placeholder-a.png",
     "bio": [],
     "policy": [],
     "policyNote": null,
     "link": null,
-    "photoPlaceholder": true
+    "photoPlaceholder": true,
+    "gender": "M"
    }
   ]
  },
