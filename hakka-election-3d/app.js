@@ -690,6 +690,14 @@ function setMetric(m) {
 document.querySelectorAll('#metric-seg button, #float-metric button').forEach(b => b.onclick = () => setMetric(b.dataset.m));
 // ---------- 手機底部抽屜：半屏 ⇄ 全屏（拖曳標題列／把手，或點把手切換）----------
 const panelEl = document.getElementById('panel');
+// 手機：把「基本數據」四格從抽屜標題下方移到候選人卡片之後，開啟抽屜第一眼就看到候選人與得票；桌機維持原位
+const statsEl = panelEl.querySelector('.p-stats'), bodyEl = panelEl.querySelector('.p-body');
+function placeStats() {
+  if (isSmall()) { if (statsEl.parentElement !== bodyEl) bodyEl.insertBefore(statsEl, document.getElementById('p-pol-sec')); }
+  else if (statsEl.parentElement !== panelEl) panelEl.insertBefore(statsEl, bodyEl);
+}
+placeStats();
+addEventListener('resize', placeStats);
 const sheet = { full: false, drag: null };
 const vh = () => innerHeight;
 const sheetH = full => vh() * (full ? 0.92 : 0.45);          // 與 CSS --sheet-full / --sheet-half 對應

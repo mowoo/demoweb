@@ -94,6 +94,8 @@
   .p-stats span{font-size:12px;color:var(--muted)}
   .p-stats b{display:block;font:900 22px/1.25 var(--serif);font-variant-numeric:tabular-nums}
   .p-stats .hl b{color:var(--vermilion)}
+  /* 手機：基本數據移進捲動區、排在候選人下方，開啟抽屜第一眼先看到候選人與得票 */
+  .p-body .p-stats{margin:14px 0 4px;border:1px solid var(--line);border-radius:10px;overflow:hidden}
   .p-body{flex:1;overflow:auto;padding:14px 18px 18px}
   .p-sub{display:flex;align-items:center;justify-content:space-between;font-weight:800;margin:0 0 8px}
   .seg{display:inline-flex;background:#efe7d4;border-radius:999px;padding:2px}
@@ -208,6 +210,14 @@
     #chips{display:none}
     body.panel-open #hud p,body.panel-open #hud .kicker{display:none}
     body.panel-open #hud h1{font-size:20px}
+    /* 手機：候選人卡片壓縮，讓半屏抽屜一開就能看到姓名、得票與黨籍 */
+    .cand .art{aspect-ratio:1/0.52}
+    .cand .nm{font-size:19px;margin-top:4px}
+    .cand .got{font-size:12.5px;margin:1px 0}
+    .cand .got b{font-size:17px}
+    .cand .party{font-size:12.5px;padding:2px 11px;margin:3px 0 1px}
+    .cand .age{font-size:13.5px;margin-top:2px}
+    .cand .role{font-size:12px}
     .p-stats{grid-template-columns:repeat(4,1fr)}
     .p-stats div{padding:6px 8px 6px 10px}
     .p-stats span{font-size:10.5px}
@@ -296,7 +306,7 @@
   <div class="p-body">
     <div class="p-sec" style="border:0;padding-top:0;margin-top:2px">兩黨主要候選人 <small><span class="ph">佔位</span></small></div>
     <div class="cands" id="p-cands"></div>
-    <div class="p-sec" style="border:0;padding-top:0;margin-top:12px">客家政見</div>
+    <div class="p-sec" id="p-pol-sec" style="border:0;padding-top:0;margin-top:12px">客家政見</div>
     <div class="policies" id="p-policies"></div>
 
     <div class="p-sec"><span>鄉鎮起伏依據 <small id="p-count" style="font-weight:500;color:var(--muted)"></small></span>
