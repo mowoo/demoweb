@@ -111,7 +111,7 @@
   .towns b small{display:block;font-weight:500;font-size:10.5px;color:var(--muted);line-height:1.1}
   .towns li.few button{opacity:.6}
   .towns li.few b small{font-size:11px}
-  .p-note{margin-top:14px;font-size:12px;color:var(--muted)}
+  .p-note{margin-top:16px;padding-top:12px;border-top:1px dashed #d7ccae;font-size:12px;line-height:1.6;color:var(--muted)}
   .p-note em{font-style:normal;background:#fff3cf;color:#7a5b00;padding:1px 8px;border-radius:999px;margin-right:6px}
 
   /* 候選人（佔位） */
@@ -301,10 +301,10 @@
     <div><span>設籍人口</span><b id="p-total">—</b></div>
     <div><span>客家人口</span><b id="p-hakka">—</b></div>
     <div class="hl"><span>客家比例</span><b id="p-pct">—</b></div>
-    <div id="p-votes-cell"><span>選舉人數（2022年資料）</span><b id="p-votes">—</b></div>
+    <div id="p-votes-cell"><span>2022年選舉人數</span><b id="p-votes">—</b></div>
   </div>
   <div class="p-body">
-    <div class="p-sec" style="border:0;padding-top:0;margin-top:2px">兩黨主要候選人 <small><span class="ph">佔位</span></small></div>
+    <div class="p-sec" style="border:0;padding-top:0;margin-top:2px">兩黨主要候選人</div>
     <div class="cands" id="p-cands"></div>
     <div class="p-sec" id="p-pol-sec" style="border:0;padding-top:0;margin-top:12px">客家政見</div>
     <div class="policies" id="p-policies"></div>
@@ -315,6 +315,8 @@
       </span>
     </div>
     <ol class="towns" id="p-towns"></ol>
+
+    <div class="p-note">各縣市長選人客家政策由《客新聞》彙整；全台各縣市客家人口數及比例資料來源，取自客家委員會110年全國客家人口暨語言基礎資料調查研究報告。</div>
   </div>
 </aside>
 <div id="tip"></div>
