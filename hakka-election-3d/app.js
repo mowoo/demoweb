@@ -905,3 +905,11 @@ overview(REDUCED ? 0.1 : 2.6);
       <div class="n-body"><span class="n-tag">${a.tag}</span><h3>${a.title}</h3><time>${a.date}</time></div>
     </a>`).join('');
 })();
+
+// ---------- 專題製作名單（資料在 data/articles.js 的 CREDITS）----------
+(function renderCredits() {
+  const el = document.getElementById('member');
+  if (!el || !window.CREDITS) return;
+  el.innerHTML = `<div class="line"></div><div class="title">專題製作名單</div>
+    <div class="roles">${CREDITS.map(([role, who]) => `<b>${role}</b>｜${who}`).join('<br>')}</div>`;
+})();

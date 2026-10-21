@@ -198,6 +198,12 @@
   .n-body time{font-size:13px;color:var(--muted)}
   .news-more{text-align:center;margin-top:32px}
   .more-btn{display:inline-block;padding:12px 40px;border-radius:999px;background:var(--ink);color:#fff;font-weight:800;text-decoration:none;box-shadow:0 5px 0 rgba(0,0,0,.25);transition:transform .12s,box-shadow .12s}
+  /* 專題製作名單（比照 hakkanews.tw/1786hero/） */
+  .member{max-width:520px;margin:56px auto 0;text-align:center;color:var(--ink)}
+  .member .line{width:56px;height:3px;margin:0 auto 18px;border-radius:2px;background:var(--vermilion)}
+  .member .title{font:900 20px/1.4 var(--serif);letter-spacing:.2em;margin-bottom:12px}
+  .member .roles{font-size:16px;line-height:2;color:#3a4256}
+  .member .roles b{font-weight:700;color:var(--ink)}
   .more-btn:hover{background:var(--indigo)}
   .more-btn:active{transform:translateY(3px);box-shadow:0 2px 0 rgba(0,0,0,.25)}
   @media (max-width:899px){.news-grid{grid-template-columns:repeat(2,1fr);gap:16px}}
@@ -389,6 +395,7 @@
     <h2 class="news-title">選戰報導<small>客新聞</small></h2>
     <div class="news-grid" id="news-grid"></div>
     <div class="news-more"><a class="more-btn" href="https://hakkanews.tw/" target="_blank" rel="noopener">看更多新聞</a></div>
+    <div class="member" id="member" aria-label="專題製作名單"></div>
   </div>
 </section>
 
