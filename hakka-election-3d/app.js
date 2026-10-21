@@ -780,11 +780,9 @@ try {
 const ORDER = ['基隆市', '臺北市', '新北市', '桃園市', '新竹市', '新竹縣', '苗栗縣', '臺中市', '彰化縣', '南投縣', '雲林縣', '嘉義市', '嘉義縣',
   '臺南市', '高雄市', '屏東縣', '宜蘭縣', '花蓮縣', '臺東縣', '澎湖縣', '金門縣', '連江縣'];
 // 縣市按鈕文字：桌機去掉「縣／市」，但新竹、嘉義同名縣市保留全名以資區別；手機選單一律全名
-const DUP_BASE = new Set(ORDER.map(n => n.replace(/[縣市]$/, '')).filter((b, i, a) => a.indexOf(b) !== i));
-const chipLabel = n => DUP_BASE.has(n.replace(/[縣市]$/, '')) ? n : n.replace(/[縣市]$/, '');
 const chips = document.getElementById('chips');
 chips.innerHTML = ORDER.filter(n => COUNTIES[norm(n)]).map(n =>
-  `<button data-c="${norm(n)}">${chipLabel(n)}</button>`).join('');
+  `<button data-c="${norm(n)}">${n}</button>`).join('');
 chips.querySelectorAll('button').forEach(b => b.onclick = () => focusCounty(b.dataset.c));
 // 手機抽屜標題的縣市選單：自訂小面板（不用原生 select，避免手機滿版選單）
 const pPick = document.getElementById('p-pick'), pMenu = document.getElementById('p-menu');
