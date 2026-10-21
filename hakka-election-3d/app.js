@@ -94,7 +94,7 @@ scene.add(sea);
 
 // ---------- 狀態（需在任何呼叫 paintCounty 之前宣告，避免 TDZ）----------
 let focused = null, selTown = null, hoverTown = null, hoverCounty = null;
-let metric = 'pct';
+let metric = 'hakka';   // 預設以「客家人口」優先（客戶要求）
 
 // ---------- 資料 ----------
 const norm = s => (s || '').replace(/臺/g, '台');
@@ -592,7 +592,9 @@ function renderCandidates(el) {
   if (!cs.length) { box.innerHTML = '<div class="p-note">（候選人資料待補）</div>'; pol.innerHTML = ''; return; }
   box.innerHTML = cs.map((cd, i) => `
     <div class="cand" style="--cc:${ccOf(cd)}">
-      <div class="art">${cd.photo ? `<img src="${cd.photo}" alt="${cd.name}插畫">` : avatar(cd, i) + '<span class="ph">插畫待補</span>'}</div>
+      <div class="art">${cd.photo
+        ? `<img class="${cd.photoPlaceholder ? '' : 'photo'}" src="${cd.photo}" alt="${cd.name}${cd.photoPlaceholder ? '（示意人像）' : ''}">${cd.photoPlaceholder ? '<span class="ph">照片待補</span>' : ''}`
+        : avatar(cd, i) + '<span class="ph">照片待補</span>'}</div>
       <div class="nm">${cd.name}</div>
       <div class="got">得票 <b>${fmt(gotOf(cd))}</b> 票</div>
       <span class="party">${cd.party}</span>
