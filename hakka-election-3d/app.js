@@ -94,6 +94,7 @@ scene.add(sea);
 
 // ---------- 狀態（需在任何呼叫 paintCounty 之前宣告，避免 TDZ）----------
 let focused = null, selTown = null, hoverTown = null, hoverCounty = null;
+let overviewDist = Infinity;   // 總覽時的鏡頭距離：滾輪往下縮到這裡之後，改為捲動頁面
 let metric = 'hakka';   // 預設以「客家人口」優先（客戶要求）
 
 // ---------- 資料 ----------
@@ -344,7 +345,8 @@ function placeFloat() {
   let y = Math.min(bottom, Math.max(top, maxY + 10)), above = false;
   // 桌機：若會壓到左下的縣市按鈕列（超寬／矮螢幕），改放到縣市上方
   if (!isSmall()) {
-    const cr = chipsEl.getBoundingClientRect();
+    const sr = canvas.getBoundingClientRect(), cr0 = chipsEl.getBoundingClientRect();
+    const cr = { left: cr0.left - sr.left, right: cr0.right - sr.left, top: cr0.top - sr.top };
     const hitX = x + fw / 2 > cr.left - 8 && x - fw / 2 < cr.right + 8;
     if (hitX && y + fh > cr.top - 8) { y = Math.max(top, minY - fh - 12); above = true; }
   }
@@ -566,7 +568,8 @@ async function overview(seconds = 2.0) {
   syncChips();
   tweenOffset();
   // 本島範圍：以實際半寬／半長算距離，目標是本島盡量填滿畫面、屏東與基隆都在框內（桌機／手機實測調整 pad）
-  await flyTo(overviewPose(), seconds);
+  const pose = overviewPose(); overviewDist = pose.r;
+  await flyTo(pose, seconds);
 }
 
 // ---------- 候選人與政策（佔位；資料在 data/election.js）----------
@@ -701,7 +704,7 @@ function placeStats() {
 placeStats();
 addEventListener('resize', placeStats);
 const sheet = { full: false, drag: null };
-const vh = () => innerHeight;
+const vh = () => canvasSize()[1];   // 舞台高度（頁面可捲動後不再等於視窗高）
 const sheetH = full => vh() * (full ? 0.92 : 0.45);          // 與 CSS --sheet-full / --sheet-half 對應
 function setSheet(full) {
   sheet.full = full;
@@ -868,9 +871,18 @@ addEventListener('resize', resize);
 resize();
 
 let last = performance.now();
+// 滾輪：在總覽且已縮到最遠時，往下滾改為捲動頁面（否則滾輪被地圖縮放吃掉，使用者捲不到下面的文章與 Footer）
+const stageEl = document.getElementById('stage');
+stageEl.addEventListener('wheel', e => {
+  if (e.target === canvas && e.deltaY > 0 && !focused && !flight && controls.distance >= overviewDist * 0.985) e.stopPropagation();
+}, { capture: true, passive: true });
+// 舞台捲出視窗時暫停繪製，省電
+let stageVisible = true;
+new IntersectionObserver(es => { stageVisible = es[0].isIntersecting; }, { threshold: 0 }).observe(stageEl);
 renderer.setAnimationLoop(now => {
   const dt = Math.min(0.1, (now - last) / 1000);
   last = now;
+  if (!stageVisible) return;
   controls.update(dt);
   updateLabels();
   renderer.render(scene, camera);
@@ -882,3 +894,14 @@ document.getElementById('veil').classList.add('off');
 // 除錯／整合用（開場運鏡之前就掛上，不被動畫阻塞）
 window.__HAKKA3D__ = { focusCounty, overview, COUNTIES, TOWNS, camera, controls, renderer, scene, updateLabels, viewport, poseFor, isSmall: () => isSmall() };
 overview(REDUCED ? 0.1 : 2.6);
+
+// ---------- 地圖下方文章區（資料在 data/articles.js）----------
+(function renderNews() {
+  const grid = document.getElementById('news-grid');
+  if (!grid || !window.ARTICLES) return;
+  grid.innerHTML = ARTICLES.slice(0, 6).map(a => `
+    <a class="n-card" href="${a.url}" target="_blank" rel="noopener">
+      <div class="n-img" ${a.img ? `style="background-image:url('${a.img}')"` : ''}>${a.img ? '' : '圖片'}</div>
+      <div class="n-body"><span class="n-tag">${a.tag}</span><h3>${a.title}</h3><time>${a.date}</time></div>
+    </a>`).join('');
+})();
