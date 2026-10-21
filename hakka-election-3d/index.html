@@ -183,14 +183,14 @@
   #peek{display:flex;align-items:center;justify-content:center;gap:8px;height:52px;background:var(--ink);color:#fff;font-weight:700;letter-spacing:.08em;text-decoration:none}
   #peek i{font-style:normal;color:var(--gold);animation:nudge 1.6s ease-in-out infinite}
   @keyframes nudge{50%{transform:translateY(4px)}}
-  .news{background:var(--paper);padding:56px 24px 64px}
+  .news{background:var(--ink);padding:56px 24px 64px;border-top:1px solid rgba(255,255,255,.1)}
   .news-wrap{max-width:1150px;margin:0 auto}
-  .news-title{display:flex;align-items:baseline;gap:12px;margin:0 0 24px;font:900 28px/1.2 var(--serif);color:var(--ink)}
+  .news-title{display:flex;align-items:baseline;gap:12px;margin:0 0 24px;font:900 28px/1.2 var(--serif);color:#fff}
   .news-title::before{content:"";align-self:stretch;width:6px;border-radius:3px;background:var(--vermilion)}
-  .news-title small{font:500 14px var(--sans);color:var(--muted)}
+  .news-title small{font:500 14px var(--sans);color:#aeb8cc}
   .news-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
   .n-card{display:block;text-decoration:none;color:inherit;background:#fff;border:1px solid var(--line);border-radius:14px;overflow:hidden;transition:transform .2s,box-shadow .2s}
-  .n-card:hover{transform:translateY(-3px);box-shadow:0 14px 30px rgba(20,36,63,.14)}
+  .n-card:hover{transform:translateY(-3px);box-shadow:0 14px 30px rgba(0,0,0,.35)}
   .n-img{aspect-ratio:16/9;background:linear-gradient(135deg,#e5dcc6,#cfc3a6);display:grid;place-items:center;color:#8b8265;font-size:13px;letter-spacing:.2em;background-size:cover;background-position:center}
   .n-img{overflow:hidden}
   .n-img img{display:block;width:100%;height:100%;object-fit:cover}   /* 客新聞圖檔有防盜連（帶 Referer 會 403），所以 img 設 referrerpolicy=no-referrer */
@@ -199,15 +199,15 @@
   .n-body h3{margin:8px 0 6px;font:700 18px/1.5 var(--sans);color:var(--ink);display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
   .n-body time{font-size:13px;color:var(--muted)}
   .news-more{text-align:center;margin-top:32px}
-  .more-btn{display:inline-block;padding:12px 40px;border-radius:999px;background:var(--ink);color:#fff;font-weight:800;text-decoration:none;box-shadow:0 5px 0 rgba(0,0,0,.25);transition:transform .12s,box-shadow .12s}
+  .more-btn{display:inline-block;padding:12px 40px;border-radius:999px;background:var(--gold);color:var(--ink);font-weight:800;text-decoration:none;box-shadow:0 5px 0 #b98715;transition:transform .12s,box-shadow .12s}
   /* 專題製作名單（比照 hakkanews.tw/1786hero/） */
-  .member{max-width:520px;margin:56px auto 0;text-align:center;color:var(--ink)}
+  .member{max-width:520px;margin:56px auto 0;text-align:center;color:#fff}
   .member .line{width:56px;height:3px;margin:0 auto 18px;border-radius:2px;background:var(--vermilion)}
   .member .title{font:900 20px/1.4 var(--serif);letter-spacing:.2em;margin-bottom:12px}
-  .member .roles{font-size:16px;line-height:2;color:#3a4256}
-  .member .roles b{font-weight:700;color:var(--ink)}
-  .more-btn:hover{background:var(--indigo)}
-  .more-btn:active{transform:translateY(3px);box-shadow:0 2px 0 rgba(0,0,0,.25)}
+  .member .roles{font-size:16px;line-height:2;color:#c9d3e6}
+  .member .roles b{font-weight:700;color:#fff}
+  .more-btn:hover{background:#ffd166}
+  .more-btn:active{transform:translateY(3px);box-shadow:0 2px 0 #b98715}
   @media (max-width:899px){.news-grid{grid-template-columns:repeat(2,1fr);gap:16px}}
   @media (max-width:480px){.news{padding:40px 16px 48px}.news-grid{grid-template-columns:1fr}.news-title{font-size:24px}}
   @media (prefers-reduced-motion:reduce){#peek i{animation:none}}
