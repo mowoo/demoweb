@@ -192,6 +192,8 @@
   .n-card{display:block;text-decoration:none;color:inherit;background:#fff;border:1px solid var(--line);border-radius:14px;overflow:hidden;transition:transform .2s,box-shadow .2s}
   .n-card:hover{transform:translateY(-3px);box-shadow:0 14px 30px rgba(20,36,63,.14)}
   .n-img{aspect-ratio:16/9;background:linear-gradient(135deg,#e5dcc6,#cfc3a6);display:grid;place-items:center;color:#8b8265;font-size:13px;letter-spacing:.2em;background-size:cover;background-position:center}
+  .n-img{overflow:hidden}
+  .n-img img{display:block;width:100%;height:100%;object-fit:cover}   /* 客新聞圖檔有防盜連（帶 Referer 會 403），所以 img 設 referrerpolicy=no-referrer */
   .n-body{padding:14px 16px 16px}
   .n-tag{display:inline-block;font-size:12px;font-weight:700;color:#fff;background:var(--vermilion);padding:1px 10px;border-radius:999px}
   .n-body h3{margin:8px 0 6px;font:700 18px/1.5 var(--sans);color:var(--ink);display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}

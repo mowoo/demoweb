@@ -901,7 +901,7 @@ overview(REDUCED ? 0.1 : 2.6);
   if (!grid || !window.ARTICLES) return;
   grid.innerHTML = ARTICLES.slice(0, 6).map(a => `
     <a class="n-card" href="${a.url}" target="_blank" rel="noopener">
-      <div class="n-img" ${a.img ? `style="background-image:url('${a.img}')"` : ''}>${a.img ? '' : '圖片'}</div>
+      <div class="n-img">${a.img ? `<img src="${a.img}" alt="" loading="lazy" referrerpolicy="no-referrer" onerror="this.remove()">` : '圖片'}</div>
       <div class="n-body"><span class="n-tag">${a.tag}</span><h3>${a.title}</h3><time>${a.date}</time></div>
     </a>`).join('');
 })();
