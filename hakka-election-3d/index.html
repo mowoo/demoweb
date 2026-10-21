@@ -123,7 +123,7 @@
   .cand .art{background:color-mix(in srgb,var(--cc) 16%,var(--paper));aspect-ratio:1/0.9;display:grid;place-items:end center;position:relative;overflow:hidden}
   .cand .art svg{width:62%;height:auto;display:block}
   .cand .art img{display:block;width:95%;height:95%;object-fit:contain;object-position:center bottom}   /* 示意人像（無照片者） */
-  .cand .art img.photo{width:100%;height:100%;object-fit:cover;object-position:center 50%}              /* 客戶提供的照片：滿版；臉部置中（共同臉寬比例裁切） */
+  .cand .art img.photo{width:100%;height:100%;object-fit:cover;object-position:center top}              /* 客戶提供的照片（640×576，與框同比例）：頭高約佔框高 70%、頭頂距上緣約 5px；手機框較矮時取上段 */
   .cand .art .ph{position:absolute;top:8px;left:8px}
   .cand .nm{font:900 23px/1.2 var(--serif);margin-top:8px;color:var(--cc)}
   .cand .party{display:inline-block;margin:5px 0 2px;font-size:14px;font-weight:800;color:#fff;background:var(--cc);padding:3px 14px;border-radius:999px}
@@ -213,7 +213,7 @@
     body.panel-open #hud h1{font-size:20px}
     /* 手機：候選人卡片壓縮，讓半屏抽屜一開就能看到姓名、得票與黨籍 */
     .cand .art{aspect-ratio:1/0.74}
-    .cand .art img.photo{object-position:center 50%}
+    .cand .art img.photo{object-position:center top}
     .cand .nm{font-size:19px;margin-top:4px}
     .cand .got{font-size:12.5px;margin:1px 0}
     .cand .got b{font-size:17px}
