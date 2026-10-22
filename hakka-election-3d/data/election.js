@@ -489,12 +489,11 @@ window.ELECTION = {
     "age": 69,
     "role": "立法委員",
     "color": "#1d4fa3",
-    "photo": "assets/cand/placeholder-a.png",
+    "photo": "assets/cand/蘇清泉.jpg",
     "bio": [],
     "policy": [],
     "policyNote": null,
-    "link": null,
-    "photoPlaceholder": true
+    "link": null
    },
    {
     "name": "周春米",
